@@ -1,0 +1,24 @@
+{
+    "packages": [
+            "bloc_concurrency",
+            "carousel_slider",
+            "dartz",
+            "dio",
+            "equatable",
+            "firebase_core",
+            "firebase_messaging",
+            "flutter_bloc",
+            "flutter_local_notifications",
+            "flutter_otp_text_field",
+            "flutter_slider_drawer",
+            "flutter_svg_icons",
+            "get_it",
+            "phone_form_field",
+            "pretty_dio_logger",
+            "shared_preferences",
+            "shimmer",
+            "go_router",
+            "flutter_svg",
+            "flutter_svg_icons"
+    ]
+}
