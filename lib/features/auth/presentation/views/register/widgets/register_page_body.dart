@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
 import 'package:nuhoud/core/widgets/custom_app_bar.dart';
 
 import '../../../../../../core/utils/app_constats.dart';
 
+import '../../../../../../core/utils/routs.dart';
 import '../../../../../../core/utils/styles.dart';
 import '../../../../../../core/widgets/custom_button.dart';
 import '../../../../../../core/widgets/gradient_container.dart';
+import '../../verification/verification_page.dart';
 import '../../widgets/app_logo_image.dart';
 import 'register_form.dart';
 
 class RegisterPageBody extends StatefulWidget {
   const RegisterPageBody({super.key});
-
   @override
   State<RegisterPageBody> createState() => _RegisterPageBodyState();
 }
@@ -68,7 +70,12 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
                       style: Styles.textStyle15.copyWith(color: Colors.white),
                     ),
                     onPressed: () {
-                      if (_registerFormKey.currentState!.validate()) {}
+                      print(emailController.text);
+                      GoRouter.of(context).pushReplacement(
+                          Routers.kVerificationPageRoute,
+                          extra: VerificationArgs(
+                              email: emailController.text,
+                              isFromRegister: true));
                     }),
               ],
             ),

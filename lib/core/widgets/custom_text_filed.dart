@@ -22,28 +22,51 @@ class CustomTextField extends StatefulWidget {
   final String? Function(String?)? validatorFun;
   final Color? borderColor;
   final TextInputType? keyboardType;
-  final IconData? prefixIcon;
   final void Function(String?)? onChange;
+  final IconData? prefixIcon;
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
+  @override
+  void dispose() {
+    focusNode.dispose();
+    super.dispose();
+  }
+
   bool showPassowrd = false;
+  FocusNode focusNode = FocusNode();
+  Color fillColor = const Color(0xffF4F7FE);
+  Color labelTextColor = Colors.grey;
+  Color passwordIconColor = Colors.black87;
+  Color textColor = Colors.black87;
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
+      padding: const EdgeInsets.symmetric(vertical: 15),
       child: TextFormField(
         style: Styles.textStyle13.copyWith(
           color: Colors.white70,
           fontWeight: FontWeight.w500,
         ),
+        onChanged: widget.onChange,
+        keyboardType: widget.keyboardType,
+        textInputAction: TextInputAction.next,
+        validator: widget.validatorFun,
+        controller: widget.controller,
+        focusNode: focusNode,
+        maxLines: widget.maxLine,
+        obscureText: widget.isPassword ? !showPassowrd : false,
         decoration: InputDecoration(
-          labelStyle: TextStyle(
-            color: Colors.white.withOpacity(0.8),
-            fontSize: 14,
+          labelStyle: const TextStyle(
+            color: Colors.white70,
+            fontSize: 12,
             fontWeight: FontWeight.w500,
           ),
           focusedBorder: OutlineInputBorder(
@@ -60,13 +83,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ),
             borderRadius: BorderRadius.circular(kBorderRadius),
           ),
+          labelText: widget.text,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-          labelText: widget.text,
-          prefixIcon: Icon(
-            widget.prefixIcon,
-            color: Colors.white70,
-          ),
+          prefixIcon: Icon(widget.prefixIcon, color: Colors.white70),
           suffixIcon: widget.isPassword
               ? IconButton(
                   icon: Icon(
@@ -83,8 +103,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 )
               : null,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(kBorderRadius),
-          ),
+              borderRadius: BorderRadius.circular(kBorderRadius),
+              borderSide: BorderSide.none),
           fillColor: Colors.white.withOpacity(0.5),
           filled: true,
         ),
