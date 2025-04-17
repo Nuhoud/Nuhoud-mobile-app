@@ -22,7 +22,7 @@ class LoginForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12),
+      margin: const EdgeInsets.symmetric(horizontal: kVerticalPadding),
       child: Form(
         key: _loginFormKey,
         child: Column(

@@ -51,8 +51,8 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
               child: CustomAppBar(title: "sing_up".tr(context), backBtn: true)),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: kHorizontalPadding, vertical: kVerticalPadding),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: kHorizontalPadding),
               children: [
                 const AppLogoImage(),
                 RegisterForm(
