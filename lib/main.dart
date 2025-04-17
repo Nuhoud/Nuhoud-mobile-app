@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:nuhoud/core/utils/routs.dart';
 import 'core/locale/locale_cubit.dart';
 import 'core/utils/app_colors.dart';
 
@@ -19,7 +20,8 @@ class Nuhoud extends StatelessWidget {
       ],
       child: BlocBuilder<LocaleCubit, ChangeLocaleState>(
         builder: (context, state) {
-          return MaterialApp(
+          return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
             locale: state.locale,
             supportedLocales: const [
               Locale("en"),
@@ -46,6 +48,7 @@ class Nuhoud extends StatelessWidget {
                 useMaterial3: true,
                 scaffoldBackgroundColor: AppColors.backgroundColor,
                 fontFamily: "Ubuntu"),
+            routerConfig: Routers.router,
           );
         },
       ),

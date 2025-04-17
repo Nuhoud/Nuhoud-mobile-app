@@ -29,7 +29,7 @@ class CustomAppBar extends StatelessWidget {
                   icon: const Icon(
                     Icons.arrow_back_outlined,
                     size: 20,
-                    color: AppColors.backgroundColor,
+                    color: AppColors.primaryColor,
                   ),
                   onPressed: () {
                     Navigator.pop(context);

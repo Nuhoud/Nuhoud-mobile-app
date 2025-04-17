@@ -22,14 +22,14 @@ class ShimmerContainer extends StatelessWidget {
             mainAxisSpacing: 16),
         itemBuilder: (BuildContext context, int index) {
           return Shimmer.fromColors(
-            baseColor: AppColors.baseShimmerColor,
+            baseColor: AppColors.backgroundColor,
             highlightColor: AppColors.highLightShimmerColor,
             child: Container(
               margin: margin,
               width: width,
               height: height,
               decoration: BoxDecoration(
-                  color: AppColors.baseShimmerColor,
+                  color: AppColors.backgroundColor,
                   borderRadius: BorderRadius.circular(kBorderRadius)),
             ),
           );
