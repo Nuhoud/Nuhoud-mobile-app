@@ -23,23 +23,23 @@ class _CustomPhoneFieldState extends State<CustomPhoneField> {
   Color labelTextColor = Colors.grey;
   @override
   void initState() {
-    fNode.addListener(() {
-      if (fNode.hasFocus) {
-        setState(() {
-          fillColor = Colors.transparent;
-          labelTextColor = Colors.white;
+    // fNode.addListener(() {
+    //   if (fNode.hasFocus) {
+    //     setState(() {
+    //       fillColor = Colors.transparent;
+    //       labelTextColor = Colors.white;
 
-          textColor = Colors.white;
-        });
-      } else {
-        setState(() {
-          fillColor = const Color(0xffF4F7FE);
+    //       textColor = Colors.white;
+    //     });
+    //   } else {
+    //     setState(() {
+    //       fillColor = const Color(0xffF4F7FE);
 
-          labelTextColor = Colors.grey;
-          textColor = Colors.black87;
-        });
-      }
-    });
+    //       labelTextColor = Colors.grey;
+    //       textColor = Colors.black87;
+    //     });
+    //   }
+    // });
     super.initState();
   }
 

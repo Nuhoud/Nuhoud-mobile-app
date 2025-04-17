@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../utils/app_colors.dart';
 import '../utils/app_constats.dart';
 import '../utils/styles.dart';
 
@@ -15,6 +13,7 @@ class CustomTextField extends StatefulWidget {
     this.validatorFun,
     this.keyboardType,
     this.onChange,
+    this.prefixIcon,
   });
   final String text;
   final bool isPassword;
@@ -23,77 +22,55 @@ class CustomTextField extends StatefulWidget {
   final String? Function(String?)? validatorFun;
   final Color? borderColor;
   final TextInputType? keyboardType;
+  final Widget? prefixIcon;
   final void Function(String?)? onChange;
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  @override
-  void dispose() {
-    focusNode.dispose();
-    super.dispose();
-  }
-
   bool showPassowrd = false;
-  FocusNode focusNode = FocusNode();
-  Color fillColor = const Color(0xffF4F7FE);
-  Color labelTextColor = Colors.grey;
-  Color passwordIconColor = Colors.black87;
-  Color textColor = Colors.black87;
-  @override
-  void initState() {
-    focusNode.addListener(() {
-      if (focusNode.hasFocus) {
-        setState(() {
-          fillColor = Colors.transparent;
-          labelTextColor = Colors.white;
-          passwordIconColor = AppColors.primaryColor;
-          textColor = Colors.white;
-        });
-      } else {
-        setState(() {
-          fillColor = const Color(0xffF4F7FE);
-          passwordIconColor = Colors.black87;
-          labelTextColor = Colors.grey;
-          textColor = Colors.black87;
-        });
-      }
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 15),
+      padding: const EdgeInsets.symmetric(vertical: 12),
       child: TextFormField(
-        style: Styles.textStyle16.copyWith(
-          color: textColor,
+        style: Styles.textStyle13.copyWith(
+          color: Colors.white70,
+          fontWeight: FontWeight.w500,
         ),
-        onChanged: widget.onChange,
-        keyboardType: widget.keyboardType,
-        textInputAction: TextInputAction.next,
-        validator: widget.validatorFun,
-        controller: widget.controller,
-        focusNode: focusNode,
-        maxLines: widget.maxLine,
-        obscureText: widget.isPassword ? !showPassowrd : false,
         decoration: InputDecoration(
-          labelStyle: TextStyle(color: labelTextColor),
+          labelStyle: TextStyle(
+            color: Colors.white.withOpacity(0.8),
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-                color: widget.borderColor == null
-                    ? const Color(0xffB2B9C6)
-                    : widget.borderColor!),
+            borderSide: const BorderSide(
+              color: Colors.white70,
+              width: 1.5,
+            ),
             borderRadius: BorderRadius.circular(kBorderRadius),
           ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: Colors.white54,
+              width: 1.2,
+            ),
+            borderRadius: BorderRadius.circular(kBorderRadius),
+          ),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
           labelText: widget.text,
+          prefixIcon: widget.prefixIcon,
           suffixIcon: widget.isPassword
               ? IconButton(
                   icon: Icon(
-                    showPassowrd ? Icons.visibility : Icons.visibility_off,
-                    color: passwordIconColor,
+                    showPassowrd
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
+                    color: Colors.white70,
                   ),
                   onPressed: () {
                     setState(() {
@@ -103,9 +80,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 )
               : null,
           border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(kBorderRadius),
-              borderSide: BorderSide.none),
-          fillColor: fillColor,
+            borderRadius: BorderRadius.circular(kBorderRadius),
+          ),
+          fillColor: Colors.white.withOpacity(0.5),
           filled: true,
         ),
       ),

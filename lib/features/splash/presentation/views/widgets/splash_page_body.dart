@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/assets_data.dart';
 import '../../../../../core/utils/routs.dart';
+import '../../../../../core/widgets/gradient_container.dart';
 
 class SplashPageBody extends StatefulWidget {
   const SplashPageBody({super.key});
@@ -43,7 +43,7 @@ class _SplashPageBodyState extends State<SplashPageBody>
     });
 
     Timer(const Duration(seconds: 10), () {
-      GoRouter.of(context).pushReplacement(Routers.kHomePageRoute);
+      GoRouter.of(context).pushReplacement(Routers.kLoginPageRoute);
     });
   }
 
@@ -57,17 +57,7 @@ class _SplashPageBodyState extends State<SplashPageBody>
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
 
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            AppColors.blueLighterColor,
-            AppColors.primaryColor,
-          ],
-        ),
-      ),
+    return GradientContainer(
       child: Center(
         child: AnimatedBuilder(
           animation: _controller,
