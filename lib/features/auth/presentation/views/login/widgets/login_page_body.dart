@@ -5,8 +5,8 @@ import 'package:nuhoud/core/widgets/gradient_container.dart';
 import 'package:phone_form_field/phone_form_field.dart';
 
 import '../../../../../../core/utils/app_constats.dart';
-import '../../../../../../core/utils/assets_data.dart';
 import '../../../../../../core/utils/styles.dart';
+import '../../widgets/app_logo_image.dart';
 import '../../../../../../core/widgets/custom_button.dart';
 import 'login_form.dart';
 import 'singin_forget_password.dart';
@@ -38,17 +38,12 @@ class _LoginPageBodyState extends State<LoginPageBody> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
     return GradientContainer(
       child: ListView(
         padding: const EdgeInsets.symmetric(
             horizontal: kHorizontalPadding, vertical: kVerticalPadding),
         children: [
-          Image.asset(
-            AssetsData.logo,
-            width: size.width * 0.4,
-            height: size.height * 0.4,
-          ),
+          const AppLogoImage(),
           LoginForm(
               loginFormKey: _loginFormKey,
               emailController: emailController,

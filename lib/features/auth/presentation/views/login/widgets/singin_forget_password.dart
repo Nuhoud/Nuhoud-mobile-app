@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
 
+import '../../../../../../core/utils/routs.dart';
 import '../../../../../../core/utils/styles.dart';
 
 class SignUpForgetPassWidget extends StatelessWidget {
@@ -15,7 +17,9 @@ class SignUpForgetPassWidget extends StatelessWidget {
       children: [
         CustomTextButtonWidget(
           text: "sing_up".tr(context),
-          onPressed: () {},
+          onPressed: () {
+            GoRouter.of(context).push(Routers.kRegisterPageRoute);
+          },
         ),
         CustomTextButtonWidget(
           text: "forgot_password".tr(context),

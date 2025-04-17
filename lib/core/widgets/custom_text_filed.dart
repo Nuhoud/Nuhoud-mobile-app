@@ -22,7 +22,7 @@ class CustomTextField extends StatefulWidget {
   final String? Function(String?)? validatorFun;
   final Color? borderColor;
   final TextInputType? keyboardType;
-  final Widget? prefixIcon;
+  final IconData? prefixIcon;
   final void Function(String?)? onChange;
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -63,7 +63,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
           labelText: widget.text,
-          prefixIcon: widget.prefixIcon,
+          prefixIcon: Icon(
+            widget.prefixIcon,
+            color: Colors.white70,
+          ),
           suffixIcon: widget.isPassword
               ? IconButton(
                   icon: Icon(

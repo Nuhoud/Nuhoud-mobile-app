@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
 
-import '../utils/app_colors.dart';
 import '../utils/app_constats.dart';
+import '../utils/styles.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({
-    super.key,
-    required this.title,
-    required this.backBtn,
-  });
+  const CustomAppBar(
+      {super.key,
+      required this.title,
+      required this.backBtn,
+      this.backgroundColor,
+      this.textColor});
   final String title;
+  final Color? backgroundColor;
+  final Color? textColor;
   final bool backBtn;
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       margin: const EdgeInsets.symmetric(horizontal: kHorizontalPadding + 4),
-      decoration: const BoxDecoration(
-          color: AppColors.primaryColor,
-          borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+          color: backgroundColor ?? Colors.white.withOpacity(0.5),
+          borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(32),
               bottomRight: Radius.circular(32))),
       child: Row(
@@ -26,11 +29,8 @@ class CustomAppBar extends StatelessWidget {
         children: [
           backBtn
               ? IconButton(
-                  icon: const Icon(
-                    Icons.arrow_back_outlined,
-                    size: 20,
-                    color: AppColors.primaryColor,
-                  ),
+                  icon: Icon(Icons.arrow_back_outlined,
+                      size: 20, color: textColor ?? Colors.white70),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -43,7 +43,9 @@ class CustomAppBar extends StatelessWidget {
             child: Text(
               overflow: TextOverflow.ellipsis,
               title,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              style: Styles.textStyle18.copyWith(
+                  color: textColor ?? Colors.white70,
+                  fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(

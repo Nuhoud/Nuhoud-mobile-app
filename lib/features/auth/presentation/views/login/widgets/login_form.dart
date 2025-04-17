@@ -40,19 +40,13 @@ class LoginForm extends StatelessWidget {
             CustomTextField(
                 text: "email".tr(context),
                 isPassword: false,
-                prefixIcon: const Icon(
-                  Icons.mail_outline_rounded,
-                  color: Colors.white70,
-                ),
+                prefixIcon: Icons.mail_outline_rounded,
                 validatorFun: (p0) =>
                     Validator.validate(p0, ValidationState.email),
                 controller: emailController),
             CustomTextField(
                 text: "password".tr(context),
-                prefixIcon: const Icon(
-                  Icons.lock_outline_rounded,
-                  color: Colors.white70,
-                ),
+                prefixIcon: Icons.lock_outline_rounded,
                 isPassword: true,
                 validatorFun: (p0) =>
                     Validator.validate(p0, ValidationState.normal),
