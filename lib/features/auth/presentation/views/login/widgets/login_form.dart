@@ -6,6 +6,8 @@ import '../../../../../../core/utils/enums.dart';
 import '../../../../../../core/utils/styles.dart';
 import '../../../../../../core/utils/validation.dart';
 import '../../../../../../core/widgets/custom_text_filed.dart';
+import '../../widgets/custom_segmented_button.dart';
+import '../../widgets/email_phone_text_field.dart';
 
 class LoginForm extends StatelessWidget {
   const LoginForm({
@@ -13,11 +15,17 @@ class LoginForm extends StatelessWidget {
     required GlobalKey<FormState> loginFormKey,
     required this.emailController,
     required this.passwordController,
+    required this.selectedAuthType,
+    required this.onAuthTypeChanged,
+    required this.phoneController,
   }) : _loginFormKey = loginFormKey;
 
   final GlobalKey<FormState> _loginFormKey;
   final TextEditingController emailController;
   final TextEditingController passwordController;
+  final AuthType selectedAuthType;
+  final ValueChanged<AuthType> onAuthTypeChanged;
+  final TextEditingController phoneController;
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +45,14 @@ class LoginForm extends StatelessWidget {
                     .copyWith(color: Colors.white, fontWeight: FontWeight.w700),
               ),
             ),
-            CustomTextField(
-                text: "email".tr(context),
-                isPassword: false,
-                prefixIcon: Icons.mail_outline_rounded,
-                validatorFun: (p0) =>
-                    Validator.validate(p0, ValidationState.email),
-                controller: emailController),
+            CustomSegmentedButton(
+              onAuthTypeChanged: onAuthTypeChanged,
+              selectedAuthType: selectedAuthType,
+            ),
+            EmailPhoneTextField(
+                selectedAuthType: selectedAuthType,
+                emailController: emailController,
+                phoneController: phoneController),
             CustomTextField(
                 text: "password".tr(context),
                 prefixIcon: Icons.lock_outline_rounded,

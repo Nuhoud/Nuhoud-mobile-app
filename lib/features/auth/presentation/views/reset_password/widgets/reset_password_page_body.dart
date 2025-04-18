@@ -5,6 +5,7 @@ import 'package:nuhoud/core/widgets/custom_app_bar.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_constats.dart';
 
+import '../../../../../../core/utils/enums.dart';
 import '../../../../../../core/widgets/custom_button.dart';
 import '../../../../../../core/widgets/gradient_container.dart';
 import 'reset_password_form.dart';
@@ -21,6 +22,8 @@ class _RestPasswordPageBodyState extends State<RestPasswordPageBody> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
   late final TextEditingController _confirmPasswordController;
+  late final TextEditingController _phoneController;
+  AuthType selectedAuthType = AuthType.phone;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -29,6 +32,13 @@ class _RestPasswordPageBodyState extends State<RestPasswordPageBody> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
     _confirmPasswordController = TextEditingController();
+    _phoneController = TextEditingController();
+  }
+
+  void _handleAuthTypeChanged(AuthType newType) {
+    setState(() {
+      selectedAuthType = newType;
+    });
   }
 
   @override
@@ -36,6 +46,7 @@ class _RestPasswordPageBodyState extends State<RestPasswordPageBody> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -67,6 +78,9 @@ class _RestPasswordPageBodyState extends State<RestPasswordPageBody> {
                 SizedBox(height: size.height * 0.05),
                 RestPasswordForm(
                     formKey: _formKey,
+                    onAuthTypeChanged: _handleAuthTypeChanged,
+                    phoneController: _phoneController,
+                    selectedAuthType: selectedAuthType,
                     emailController: _emailController,
                     passwordController: _passwordController,
                     confirmPasswordController: _confirmPasswordController),

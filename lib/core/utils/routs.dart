@@ -36,8 +36,9 @@ abstract class Routers {
         builder: (context, state) {
           final args = state.extra as VerificationArgs;
           return VerificationPage(
-            email: args.email,
+            email: args.emailOrPhone,
             isFromRegiter: args.isFromRegister,
+            selectedAuthType: args.selectedAuthType,
           );
         },
       ),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:nuhoud/core/utils/app_constats.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
+import 'package:nuhoud/core/utils/enums.dart';
 
 import '../../../../../../core/widgets/custom_button.dart';
 import '../../../../../../core/widgets/gradient_container.dart';
@@ -13,9 +14,13 @@ import 'verification_msg.dart';
 
 class VerificationPagebody extends StatefulWidget {
   const VerificationPagebody(
-      {super.key, required this.email, required this.isFromRigster});
+      {super.key,
+      required this.email,
+      required this.isFromRigster,
+      required this.selectedAuthType});
   final String email;
   final bool isFromRigster;
+  final AuthType selectedAuthType;
   @override
   State<VerificationPagebody> createState() => _VerificationPagebodyState();
 }
@@ -68,17 +73,24 @@ class _VerificationPagebodyState extends State<VerificationPagebody> {
           padding: EdgeInsets.symmetric(
               vertical: size.height * 0.05, horizontal: kHorizontalPadding),
           children: [
-            const MailImage(),
+            VerificationImage(
+              authType: widget.selectedAuthType,
+            ),
             Center(
               child: Text(
                 textAlign: TextAlign.center,
-                "enter_the_code_to_continue".tr(context),
+                widget.selectedAuthType == AuthType.email
+                    ? "enter_the_code_to_continue_email".tr(context)
+                    : "enter_the_code_to_continue_phone".tr(context),
                 style: theme.textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold, color: Colors.white),
               ),
             ),
             SizedBox(height: size.height * 0.05),
-            VerificationMsg(email: widget.email),
+            VerificationMsg(
+              emailOrPhone: widget.email,
+              selectedAuthType: widget.selectedAuthType,
+            ),
             CustomOptField(onSubmit: (value) {
               setState(() => _otpValue = value);
             }),

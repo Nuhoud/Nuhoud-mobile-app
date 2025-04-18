@@ -31,15 +31,11 @@ class CustomTextField extends StatefulWidget {
 class _CustomTextFieldState extends State<CustomTextField> {
   @override
   void dispose() {
-    focusNode.dispose();
     super.dispose();
   }
 
   bool showPassowrd = false;
-  FocusNode focusNode = FocusNode();
-  Color fillColor = const Color(0xffF4F7FE);
-  Color labelTextColor = Colors.grey;
-  Color passwordIconColor = Colors.black87;
+
   Color textColor = Colors.black87;
   @override
   void initState() {
@@ -60,7 +56,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
         textInputAction: TextInputAction.next,
         validator: widget.validatorFun,
         controller: widget.controller,
-        focusNode: focusNode,
         maxLines: widget.maxLine,
         obscureText: widget.isPassword ? !showPassowrd : false,
         decoration: InputDecoration(

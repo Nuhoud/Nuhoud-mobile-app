@@ -7,6 +7,8 @@ import '../../../../../../core/utils/styles.dart';
 import '../../../../../../core/utils/validation.dart';
 
 import '../../../../../../core/widgets/custom_text_filed.dart';
+import '../../widgets/custom_segmented_button.dart';
+import '../../widgets/email_phone_text_field.dart';
 
 class RegisterForm extends StatelessWidget {
   const RegisterForm({
@@ -16,6 +18,9 @@ class RegisterForm extends StatelessWidget {
     required this.emailController,
     required this.passwordController,
     required this.confirmPasswordController,
+    required this.selectedAuthType,
+    required this.onAuthTypeChanged,
+    required this.phoneController,
   }) : _registerFormKey = registerFormKey;
 
   final GlobalKey<FormState> _registerFormKey;
@@ -23,6 +28,9 @@ class RegisterForm extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final TextEditingController confirmPasswordController;
+  final AuthType selectedAuthType;
+  final ValueChanged<AuthType> onAuthTypeChanged;
+  final TextEditingController phoneController;
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +50,14 @@ class RegisterForm extends StatelessWidget {
                     .copyWith(color: Colors.white, fontWeight: FontWeight.w700),
               ),
             ),
+            CustomSegmentedButton(
+              onAuthTypeChanged: onAuthTypeChanged,
+              selectedAuthType: selectedAuthType,
+            ),
+            EmailPhoneTextField(
+                selectedAuthType: selectedAuthType,
+                emailController: emailController,
+                phoneController: phoneController),
             CustomTextField(
               text: "first_name".tr(context),
               isPassword: false,
@@ -49,14 +65,6 @@ class RegisterForm extends StatelessWidget {
               validatorFun: (p0) =>
                   Validator.validate(p0, ValidationState.normal),
               controller: nameController,
-            ),
-            CustomTextField(
-              text: "email".tr(context),
-              prefixIcon: Icons.mail_outline_rounded,
-              isPassword: false,
-              validatorFun: (p0) =>
-                  Validator.validate(p0, ValidationState.email),
-              controller: emailController,
             ),
             CustomTextField(
                 text: "password".tr(context),

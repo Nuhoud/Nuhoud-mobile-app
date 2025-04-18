@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
 import 'package:nuhoud/core/widgets/gradient_container.dart';
 
-import 'package:phone_form_field/phone_form_field.dart';
-
 import '../../../../../../core/utils/app_constats.dart';
+import '../../../../../../core/utils/enums.dart';
 import '../../../../../../core/utils/styles.dart';
 import '../../widgets/app_logo_image.dart';
 import '../../../../../../core/widgets/custom_button.dart';
@@ -18,21 +17,30 @@ class LoginPageBody extends StatefulWidget {
 }
 
 class _LoginPageBodyState extends State<LoginPageBody> {
-  late final TextEditingController emailController;
-  late final TextEditingController passwordController;
-  late final PhoneController phoneController;
+  late final TextEditingController _emailController;
+  late final TextEditingController _passwordController;
+  late final TextEditingController _phoneController;
+  AuthType selectedAuthType = AuthType.phone;
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
   @override
   void initState() {
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    _phoneController = TextEditingController();
     super.initState();
+  }
+
+  void _handleAuthTypeChanged(AuthType newType) {
+    setState(() {
+      selectedAuthType = newType;
+    });
   }
 
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -45,9 +53,12 @@ class _LoginPageBodyState extends State<LoginPageBody> {
         children: [
           const AppLogoImage(),
           LoginForm(
+              onAuthTypeChanged: _handleAuthTypeChanged,
+              phoneController: _phoneController,
+              selectedAuthType: selectedAuthType,
               loginFormKey: _loginFormKey,
-              emailController: emailController,
-              passwordController: passwordController),
+              emailController: _emailController,
+              passwordController: _passwordController),
           const SignUpForgetPassWidget(),
           CustomButton(
               onPressed: () {

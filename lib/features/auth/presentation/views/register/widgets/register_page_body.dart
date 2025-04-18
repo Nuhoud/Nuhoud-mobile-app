@@ -5,6 +5,7 @@ import 'package:nuhoud/core/widgets/custom_app_bar.dart';
 
 import '../../../../../../core/utils/app_constats.dart';
 
+import '../../../../../../core/utils/enums.dart';
 import '../../../../../../core/utils/routs.dart';
 import '../../../../../../core/utils/styles.dart';
 import '../../../../../../core/widgets/custom_button.dart';
@@ -25,6 +26,8 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
   late final TextEditingController emailController;
   late final TextEditingController passwordController;
   late final TextEditingController confirmPasswordController;
+  late final TextEditingController phoneController;
+  AuthType selectedAuthType = AuthType.phone;
 
   @override
   void initState() {
@@ -33,6 +36,13 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
     nameController = TextEditingController();
     passwordController = TextEditingController();
     confirmPasswordController = TextEditingController();
+    phoneController = TextEditingController();
+  }
+
+  void _handleAuthTypeChanged(AuthType newType) {
+    setState(() {
+      selectedAuthType = newType;
+    });
   }
 
   @override
@@ -41,6 +51,7 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
+    phoneController.dispose();
     super.dispose();
   }
 
@@ -60,6 +71,9 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
                 RegisterForm(
                   registerFormKey: _registerFormKey,
                   nameController: nameController,
+                  selectedAuthType: selectedAuthType,
+                  onAuthTypeChanged: _handleAuthTypeChanged,
+                  phoneController: phoneController,
                   emailController: emailController,
                   passwordController: passwordController,
                   confirmPasswordController: confirmPasswordController,
@@ -73,7 +87,10 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
                       GoRouter.of(context).pushReplacement(
                           Routers.kVerificationPageRoute,
                           extra: VerificationArgs(
-                              email: emailController.text,
+                              selectedAuthType: selectedAuthType,
+                              emailOrPhone: selectedAuthType == AuthType.email
+                                  ? emailController.text
+                                  : phoneController.text,
                               isFromRegister: true));
                     }),
               ],
