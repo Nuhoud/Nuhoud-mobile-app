@@ -5,12 +5,10 @@ import 'package:nuhoud/core/widgets/custom_app_bar.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/app_constats.dart';
 
-import '../../../../../../core/utils/assets_data.dart';
-import '../../../../../../core/utils/enums.dart';
-import '../../../../../../core/utils/validation.dart';
 import '../../../../../../core/widgets/custom_button.dart';
-import '../../../../../../core/widgets/custom_text_filed.dart';
 import '../../../../../../core/widgets/gradient_container.dart';
+import 'reset_password_form.dart';
+import 'rest_passwrod_image.dart';
 
 class RestPasswordPageBody extends StatefulWidget {
   const RestPasswordPageBody({super.key});
@@ -87,74 +85,6 @@ class _RestPasswordPageBodyState extends State<RestPasswordPageBody> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class RestPasswordForm extends StatelessWidget {
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
-  final TextEditingController confirmPasswordController;
-  final GlobalKey<FormState> formKey;
-  const RestPasswordForm(
-      {super.key,
-      required this.emailController,
-      required this.passwordController,
-      required this.confirmPasswordController,
-      required this.formKey});
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-        key: formKey,
-        child: Column(children: [
-          CustomTextField(
-            text: "email".tr(context),
-            validatorFun: (p0) => Validator.validate(p0, ValidationState.email),
-            isPassword: true,
-            controller: passwordController,
-          ),
-          CustomTextField(
-            text: "new_password".tr(context),
-            validatorFun: (p0) =>
-                Validator.validate(p0, ValidationState.password),
-            isPassword: true,
-            controller: passwordController,
-          ),
-          CustomTextField(
-            text: "confirm_password".tr(context),
-            isPassword: true,
-            validatorFun: (p0) => Validator.validateConfirmPassword(
-              p0,
-              passwordController.text,
-            ),
-            controller: confirmPasswordController,
-          ),
-          SizedBox(height: MediaQuery.sizeOf(context).height * 0.05),
-        ]));
-  }
-}
-
-class ForgetPasswordImage extends StatelessWidget {
-  const ForgetPasswordImage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          height: MediaQuery.sizeOf(context).height * 0.18,
-          alignment: Alignment.center,
-          child: AspectRatio(
-            aspectRatio: 1,
-            child: Image.asset(
-              AssetsData.forgetPassword,
-              fit: BoxFit.contain,
-            ),
-          ),
-        ),
-        SizedBox(height: MediaQuery.sizeOf(context).height * 0.05),
-      ],
     );
   }
 }
