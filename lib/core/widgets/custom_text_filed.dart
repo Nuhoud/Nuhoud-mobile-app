@@ -105,7 +105,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(kBorderRadius),
               borderSide: BorderSide.none),
-          fillColor: Colors.white.withOpacity(0.5),
+          fillColor: Colors.white.withValues(alpha: 0.5),
           filled: true,
         ),
       ),

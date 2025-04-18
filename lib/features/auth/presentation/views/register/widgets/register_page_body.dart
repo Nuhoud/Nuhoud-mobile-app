@@ -70,7 +70,6 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
                       style: Styles.textStyle15.copyWith(color: Colors.white),
                     ),
                     onPressed: () {
-                      print(emailController.text);
                       GoRouter.of(context).pushReplacement(
                           Routers.kVerificationPageRoute,
                           extra: VerificationArgs(

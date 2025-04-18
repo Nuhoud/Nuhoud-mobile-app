@@ -1,0 +1,2 @@
+C:/Ayham/nuhoud/android/app/.cxx/Debug/5825251t/x86_64/CMakeFiles/edit_cache.dir
+C:/Ayham/nuhoud/android/app/.cxx/Debug/5825251t/x86_64/CMakeFiles/rebuild_cache.dir

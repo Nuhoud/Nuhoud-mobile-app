@@ -25,7 +25,7 @@ class CustomOptField extends StatelessWidget {
                 child: OtpTextField(
                   onSubmit: onSubmit,
                   filled: true,
-                  fillColor: Colors.white.withOpacity(0.5),
+                  fillColor: Colors.white.withValues(alpha: 0.5),
                   borderColor: Colors.white70,
                   focusedBorderColor: Colors.white70,
                   cursorColor: Colors.white70,
