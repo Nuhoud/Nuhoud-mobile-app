@@ -1,14 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:nuhoud/core/utils/app_constats.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
-import 'package:nuhoud/features/auth/presentation/views/widgets/app_logo_image.dart';
-
-import '../../../../../../core/utils/app_constats.dart';
 
 import '../../../../../../core/widgets/custom_button.dart';
 import '../../../../../../core/widgets/gradient_container.dart';
 import 'custom_opt_field.dart';
+import 'mail_image.dart';
 import 'resend_code.dart';
 import 'verification_msg.dart';
 
@@ -54,8 +53,6 @@ class _VerificationPagebodyState extends State<VerificationPagebody> {
 
   void _resendCode() {
     if (_canResend) {
-      // BlocProvider.of<ResetPasswordCubit>(context)
-      //     .resendCode(phone: widget.phoneNumber);
       _startTimer();
     }
   }
@@ -68,8 +65,10 @@ class _VerificationPagebodyState extends State<VerificationPagebody> {
     return SafeArea(
       child: GradientContainer(
         child: ListView(
+          padding: EdgeInsets.symmetric(
+              vertical: size.height * 0.05, horizontal: kHorizontalPadding),
           children: [
-            const AppLogoImage(),
+            const MailImage(),
             Center(
               child: Text(
                 textAlign: TextAlign.center,
@@ -78,20 +77,15 @@ class _VerificationPagebodyState extends State<VerificationPagebody> {
                     fontWeight: FontWeight.bold, color: Colors.white),
               ),
             ),
-            const SizedBox(height: kSizedBoxHeight),
-            VerificationMsg(email: widget.email),
             SizedBox(height: size.height * 0.05),
-            CustomOptField(
-                size: size,
-                onSubmit: (value) {
-                  setState(() => _otpValue = value);
-                }),
-            const SizedBox(height: kSizedBoxHeight),
+            VerificationMsg(email: widget.email),
+            CustomOptField(onSubmit: (value) {
+              setState(() => _otpValue = value);
+            }),
             ResendCode(
                 onPressed: _canResend ? _resendCode : null,
                 canResend: _canResend,
                 remainingTime: _remainingTime),
-            const SizedBox(height: kSizedBoxHeight),
             if (widget.isFromRigster)
               CustomButton(
                 child: Text(
@@ -103,16 +97,6 @@ class _VerificationPagebodyState extends State<VerificationPagebody> {
                   if (_otpValue.isNotEmpty && _otpValue.length == 6) {}
                 },
               ),
-            // if (widget.fromRigster)
-            //   RegisterBlocConsumer(
-            //       theme: theme,
-            //       otpValue: _otpValue,
-            //       phoneNumber: widget.phoneNumber),
-            // if (!widget.fromRigster)
-            // VerfiResetPasswrodBlocConsumer(
-            //     theme: theme,
-            //     otpValue: _otpValue,
-            //     phoneNumber: widget.phoneNumber)
           ],
         ),
       ),
