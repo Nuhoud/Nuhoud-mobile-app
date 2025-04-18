@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/auth/presentation/views/login/login_page.dart';
 import '../../features/auth/presentation/views/register/register_page.dart';
+import '../../features/auth/presentation/views/reset_password/reset_password_page.dart';
 import '../../features/auth/presentation/views/verification/verification_page.dart';
 import '../../features/home/presentation/views/home_page.dart';
 import '../../features/splash/presentation/views/splash_page.dart';
@@ -11,6 +12,7 @@ abstract class Routers {
   static const String kLoginPageRoute = '/loginPage';
   static const String kRegisterPageRoute = '/registerPage';
   static const String kVerificationPageRoute = '/verificationPage';
+  static const String kRestPasswordPage = '/restPasswPage';
   static final router = GoRouter(
     routes: [
       GoRoute(
@@ -38,6 +40,10 @@ abstract class Routers {
             isFromRegiter: args.isFromRegister,
           );
         },
+      ),
+      GoRoute(
+        path: kRestPasswordPage,
+        builder: (context, state) => const ResetPasswordPage(),
       ),
     ],
   );
