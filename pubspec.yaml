@@ -9,6 +9,7 @@ environment:
   sdk: ^3.5.3
 
 dependencies:
+  awesome_snackbar_content: ^0.1.5
   bloc_concurrency: ^0.3.0
   carousel_slider: ^5.0.0
   cupertino_icons: ^1.0.8

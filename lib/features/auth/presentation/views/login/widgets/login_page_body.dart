@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
+import 'package:nuhoud/core/utils/services_locater.dart';
 import 'package:nuhoud/core/widgets/gradient_container.dart';
+import 'package:nuhoud/features/auth/presentation/view-model/auth_cubit.dart';
 
 import '../../../../../../core/utils/app_constats.dart';
 import '../../../../../../core/utils/enums.dart';
-import '../../../../../../core/utils/styles.dart';
 import '../../widgets/app_logo_image.dart';
-import '../../../../../../core/widgets/custom_button.dart';
+import '../../widgets/auth_bloc_consumer.dart';
 import 'login_form.dart';
 import 'singin_forget_password.dart';
 
@@ -60,14 +62,22 @@ class _LoginPageBodyState extends State<LoginPageBody> {
               emailController: _emailController,
               passwordController: _passwordController),
           const SignUpForgetPassWidget(),
-          CustomButton(
-              onPressed: () {
-                if (_loginFormKey.currentState!.validate()) {}
-              },
-              child: Text(
-                "login".tr(context),
-                style: Styles.textStyle15.copyWith(color: Colors.white),
-              )),
+          AuthBlocConsumer(
+            cubit: getit.get<AuthCubit>(),
+            buttonText: "login".tr(context),
+            onPressed: () {
+              if (_loginFormKey.currentState!.validate()) {
+                final emailOrPhone = selectedAuthType == AuthType.email
+                    ? _emailController.text
+                    : _phoneController.text;
+                context.read<AuthCubit>().login(
+                    emailOrPhone: emailOrPhone,
+                    password: _passwordController.text,
+                    authType: selectedAuthType);
+              }
+            },
+            onSuccess: () {},
+          )
         ],
       ),
     );
