@@ -3,10 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:nuhoud/core/utils/routs.dart';
+import 'package:nuhoud/core/utils/services_locater.dart';
 import 'core/locale/locale_cubit.dart';
 import 'core/utils/app_colors.dart';
 
 void main() {
+  setupLocatorServices();
   runApp(const Nuhoud());
 }
 
