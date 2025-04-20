@@ -28,21 +28,37 @@ class ApiServices {
     };
   }
 
-  Future<Response> get({required String endPoint}) {
-    return _dio.get(endPoint, options: Options(headers: _headers()));
+  Future<Response> get(
+      {required String endPoint, Map<String, dynamic>? queryParameters}) {
+    return _dio.get(endPoint,
+        queryParameters: queryParameters,
+        options: Options(headers: _headers()));
   }
 
-  Future<Response> post({required String endPoint, required dynamic data}) {
+  Future<Response> post(
+      {required String endPoint,
+      required dynamic data,
+      Map<String, dynamic>? queryParameters}) {
     return _dio.post(endPoint,
-        data: data, options: Options(headers: _headers()));
+        queryParameters: queryParameters,
+        data: data,
+        options: Options(headers: _headers()));
   }
 
-  Future<Response> put({required String endPoint, required dynamic data}) {
+  Future<Response> put(
+      {required String endPoint,
+      required dynamic data,
+      Map<String, dynamic>? queryParameters}) {
     return _dio.put(endPoint,
-        data: data, options: Options(headers: _headers()));
+        queryParameters: queryParameters,
+        data: data,
+        options: Options(headers: _headers()));
   }
 
-  Future<Response> delete({required String endPoint}) {
-    return _dio.delete(endPoint, options: Options(headers: _headers()));
+  Future<Response> delete(
+      {required String endPoint, Map<String, dynamic>? queryParameters}) {
+    return _dio.delete(endPoint,
+        queryParameters: queryParameters,
+        options: Options(headers: _headers()));
   }
 }

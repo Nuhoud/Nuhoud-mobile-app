@@ -20,13 +20,12 @@ class AuthRepoImpl implements AuthRepo {
     required AuthType authType,
   }) async {
     try {
-      final response = await _apiServices.post(
-        endPoint: Urls.login,
-        data: {
-          _getAuthType(authType): emailOrPhone,
-          'password': password,
-        },
-      );
+      final response = await _apiServices.post(endPoint: Urls.login, data: {
+        'identifier': emailOrPhone,
+        'password': password,
+      }, queryParameters: {
+        "isMobile": _getAuthType(authType)
+      });
       if (response.statusCode == 200) {
         final token = response.data['access_token'] as String;
         return right(token);
@@ -46,15 +45,14 @@ class AuthRepoImpl implements AuthRepo {
     required AuthType authType,
   }) async {
     try {
-      final response = await _apiServices.post(
-        endPoint: Urls.register,
-        data: {
-          'name': name,
-          _getAuthType(authType): emailOrPhone,
-          'password': password,
-          'userType': 'normal'
-        },
-      );
+      final response = await _apiServices.post(endPoint: Urls.register, data: {
+        'name': name,
+        'identifier': emailOrPhone,
+        'password': password,
+        'userType': 'normal'
+      }, queryParameters: {
+        "isMobile": _getAuthType(authType)
+      });
       if (response.statusCode == 200) {
         final registeredEmail = response.data['email'] as String;
         return right(registeredEmail);
@@ -66,7 +64,7 @@ class AuthRepoImpl implements AuthRepo {
     }
   }
 
-  String _getAuthType(AuthType authType) {
-    return authType == AuthType.email ? "email" : "phone";
+  bool _getAuthType(AuthType authType) {
+    return authType == AuthType.phone;
   }
 }

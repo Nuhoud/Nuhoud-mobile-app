@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
 import 'package:nuhoud/core/widgets/custom_app_bar.dart';
 
 import '../../../../../../core/utils/app_constats.dart';
 
 import '../../../../../../core/utils/enums.dart';
-import '../../../../../../core/utils/routs.dart';
-import '../../../../../../core/utils/styles.dart';
-import '../../../../../../core/widgets/custom_button.dart';
+import '../../../../../../core/utils/services_locater.dart';
 import '../../../../../../core/widgets/gradient_container.dart';
-import '../../verification/verification_page.dart';
+import '../../../view-model/auth_cubit.dart';
 import '../../widgets/app_logo_image.dart';
+import '../../widgets/auth_bloc_consumer.dart';
 import 'register_form.dart';
 
 class RegisterPageBody extends StatefulWidget {
@@ -78,21 +77,23 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
                   passwordController: passwordController,
                   confirmPasswordController: confirmPasswordController,
                 ),
-                CustomButton(
-                    child: Text(
-                      "confirm".tr(context),
-                      style: Styles.textStyle15.copyWith(color: Colors.white),
-                    ),
-                    onPressed: () {
-                      GoRouter.of(context).pushReplacement(
-                          Routers.kVerificationPageRoute,
-                          extra: VerificationArgs(
-                              selectedAuthType: selectedAuthType,
-                              emailOrPhone: selectedAuthType == AuthType.email
-                                  ? emailController.text
-                                  : phoneController.text,
-                              isFromRegister: true));
-                    }),
+                AuthBlocConsumer(
+                  cubit: getit.get<AuthCubit>(),
+                  buttonText: "confirm".tr(context),
+                  onPressed: () {
+                    if (_registerFormKey.currentState!.validate()) {
+                      final emailOrPhone = selectedAuthType == AuthType.email
+                          ? emailController.text
+                          : phoneController.text;
+                      context.read<AuthCubit>().register(
+                          name: nameController.text,
+                          emailOrPhone: emailOrPhone,
+                          password: passwordController.text,
+                          authType: selectedAuthType);
+                    }
+                  },
+                  onSuccess: () {},
+                )
               ],
             ),
           ),
