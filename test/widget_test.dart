@@ -8,12 +8,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:nuhoud/main.dart';
+import 'package:nuhoud/nuhoud_app/nuhoud_app.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const Nuhoud());
+    await tester.pumpWidget(const NuhoudApp());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
