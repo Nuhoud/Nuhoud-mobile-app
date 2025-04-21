@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nuhoud/core/utils/app_constats.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
 import 'package:nuhoud/core/utils/enums.dart';
 
-import '../../../../../../core/widgets/custom_button.dart';
+import '../../../../../../core/utils/services_locater.dart';
 import '../../../../../../core/widgets/gradient_container.dart';
+import '../../../view-model/auth_cubit.dart';
+import '../../widgets/auth_bloc_consumer.dart';
 import 'custom_opt_field.dart';
 import 'mail_image.dart';
 import 'resend_code.dart';
@@ -15,10 +18,10 @@ import 'verification_msg.dart';
 class VerificationPagebody extends StatefulWidget {
   const VerificationPagebody(
       {super.key,
-      required this.email,
+      required this.identifier,
       required this.isFromRigster,
       required this.selectedAuthType});
-  final String email;
+  final String identifier;
   final bool isFromRigster;
   final AuthType selectedAuthType;
   @override
@@ -58,6 +61,8 @@ class _VerificationPagebodyState extends State<VerificationPagebody> {
 
   void _resendCode() {
     if (_canResend) {
+      context.read<AuthCubit>().resendOtp(
+          identifier: widget.identifier, authType: widget.selectedAuthType);
       _startTimer();
     }
   }
@@ -88,7 +93,7 @@ class _VerificationPagebodyState extends State<VerificationPagebody> {
             ),
             SizedBox(height: size.height * 0.05),
             VerificationMsg(
-              emailOrPhone: widget.email,
+              emailOrPhone: widget.identifier,
               selectedAuthType: widget.selectedAuthType,
             ),
             CustomOptField(onSubmit: (value) {
@@ -98,17 +103,21 @@ class _VerificationPagebodyState extends State<VerificationPagebody> {
                 onPressed: _canResend ? _resendCode : null,
                 canResend: _canResend,
                 remainingTime: _remainingTime),
-            if (widget.isFromRigster)
-              CustomButton(
-                child: Text(
-                  "verfi_num".tr(context),
-                  style: theme.textTheme.titleMedium!
-                      .copyWith(color: Colors.white),
-                ),
-                onPressed: () {
-                  if (_otpValue.isNotEmpty && _otpValue.length == 6) {}
-                },
-              ),
+            AuthBlocConsumer(
+              buttonText: "verfi_num".tr(context),
+              cubit: getit.get<AuthCubit>(),
+              onPressed: () {
+                if (_otpValue.isNotEmpty && _otpValue.length == 5) {
+                  if (widget.isFromRigster) {
+                    context.read<AuthCubit>().verifyOtp(
+                        identifier: widget.identifier,
+                        otp: _otpValue,
+                        authType: widget.selectedAuthType);
+                  } else {}
+                }
+              },
+              onSuccess: () {},
+            ),
           ],
         ),
       ),
