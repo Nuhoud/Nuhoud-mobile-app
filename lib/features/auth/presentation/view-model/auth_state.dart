@@ -16,12 +16,4 @@ class AuthError extends AuthState {
   const AuthError(this.message);
 }
 
-class AuthLoginSuccess extends AuthState {
-  final String token;
-  const AuthLoginSuccess(this.token);
-}
-
-class AuthRegisterSuccess extends AuthState {
-  final String email;
-  const AuthRegisterSuccess(this.email);
-}
+class AuthSuccess extends AuthState {}

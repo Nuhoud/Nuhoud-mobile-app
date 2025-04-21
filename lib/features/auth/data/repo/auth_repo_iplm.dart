@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:nuhoud/core/utils/cache_helper.dart';
 import 'package:nuhoud/features/auth/data/repo/auth_repo.dart';
 
 import '../../../../core/api_services/api_services.dart';
@@ -14,7 +15,7 @@ class AuthRepoImpl implements AuthRepo {
   AuthRepoImpl(this._apiServices);
 
   @override
-  Future<Either<Failure, String>> login({
+  Future<Either<Failure, void>> login({
     required String emailOrPhone,
     required String password,
     required AuthType authType,
@@ -26,9 +27,10 @@ class AuthRepoImpl implements AuthRepo {
       }, queryParameters: {
         "isMobile": _getAuthType(authType)
       });
-      if (response.statusCode == 200) {
+      if (_isSuccessResponse(response.statusCode)) {
         final token = response.data['access_token'] as String;
-        return right(token);
+        _saveUserInfo(token);
+        return right(null);
       }
       return left(ServerFailure(ErrorHandler.defaultMessage()));
     } catch (e) {
@@ -53,9 +55,9 @@ class AuthRepoImpl implements AuthRepo {
       }, queryParameters: {
         "isMobile": _getAuthType(authType)
       });
-      if (response.statusCode == 200) {
-        final registeredEmail = response.data['email'] as String;
-        return right(registeredEmail);
+      if (_isSuccessResponse(response.statusCode)) {
+        final identifier = response.data['identifier'] as String;
+        return right(identifier);
       }
       return left(ServerFailure(ErrorHandler.defaultMessage()));
     } catch (e) {
@@ -64,7 +66,69 @@ class AuthRepoImpl implements AuthRepo {
     }
   }
 
+  @override
+  Future<Either<Failure, void>> verifyOtp({
+    required String identifier,
+    required String otp,
+    required AuthType authType,
+  }) async {
+    try {
+      final response = await _apiServices.post(
+        endPoint: Urls.verifyOtp,
+        data: {
+          'identifier': identifier,
+          'otp': otp,
+        },
+        queryParameters: {
+          "isMobile": _getAuthType(authType),
+        },
+      );
+      if (_isSuccessResponse(response.statusCode)) {
+        final token = response.data['access_token'] as String;
+        _saveUserInfo(token);
+        return right(null);
+      }
+      return left(ServerFailure(ErrorHandler.defaultMessage()));
+    } catch (e) {
+      debugPrint('Verify OTP error: $e');
+      return left(ErrorHandler.handle(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> resendOtp({
+    required String identifier,
+    required AuthType authType,
+  }) async {
+    try {
+      final response = await _apiServices.post(
+        endPoint: Urls.resendOtp,
+        data: {
+          'identifier': identifier,
+        },
+        queryParameters: {
+          "isMobile": _getAuthType(authType),
+        },
+      );
+      if (_isSuccessResponse(response.statusCode)) {
+        return right(null);
+      }
+      return left(ServerFailure(ErrorHandler.defaultMessage()));
+    } catch (e) {
+      debugPrint('Resend OTP error: $e');
+      return left(ErrorHandler.handle(e));
+    }
+  }
+
   bool _getAuthType(AuthType authType) {
     return authType == AuthType.phone;
+  }
+
+  bool _isSuccessResponse(int? statusCode) {
+    return statusCode == 200 || statusCode == 201;
+  }
+
+  void _saveUserInfo(String token) async {
+    await CacheHelper.setString(key: 'token', value: token);
   }
 }

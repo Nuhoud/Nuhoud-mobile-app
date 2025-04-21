@@ -35,7 +35,7 @@ class AuthBlocConsumer extends StatelessWidget {
             contentType: ContentType.failure,
           );
         }
-        if (state is AuthLoginSuccess || state is AuthRegisterSuccess) {
+        if (state is AuthSuccess) {
           onSuccess();
         }
       },

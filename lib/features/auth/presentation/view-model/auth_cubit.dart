@@ -24,7 +24,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
     result.fold(
       (failure) => emit(AuthError(failure.message)),
-      (token) => emit(AuthLoginSuccess(token)),
+      (_) => emit(AuthSuccess()),
     );
   }
 
@@ -43,7 +43,39 @@ class AuthCubit extends Cubit<AuthState> {
     );
     result.fold(
       (failure) => emit(AuthError(failure.message)),
-      (email) => emit(AuthRegisterSuccess(email)),
+      (_) => emit(AuthSuccess()),
+    );
+  }
+
+  Future<void> verifyOtp({
+    required String identifier,
+    required String otp,
+    required AuthType authType,
+  }) async {
+    emit(AuthLoading());
+    final result = await _authRepo.verifyOtp(
+      identifier: identifier,
+      otp: otp,
+      authType: authType,
+    );
+    result.fold(
+      (failure) => emit(AuthError(failure.message)),
+      (_) => emit(AuthSuccess()),
+    );
+  }
+
+  Future<void> resendOtp({
+    required String identifier,
+    required AuthType authType,
+  }) async {
+    emit(AuthLoading());
+    final result = await _authRepo.resendOtp(
+      identifier: identifier,
+      authType: authType,
+    );
+    result.fold(
+      (failure) => emit(AuthError(failure.message)),
+      (_) => emit(AuthSuccess()),
     );
   }
 }
