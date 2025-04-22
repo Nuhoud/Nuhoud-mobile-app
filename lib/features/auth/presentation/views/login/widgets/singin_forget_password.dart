@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
 
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/routs.dart';
 import '../../../../../../core/utils/styles.dart';
 
@@ -49,8 +50,8 @@ class CustomTextButtonWidget extends StatelessWidget {
         style: Styles.textStyle15.copyWith(
           decoration: TextDecoration.underline,
           decorationThickness: 0.6,
-          decorationColor: Colors.white,
-          color: Colors.white,
+          decorationColor: AppColors.primaryColor,
+          color: AppColors.primaryColor,
         ),
       ),
     );

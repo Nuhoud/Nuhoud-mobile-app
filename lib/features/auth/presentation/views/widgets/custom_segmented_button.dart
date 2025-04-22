@@ -59,24 +59,24 @@ class CustomSegmentedButton extends StatelessWidget {
       backgroundColor: WidgetStateProperty.resolveWith<Color?>(
         (Set<WidgetState> states) {
           if (states.contains(WidgetState.selected)) {
-            return Colors.white.withValues(alpha: 0.5);
+            return Colors.grey[100];
           }
-          return Colors.white.withValues(alpha: 0.1);
+          return AppColors.fillTextFiledColor;
         },
       ),
       foregroundColor: WidgetStateProperty.resolveWith<Color?>(
         (Set<WidgetState> states) {
           return states.contains(WidgetState.selected)
-              ? AppColors.textColor
-              : Colors.white70;
+              ? AppColors.primaryColor
+              : AppColors.secondaryText;
         },
       ),
       side: WidgetStateProperty.resolveWith<BorderSide?>(
         (Set<WidgetState> states) {
           return BorderSide(
             color: states.contains(WidgetState.selected)
-                ? Colors.white70
-                : Colors.white54,
+                ? AppColors.primaryColor
+                : AppColors.secondaryText,
             width: 1.2,
           );
         },

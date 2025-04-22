@@ -51,7 +51,6 @@ class AuthRepoImpl implements AuthRepo {
         'name': name,
         'identifier': emailOrPhone,
         'password': password,
-        'userType': 'normal'
       }, queryParameters: {
         "isMobile": _getAuthType(authType)
       });

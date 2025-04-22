@@ -23,14 +23,14 @@ class VerificationMsg extends StatelessWidget {
                   ? "pleas_enter_the_number_email".tr(context)
                   : "pleas_enter_the_number_phone".tr(context),
               style: theme.textTheme.bodyLarge?.copyWith(
-                color: AppColors.textColor,
+                color: AppColors.primaryText,
               ),
               children: [
                 TextSpan(
                   text: emailOrPhone,
                   style: Styles.textStyle15.copyWith(
                     fontWeight: FontWeight.w500,
-                    color: AppColors.textColor,
+                    color: AppColors.secondaryText,
                   ),
                 ),
               ],

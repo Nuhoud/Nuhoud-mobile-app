@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/app_colors.dart';
 import '../utils/app_constats.dart';
 import '../utils/styles.dart';
 
@@ -36,7 +37,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   bool showPassowrd = false;
 
-  Color textColor = Colors.black87;
   @override
   void initState() {
     super.initState();
@@ -48,7 +48,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       padding: const EdgeInsets.symmetric(vertical: 15),
       child: TextFormField(
         style: Styles.textStyle13.copyWith(
-          color: Colors.white70,
+          color: AppColors.secondaryText,
           fontWeight: FontWeight.w500,
         ),
         onChanged: widget.onChange,
@@ -60,20 +60,34 @@ class _CustomTextFieldState extends State<CustomTextField> {
         obscureText: widget.isPassword ? !showPassowrd : false,
         decoration: InputDecoration(
           labelStyle: const TextStyle(
-            color: Colors.white70,
+            color: AppColors.secondaryText,
             fontSize: 12,
             fontWeight: FontWeight.w500,
           ),
           focusedBorder: OutlineInputBorder(
             borderSide: const BorderSide(
-              color: Colors.white70,
+              color: AppColors.secondaryText,
               width: 1.5,
+            ),
+            borderRadius: BorderRadius.circular(kBorderRadius),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: Colors.red,
+              width: 1.2,
+            ),
+            borderRadius: BorderRadius.circular(kBorderRadius),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderSide: const BorderSide(
+              color: Colors.red,
+              width: 1.2,
             ),
             borderRadius: BorderRadius.circular(kBorderRadius),
           ),
           enabledBorder: OutlineInputBorder(
             borderSide: const BorderSide(
-              color: Colors.white54,
+              color: AppColors.secondaryText,
               width: 1.2,
             ),
             borderRadius: BorderRadius.circular(kBorderRadius),
@@ -81,14 +95,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
           labelText: widget.text,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-          prefixIcon: Icon(widget.prefixIcon, color: Colors.white70),
+          prefixIcon: Icon(
+            widget.prefixIcon,
+            color: AppColors.secodaryColor,
+          ),
           suffixIcon: widget.isPassword
               ? IconButton(
                   icon: Icon(
                     showPassowrd
                         ? Icons.visibility_outlined
                         : Icons.visibility_off_outlined,
-                    color: Colors.white70,
+                    color: AppColors.secodaryColor,
                   ),
                   onPressed: () {
                     setState(() {
@@ -100,7 +117,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(kBorderRadius),
               borderSide: BorderSide.none),
-          fillColor: Colors.white.withValues(alpha: 0.5),
+          fillColor: AppColors.fillTextFiledColor,
           filled: true,
         ),
       ),

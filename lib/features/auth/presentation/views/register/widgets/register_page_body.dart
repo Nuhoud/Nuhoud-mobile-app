@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
+import 'package:nuhoud/core/utils/assets_data.dart';
 import 'package:nuhoud/core/widgets/custom_app_bar.dart';
+import 'package:nuhoud/features/auth/presentation/views/verification/verification_page.dart';
 
 import '../../../../../../core/utils/app_constats.dart';
-
 import '../../../../../../core/utils/enums.dart';
+import '../../../../../../core/utils/routs.dart';
 import '../../../../../../core/utils/services_locater.dart';
 import '../../../../../../core/widgets/gradient_container.dart';
 import '../../../view-model/auth_cubit.dart';
-import '../../widgets/app_logo_image.dart';
+import '../../widgets/custom_auth_image.dart';
 import '../../widgets/auth_bloc_consumer.dart';
+import '../../widgets/custom_auth_container.dart';
 import 'register_form.dart';
 
 class RegisterPageBody extends StatefulWidget {
@@ -61,12 +64,19 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
         children: [
           SafeArea(
               child: CustomAppBar(title: "sing_up".tr(context), backBtn: true)),
-          Expanded(
+          SizedBox(
+            height: MediaQuery.sizeOf(context).height * 0.02,
+          ),
+          const Expanded(
+              flex: 1,
+              child: CustomAuthImage(
+                image: AssetsData.register,
+              )),
+          CustomAuthContainer(
             child: ListView(
               padding:
                   const EdgeInsets.symmetric(horizontal: kHorizontalPadding),
               children: [
-                const AppLogoImage(),
                 RegisterForm(
                   registerFormKey: _registerFormKey,
                   nameController: nameController,
@@ -81,15 +91,21 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
                   cubit: getit.get<AuthCubit>(),
                   buttonText: "confirm".tr(context),
                   onPressed: () {
-                    if (_registerFormKey.currentState!.validate()) {
+                    {
                       final emailOrPhone = selectedAuthType == AuthType.email
                           ? emailController.text
                           : phoneController.text;
-                      context.read<AuthCubit>().register(
-                          name: nameController.text,
-                          emailOrPhone: emailOrPhone,
-                          password: passwordController.text,
-                          authType: selectedAuthType);
+                      GoRouter.of(context).pushReplacement(
+                          Routers.kVerificationPageRoute,
+                          extra: VerificationArgs(
+                              selectedAuthType: selectedAuthType,
+                              emailOrPhone: emailOrPhone,
+                              isFromRegister: true));
+                      // context.read<AuthCubit>().register(
+                      //     name: nameController.text,
+                      //     emailOrPhone: emailOrPhone,
+                      //     password: passwordController.text,
+                      //     authType: selectedAuthType);
                     }
                   },
                   onSuccess: () {},

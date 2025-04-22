@@ -14,9 +14,9 @@ class GradientContainer extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.blueLighterColor,
-            Color(0xff004EFF),
             AppColors.primaryColor,
+            AppColors.secodaryColor,
+            Color(0xffded2f6)
           ],
           stops: [0.1, 0.5, 0.9],
         ),

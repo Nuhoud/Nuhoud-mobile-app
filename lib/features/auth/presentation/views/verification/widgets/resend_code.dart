@@ -26,7 +26,8 @@ class ResendCode extends StatelessWidget {
           children: [
             Text(
               "didn't_receive_code".tr(context),
-              style: Styles.textStyle18.copyWith(color: Colors.white),
+              style:
+                  Styles.textStyle18.copyWith(color: AppColors.secondaryText),
             ),
             const SizedBox(width: 8),
             TextButton(
@@ -37,9 +38,9 @@ class ResendCode extends StatelessWidget {
                     : "${"resend".tr(context)} (${_remainingTime.toString().padLeft(2, '0')})",
                 style: TextStyle(
                   decoration: _canResend ? TextDecoration.underline : null,
-                  decorationColor: _canResend ? AppColors.textColor : null,
+                  decorationColor: _canResend ? AppColors.primaryText : null,
                   decorationThickness: _canResend ? 0.6 : null,
-                  color: AppColors.textColor,
+                  color: AppColors.primaryText,
                   fontWeight: FontWeight.bold,
                 ),
               ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nuhoud/core/utils/app_constats.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
 
+import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/enums.dart';
 import '../../../../../../core/utils/styles.dart';
 import '../../../../../../core/utils/validation.dart';
@@ -46,8 +47,8 @@ class RegisterForm extends StatelessWidget {
                   const EdgeInsets.symmetric(horizontal: kHorizontalPadding),
               child: Text(
                 "sing_up".tr(context),
-                style: Styles.textStyle20
-                    .copyWith(color: Colors.white, fontWeight: FontWeight.w700),
+                style: Styles.textStyle20.copyWith(
+                    color: AppColors.primaryColor, fontWeight: FontWeight.w700),
               ),
             ),
             CustomSegmentedButton(
