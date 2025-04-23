@@ -68,42 +68,38 @@ class _RestPasswordPageBodyState extends State<RestPasswordPageBody> {
           ),
           const Expanded(
               flex: 1, child: CustomAuthImage(image: AssetsData.resetPassword)),
-          Expanded(
-            flex: 2,
-            child: CustomAuthContainer(
-              child: ListView(
-                padding: EdgeInsets.symmetric(
-                    vertical: size.height * 0.05,
-                    horizontal: kHorizontalPadding),
-                children: [
-                  Text(
-                    "enter_phone_num_to_reset_pass".tr(context),
-                    textAlign: TextAlign.center,
-                    style: Styles.textStyle20.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryText,
-                    ),
+          CustomAuthContainer(
+            child: ListView(
+              padding: EdgeInsets.symmetric(
+                  vertical: size.height * 0.05, horizontal: kHorizontalPadding),
+              children: [
+                Text(
+                  "enter_phone_num_to_reset_pass".tr(context),
+                  textAlign: TextAlign.center,
+                  style: Styles.textStyle20.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primaryText,
                   ),
-                  SizedBox(height: size.height * 0.05),
-                  RestPasswordForm(
-                      formKey: _formKey,
-                      onAuthTypeChanged: _handleAuthTypeChanged,
-                      phoneController: _phoneController,
-                      selectedAuthType: selectedAuthType,
-                      emailController: _emailController,
-                      passwordController: _passwordController,
-                      confirmPasswordController: _confirmPasswordController),
-                  CustomButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {}
-                    },
-                    child: Text(
-                      "continue".tr(context),
-                      style: Styles.textStyle15.copyWith(color: Colors.white),
-                    ),
+                ),
+                SizedBox(height: size.height * 0.05),
+                RestPasswordForm(
+                    formKey: _formKey,
+                    onAuthTypeChanged: _handleAuthTypeChanged,
+                    phoneController: _phoneController,
+                    selectedAuthType: selectedAuthType,
+                    emailController: _emailController,
+                    passwordController: _passwordController,
+                    confirmPasswordController: _confirmPasswordController),
+                CustomButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {}
+                  },
+                  child: Text(
+                    "continue".tr(context),
+                    style: Styles.textStyle15.copyWith(color: Colors.white),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],

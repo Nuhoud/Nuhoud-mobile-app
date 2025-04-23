@@ -60,7 +60,6 @@ class RestPasswordForm extends StatelessWidget {
               ),
               controller: confirmPasswordController,
             ),
-            SizedBox(height: MediaQuery.sizeOf(context).height * 0.05),
           ]),
         ));
   }

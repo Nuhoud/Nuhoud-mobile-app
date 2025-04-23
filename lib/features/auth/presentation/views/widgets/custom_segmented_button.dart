@@ -58,29 +58,27 @@ class CustomSegmentedButton extends StatelessWidget {
     return ButtonStyle(
       backgroundColor: WidgetStateProperty.resolveWith<Color?>(
         (Set<WidgetState> states) {
-          if (states.contains(WidgetState.selected)) {
-            return Colors.grey[100];
-          }
-          return AppColors.fillTextFiledColor;
+          return states.contains(WidgetState.selected)
+              ? AppColors.primaryColor.withValues(alpha: 0.2)
+              : Colors.transparent;
         },
       ),
       foregroundColor: WidgetStateProperty.resolveWith<Color?>(
         (Set<WidgetState> states) {
           return states.contains(WidgetState.selected)
               ? AppColors.primaryColor
-              : AppColors.secondaryText;
+              : AppColors.secondaryText.withValues(alpha: 0.8);
         },
       ),
       side: WidgetStateProperty.resolveWith<BorderSide?>(
         (Set<WidgetState> states) {
-          return BorderSide(
-            color: states.contains(WidgetState.selected)
-                ? AppColors.primaryColor
-                : AppColors.secondaryText,
+          return const BorderSide(
+            color: AppColors.secondaryText,
             width: 1.2,
           );
         },
       ),
+      //side: WidgetStateProperty.all(OutlineInputBorder()),
       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
         RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadius),
@@ -91,8 +89,11 @@ class CustomSegmentedButton extends StatelessWidget {
       ),
       textStyle: WidgetStateProperty.all<TextStyle>(
         Styles.textStyle13.copyWith(
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w600,
         ),
+      ),
+      overlayColor: WidgetStateProperty.all(
+        AppColors.primaryColor.withValues(alpha: 0.05),
       ),
     );
   }
