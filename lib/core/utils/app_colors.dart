@@ -8,5 +8,9 @@ class AppColors {
   static const Color backgroundColor = Color(0xFFf7ffff);
   static const Color primaryText = Color(0xFFb1c7ff);
   static const Color secondaryText = Color(0xFF666666);
+  static const Color blackTextColor = Colors.black;
   static const Color fillTextFiledColor = Color(0xFFf7ffff);
+  //new button colors
+  static const Color skipButtonEndColor = Color(0xFFf21485);
+  static const Color skipButtonStartColor = Color(0xFFb1107a);
 }

@@ -5,6 +5,8 @@ import '../../features/auth/presentation/views/register/register_page.dart';
 import '../../features/auth/presentation/views/reset_password/reset_password_page.dart';
 import '../../features/auth/presentation/views/verification/verification_page.dart';
 import '../../features/home/presentation/views/home_page.dart';
+import '../../features/onboarding/presentation/views/onboarding_intro_page.dart';
+import '../../features/onboarding/presentation/views/onboarding_upload_page.dart';
 import '../../features/splash/presentation/views/splash_page.dart';
 
 abstract class Routers {
@@ -13,6 +15,9 @@ abstract class Routers {
   static const String kRegisterPageRoute = '/registerPage';
   static const String kVerificationPageRoute = '/verificationPage';
   static const String kRestPasswordPage = '/restPasswPage';
+  static const String kOndboardingIntroPage = '/onboardingIntroPage';
+  static const String kOndboardingUploadPage = '/onboardingUploadPage';
+
   static final router = GoRouter(
     routes: [
       GoRoute(
@@ -45,6 +50,14 @@ abstract class Routers {
       GoRoute(
         path: kRestPasswordPage,
         builder: (context, state) => const ResetPasswordPage(),
+      ),
+      GoRoute(
+        path: kOndboardingIntroPage,
+        builder: (context, state) => const OnboardingIntroPage(),
+      ),
+      GoRoute(
+        path: kOndboardingUploadPage,
+        builder: (context, state) => const OnboardingUploadPage(),
       ),
     ],
   );

@@ -10,14 +10,17 @@ class CustomButton extends StatelessWidget {
       this.verticalHieght,
       this.horizontalWidth,
       this.height,
-      required this.child});
+      required this.child,
+      this.primaryGradinetColor,
+      this.secodanryGradinetColor});
 
   final void Function() onPressed;
   final double? verticalHieght;
   final double? horizontalWidth;
   final double? height;
   final Widget child;
-
+  final Color? primaryGradinetColor;
+  final Color? secodanryGradinetColor;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -28,10 +31,10 @@ class CustomButton extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(kBorderRadius),
-          gradient: const LinearGradient(
+          gradient: LinearGradient(
             colors: [
-              AppColors.primaryColor,
-              AppColors.secodaryColor,
+              primaryGradinetColor ?? AppColors.primaryColor,
+              secodanryGradinetColor ?? AppColors.secodaryColor,
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
