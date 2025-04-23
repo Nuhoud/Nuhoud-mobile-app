@@ -1,5 +1,5 @@
 class AssetsData {
-  static const logo = 'assets/images/logo-white.png';
+  static const logo = 'assets/images/logo-nuhoud.png';
 
   //auth images
   static const login = 'assets/images/login.png';

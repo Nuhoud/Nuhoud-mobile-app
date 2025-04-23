@@ -42,7 +42,7 @@ class _SplashPageBodyState extends State<SplashPageBody>
       _controller.forward();
     });
 
-    Timer(const Duration(seconds: 10), () {
+    Timer(const Duration(seconds: 3), () {
       GoRouter.of(context).pushReplacement(Routers.kLoginPageRoute);
     });
   }
@@ -72,9 +72,9 @@ class _SplashPageBodyState extends State<SplashPageBody>
           },
           child: Image.asset(
             AssetsData.logo,
-            width: size.width * 0.5,
-            height: size.height * 0.5,
-            fit: BoxFit.cover,
+            width: size.width * 0.35,
+            height: size.height * 0.35,
+            fit: BoxFit.contain,
           ),
         ),
       ),
