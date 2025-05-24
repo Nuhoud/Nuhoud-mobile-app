@@ -15,16 +15,24 @@ class CustomTextField extends StatefulWidget {
     this.keyboardType,
     this.onChange,
     this.prefixIcon,
+    this.fillColor,
+    this.hPadding,
+    this.vPadding,
+    this.hitText,
   });
   final String text;
+  final String? hitText;
   final bool isPassword;
   final int maxLine;
   final TextEditingController controller;
   final String? Function(String?)? validatorFun;
   final Color? borderColor;
+  final Color? fillColor;
   final TextInputType? keyboardType;
   final void Function(String?)? onChange;
   final IconData? prefixIcon;
+  final double? hPadding;
+  final double? vPadding;
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
@@ -45,7 +53,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 15),
+      padding: EdgeInsets.symmetric(
+          vertical: widget.vPadding ?? 15, horizontal: widget.hPadding ?? 1),
       child: TextFormField(
         style: Styles.textStyle13.copyWith(
           color: AppColors.secondaryText,
@@ -59,6 +68,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
         maxLines: widget.maxLine,
         obscureText: widget.isPassword ? !showPassowrd : false,
         decoration: InputDecoration(
+          hintText: widget.hitText,
+          hintStyle: Styles.textStyle13.copyWith(
+            color: AppColors.secondaryText,
+            fontWeight: FontWeight.w500,
+          ),
           labelStyle: const TextStyle(
             color: AppColors.secondaryText,
             fontSize: 12,
@@ -117,7 +131,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(kBorderRadius),
               borderSide: BorderSide.none),
-          fillColor: AppColors.fillTextFiledColor,
+          fillColor: widget.fillColor ?? AppColors.fillTextFiledColor,
           filled: true,
         ),
       ),

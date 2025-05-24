@@ -6,7 +6,12 @@ import '../../features/auth/presentation/views/reset_password/reset_password_pag
 import '../../features/auth/presentation/views/verification/verification_page.dart';
 import '../../features/home/presentation/views/home_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_intro_page.dart';
+import '../../features/onboarding/presentation/views/onboarding_job_preferences_page.dart';
+import '../../features/onboarding/presentation/views/onboarding_ueser_experince_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_upload_page.dart';
+import '../../features/onboarding/presentation/views/onboarding_user_basic_info_page.dart';
+import '../../features/onboarding/presentation/views/onboarding_user_education_info_page.dart';
+import '../../features/onboarding/presentation/views/onboarding_user_goals_page.dart';
 import '../../features/splash/presentation/views/splash_page.dart';
 
 abstract class Routers {
@@ -17,6 +22,15 @@ abstract class Routers {
   static const String kRestPasswordPage = '/restPasswPage';
   static const String kOndboardingIntroPage = '/onboardingIntroPage';
   static const String kOndboardingUploadPage = '/onboardingUploadPage';
+  static const String kOndboardingUserInfoPage = '/onboardingUserInfoPage';
+  static const String kOndboardingUserEducationPage =
+      '/onboardingUserEducationPage';
+  static const String kOndboardingUserExperiencePage =
+      '/onboardingUserExperiencePage';
+  static const String kOndboardingUserBasicPage = '/onboardingUserBasicPage';
+  static const String kOndboardingUserGoalsPage = '/onboardingUserGoalsPage';
+  static const String kOndboardingJobPreferencesPage =
+      '/onboardingJobPreferencesPage';
 
   static final router = GoRouter(
     routes: [
@@ -58,6 +72,26 @@ abstract class Routers {
       GoRoute(
         path: kOndboardingUploadPage,
         builder: (context, state) => const OnboardingUploadPage(),
+      ),
+      GoRoute(
+        path: kOndboardingUserEducationPage,
+        builder: (context, state) => const OnboardingUserEducationInfoPage(),
+      ),
+      GoRoute(
+        path: kOndboardingUserBasicPage,
+        builder: (context, state) => const OnboardingUserBasicInfoPage(),
+      ),
+      GoRoute(
+        path: kOndboardingUserExperiencePage,
+        builder: (context, state) => const OnboardingUserExperiencePage(),
+      ),
+      GoRoute(
+        path: kOndboardingUserGoalsPage,
+        builder: (context, state) => const OnboardingUserGoalsPage(),
+      ),
+      GoRoute(
+        path: kOndboardingJobPreferencesPage,
+        builder: (context, state) => const OnboardingJobPreferencesPage(),
       ),
     ],
   );

@@ -25,7 +25,7 @@ class OnboardingIntroPageBody extends StatelessWidget {
             const IntroInfo(),
             CustomButton(
               onPressed: () {
-                GoRouter.of(context).push(Routers.kOndboardingUploadPage);
+                GoRouter.of(context).push(Routers.kOndboardingUserBasicPage);
               },
               horizontalWidth: MediaQuery.of(context).size.width * 0.15,
               child: Text(
