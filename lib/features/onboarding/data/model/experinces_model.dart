@@ -19,10 +19,10 @@ class ExperincesModel {
     return ExperincesModel(
       jobTitle: json['jobTitle'],
       company: json['company'],
-      jobDescription: json['jobDescription'],
-      jobStartDate: json['jobStartDate'],
-      jobEndDate: json['jobEndDate'],
-      jobLocation: json['jobLocation'],
+      jobDescription: json['description'],
+      jobStartDate: json['startDate'],
+      jobEndDate: json['endDate'],
+      jobLocation: json['location'],
     );
   }
 
@@ -30,10 +30,10 @@ class ExperincesModel {
     return {
       'jobTitle': jobTitle,
       'company': company,
-      'jobDescription': jobDescription,
-      'jobStartDate': jobStartDate,
-      'jobEndDate': jobEndDate,
-      'jobLocation': jobLocation,
+      'location': jobDescription,
+      'startDate': jobStartDate,
+      'endDate': jobEndDate,
+      'description': jobLocation,
     };
   }
 }

@@ -1,10 +1,14 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/enums.dart';
 import '../../../../../../core/utils/styles.dart';
 import '../../../../../../core/utils/validation.dart';
 import '../../../../../../core/widgets/custom_button.dart';
+import '../../../../../../core/widgets/custom_snak_bar.dart';
 import '../../../../../../core/widgets/custom_text_filed.dart';
+import '../../../view-model/onboarding_cuibt/onboarding_cubit.dart';
 import '../onboarding_container.dart';
 
 class OnboardingJobPreferencesPageBody extends StatefulWidget {
@@ -117,7 +121,30 @@ class _OnboardingJobPreferencesPageBodyState
             CustomButton(
               child: Text("التالي",
                   style: Styles.textStyle16.copyWith(color: Colors.white)),
-              onPressed: () => {},
+              onPressed: () => {
+                if (_selectedWorkPlaceType != null &&
+                    _selectedJobType != null &&
+                    _locationController.text.isNotEmpty)
+                  {
+                    context
+                        .read<OnboardingCubit>()
+                        .addBasicInfo("jobPreferences", {
+                      "workPlaceType": _selectedWorkPlaceType,
+                      "jobType": _selectedJobType,
+                      "jobLocation": _locationController.text,
+                    }),
+                    context.read<OnboardingCubit>().printData(),
+                  }
+                else
+                  {
+                    CustomSnackBar.showSnackBar(
+                      context: context,
+                      title: "خطأ",
+                      message: "الرجاء تعبئة جميع البيانات المطلوبة",
+                      contentType: ContentType.failure,
+                    )
+                  }
+              },
             ),
           ],
         ),

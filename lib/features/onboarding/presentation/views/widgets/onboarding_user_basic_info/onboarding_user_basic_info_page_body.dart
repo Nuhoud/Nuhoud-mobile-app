@@ -118,10 +118,9 @@ class _OnboardingUserBasicInfoPageBodyState
                         "location": locationController.text.trim(),
                         "languages": languages,
                       };
-                      print(data);
                       context
                           .read<OnboardingCubit>()
-                          .addBasicInfo("basic-info", data);
+                          .addBasicInfo("basicInfo", data);
 
                       GoRouter.of(context)
                           .push(Routers.kOndboardingUserEducationPage);

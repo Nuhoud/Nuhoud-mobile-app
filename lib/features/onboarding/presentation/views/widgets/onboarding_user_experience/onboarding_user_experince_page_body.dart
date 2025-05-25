@@ -1,5 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../../core/utils/app_colors.dart';
@@ -10,6 +11,7 @@ import '../../../../../../core/utils/validation.dart';
 import '../../../../../../core/widgets/custom_snak_bar.dart';
 import '../../../../../../core/widgets/custom_text_filed.dart';
 import '../../../../data/model/experinces_model.dart';
+import '../../../view-model/onboarding_cuibt/onboarding_cubit.dart';
 import '../buttons_row.dart';
 import '../onboarding_container.dart';
 import '../custom_date_picker.dart';
@@ -80,9 +82,9 @@ class _OnboardingUserExperiencePageBodyState
       );
     } else {
       final data = addedExperiences.map((e) => e.toJson()).toList();
-
+      BlocProvider.of<OnboardingCubit>(context)
+          .addBasicInfo("experiences", data);
       GoRouter.of(context).push(Routers.kOndboardingUserGoalsPage);
-      print(data); // Send to backend
     }
   }
 

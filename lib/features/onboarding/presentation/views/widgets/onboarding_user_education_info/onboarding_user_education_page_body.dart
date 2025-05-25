@@ -88,7 +88,6 @@ class _OnboardingUserEducationPageBodyState
       final data = addedDegrees.map((e) => e.toJson()).toList();
       context.read<OnboardingCubit>().addBasicInfo("education", data);
       GoRouter.of(context).push(Routers.kOndboardingUserExperiencePage);
-      print(data); // Send to backend
     }
   }
 

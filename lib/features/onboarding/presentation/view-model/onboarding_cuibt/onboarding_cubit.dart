@@ -9,4 +9,8 @@ class OnboardingCubit extends Cubit<OnboardingState> {
   void addBasicInfo(String key, dynamic value) {
     onboardingData[key] = value;
   }
+
+  void printData() {
+    print(onboardingData);
+  }
 }

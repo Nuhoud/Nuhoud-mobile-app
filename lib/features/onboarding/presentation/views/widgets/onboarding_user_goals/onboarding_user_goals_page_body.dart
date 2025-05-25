@@ -1,11 +1,15 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nuhoud/features/onboarding/presentation/view-model/onboarding_cuibt/onboarding_cubit.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/enums.dart';
 import '../../../../../../core/utils/routs.dart';
 import '../../../../../../core/utils/styles.dart';
 import '../../../../../../core/utils/validation.dart';
 import '../../../../../../core/widgets/custom_button.dart';
+import '../../../../../../core/widgets/custom_snak_bar.dart';
 import '../../../../../../core/widgets/custom_text_filed.dart';
 import '../onboarding_container.dart';
 
@@ -125,9 +129,26 @@ class _OnboardingUserGoalsPageBodyState
             CustomButton(
               child: Text("التالي",
                   style: Styles.textStyle16.copyWith(color: Colors.white)),
-              onPressed: () => {
-                GoRouter.of(context)
-                    .push(Routers.kOndboardingJobPreferencesPage)
+              onPressed: () {
+                if (goalController.text.isNotEmpty &&
+                    interestControllers.isNotEmpty) {
+                  final interests =
+                      interestControllers.map((e) => e.text).toList();
+                  BlocProvider.of<OnboardingCubit>(context)
+                      .addBasicInfo("goals", {
+                    "careerGoal": goalController.text,
+                    "interests": interests,
+                  });
+                  GoRouter.of(context)
+                      .push(Routers.kOndboardingJobPreferencesPage);
+                } else {
+                  CustomSnackBar.showSnackBar(
+                    context: context,
+                    title: "خطأ",
+                    message: "الرجاء تعبئة جميع البيانات المطلوبة",
+                    contentType: ContentType.failure,
+                  );
+                }
               },
             ),
           ],
