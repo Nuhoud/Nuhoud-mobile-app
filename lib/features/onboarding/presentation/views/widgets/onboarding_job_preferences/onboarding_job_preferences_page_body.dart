@@ -1,8 +1,10 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/enums.dart';
+import '../../../../../../core/utils/routs.dart';
 import '../../../../../../core/utils/styles.dart';
 import '../../../../../../core/utils/validation.dart';
 import '../../../../../../core/widgets/custom_button.dart';
@@ -80,7 +82,6 @@ class _OnboardingJobPreferencesPageBodyState
                       } else {
                         if (selected) {
                           _selectedWorkPlaceTypes.add(type);
-                          // If all options except "الكل" are selected, select "الكل" too
                           if (_selectedWorkPlaceTypes.length ==
                               _workPlaceTypes.length - 1) {
                             _selectedWorkPlaceTypes = _workPlaceTypes
@@ -105,7 +106,7 @@ class _OnboardingJobPreferencesPageBodyState
             const SizedBox(height: 25),
 
             // Job Type Section
-            Text("نوع الوظيفة", style: Styles.textStyle16),
+            const Text("نوع الوظيفة", style: Styles.textStyle16),
             const SizedBox(height: 10),
             Wrap(
               spacing: 8,
@@ -167,29 +168,27 @@ class _OnboardingJobPreferencesPageBodyState
             CustomButton(
               child: Text("التالي",
                   style: Styles.textStyle16.copyWith(color: Colors.white)),
-              onPressed: () => {
+              onPressed: () {
                 if (_selectedWorkPlaceTypes.isNotEmpty &&
                     _selectedJobTypes.isNotEmpty &&
-                    _locationController.text.isNotEmpty)
-                  {
-                    context
-                        .read<OnboardingCubit>()
-                        .addBasicInfo("jobPreferences", {
-                      "workPlaceType": _selectedWorkPlaceTypes,
-                      "jobType": _selectedJobTypes,
-                      "jobLocation": _locationController.text,
-                    }),
-                    context.read<OnboardingCubit>().printData(),
-                  }
-                else
-                  {
-                    CustomSnackBar.showSnackBar(
-                      context: context,
-                      title: "خطأ",
-                      message: "الرجاء تعبئة جميع البيانات المطلوبة",
-                      contentType: ContentType.failure,
-                    )
-                  }
+                    _locationController.text.isNotEmpty) {
+                  context
+                      .read<OnboardingCubit>()
+                      .addBasicInfo("jobPreferences", {
+                    "workPlaceType": _selectedWorkPlaceTypes,
+                    "jobType": _selectedJobTypes,
+                    "jobLocation": _locationController.text,
+                  });
+                  context.read<OnboardingCubit>().printData();
+                  GoRouter.of(context).push(Routers.kOndboardingUserSkillsPage);
+                } else {
+                  CustomSnackBar.showSnackBar(
+                    context: context,
+                    title: "خطأ",
+                    message: "الرجاء تعبئة جميع البيانات المطلوبة",
+                    contentType: ContentType.failure,
+                  );
+                }
               },
             ),
           ],

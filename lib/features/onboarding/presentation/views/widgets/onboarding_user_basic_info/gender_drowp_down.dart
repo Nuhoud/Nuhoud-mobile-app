@@ -38,7 +38,7 @@ class GenderDropdown extends StatelessWidget {
       ),
       items: ['ذكر', 'أنثى']
           .map((g) => DropdownMenuItem(
-                value: g == 'ذكر' ? 'male' : 'female',
+                value: g == 'ذكر' ? 'ذكر' : 'أنثى',
                 child: Text(g),
               ))
           .toList(),

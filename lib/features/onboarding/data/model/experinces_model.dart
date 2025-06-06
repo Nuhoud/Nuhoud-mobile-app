@@ -3,16 +3,18 @@ class ExperincesModel {
   final String company;
   final String jobDescription;
   final String jobStartDate;
-  final String jobEndDate;
+  final String? jobEndDate;
   final String jobLocation;
+  final bool isCurrent;
 
   ExperincesModel({
     required this.jobTitle,
     required this.company,
     required this.jobDescription,
     required this.jobStartDate,
-    required this.jobEndDate,
+    this.jobEndDate,
     required this.jobLocation,
+    required this.isCurrent,
   });
 
   factory ExperincesModel.fromJson(Map<String, dynamic> json) {
@@ -23,17 +25,19 @@ class ExperincesModel {
       jobStartDate: json['startDate'],
       jobEndDate: json['endDate'],
       jobLocation: json['location'],
+      isCurrent: json['isCurrent'],
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson(bool withEndDate) {
     return {
       'jobTitle': jobTitle,
       'company': company,
       'location': jobDescription,
       'startDate': jobStartDate,
-      'endDate': jobEndDate,
+      if (withEndDate) 'endDate': jobEndDate,
       'description': jobLocation,
+      'isCurrent': isCurrent,
     };
   }
 }

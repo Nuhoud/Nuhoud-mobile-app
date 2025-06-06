@@ -46,18 +46,34 @@ class _OnboardingUserExperiencePageBodyState
     final jobStartDate = formItem.jobStartDateController.text.trim();
     final jobEndDate = formItem.jobEndDateController.text.trim();
     final jobLocation = formItem.jobLocationController.text.trim();
+    bool isCurrent = formItem.jobEndDateController.text == "حالياً";
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        addedExperiences.add(ExperincesModel(
-          jobTitle: jobTitle,
-          company: company,
-          jobDescription: jobDescription,
-          jobStartDate: jobStartDate,
-          jobEndDate: jobEndDate,
-          jobLocation: jobLocation,
-        ));
-        formItem.clear();
-      });
+      if (isCurrent) {
+        setState(() {
+          addedExperiences.add(ExperincesModel(
+            isCurrent: isCurrent,
+            jobTitle: jobTitle,
+            company: company,
+            jobDescription: jobDescription,
+            jobStartDate: jobStartDate,
+            jobLocation: jobLocation,
+          ));
+          formItem.clear();
+        });
+      } else {
+        setState(() {
+          addedExperiences.add(ExperincesModel(
+            isCurrent: isCurrent,
+            jobTitle: jobTitle,
+            company: company,
+            jobDescription: jobDescription,
+            jobStartDate: jobStartDate,
+            jobEndDate: jobEndDate,
+            jobLocation: jobLocation,
+          ));
+          formItem.clear();
+        });
+      }
     }
   }
 
@@ -78,7 +94,7 @@ class _OnboardingUserExperiencePageBodyState
         duration: const Duration(seconds: 2),
       );
     } else {
-      final data = addedExperiences.map((e) => e.toJson()).toList();
+      final data = addedExperiences.map((e) => e.toJson(!e.isCurrent)).toList();
       BlocProvider.of<OnboardingCubit>(context)
           .addBasicInfo("experiences", data);
       GoRouter.of(context).push(Routers.kOndboardingUserGoalsPage);
@@ -117,7 +133,7 @@ class _OnboardingUserExperiencePageBodyState
                         child: ListTile(
                           title: Text("${exp.jobTitle} - ${exp.company}"),
                           subtitle: Text(
-                              "${exp.jobStartDate} | ${exp.jobEndDate} | الموقع: ${exp.jobLocation}"),
+                              "${exp.jobStartDate} | ${exp.isCurrent ? "حالياً" : exp.jobEndDate} | الموقع: ${exp.jobLocation}"),
                           trailing: IconButton(
                             icon: const Icon(Icons.delete_outline_outlined,
                                 color: Colors.red),

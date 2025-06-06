@@ -13,6 +13,7 @@ import '../../features/onboarding/presentation/views/onboarding_user_basic_info_
 import '../../features/onboarding/presentation/views/onboarding_user_certifications_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_user_education_info_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_user_goals_page.dart';
+import '../../features/onboarding/presentation/views/onboarding_user_skills_page.dart';
 import '../../features/splash/presentation/views/splash_page.dart';
 
 abstract class Routers {
@@ -34,6 +35,7 @@ abstract class Routers {
       '/onboardingJobPreferencesPage';
   static const String kOndboardingUserCertificationsPage =
       '/onboardingUserCertificationsPage';
+  static const String kOndboardingUserSkillsPage = '/onboardingUserSkillsPage';
 
   static final router = GoRouter(
     routes: [
@@ -99,6 +101,10 @@ abstract class Routers {
       GoRoute(
         path: kOndboardingUserCertificationsPage,
         builder: (context, state) => const OnboardingUserCertificationsPage(),
+      ),
+      GoRoute(
+        path: kOndboardingUserSkillsPage,
+        builder: (context, state) => const OnboardingUserSkillsPage(),
       ),
     ],
   );
