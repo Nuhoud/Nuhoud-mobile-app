@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/routs.dart';
 import '../../../../../../core/utils/styles.dart';
+import '../../../../../../core/widgets/custom_dialog.dart';
 import '../../../../../../core/widgets/custom_snak_bar.dart';
 import '../../../../data/model/education_model.dart';
 import '../../../view-model/onboarding_cuibt/onboarding_cubit.dart';
@@ -25,7 +26,7 @@ class OnboardingUserEducationPageBody extends StatefulWidget {
 class _OnboardingUserEducationPageBodyState
     extends State<OnboardingUserEducationPageBody> {
   final EducationFormItem formItem = EducationFormItem();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   final List<EducationModel> addedDegrees = [];
 
   @override
@@ -39,13 +40,12 @@ class _OnboardingUserEducationPageBodyState
   }
 
   void addDegree() {
-    final degree = formItem.degreeController.text.trim();
-    final field = formItem.fieldController.text.trim();
-    final university = formItem.universityController.text.trim();
-    final endYear = int.tryParse(formItem.endYearController.text.trim()) ?? 0;
-    final gpa = double.tryParse(formItem.gpaController.text.trim()) ?? 0.0;
-
-    if (_formKey.currentState!.validate()) {
+    if (formKey.currentState!.validate()) {
+      final degree = formItem.degreeController.text.trim();
+      final field = formItem.fieldController.text.trim();
+      final university = formItem.universityController.text.trim();
+      final endYear = int.tryParse(formItem.endYearController.text.trim());
+      final gpa = double.tryParse(formItem.gpaController.text.trim());
       setState(() {
         addedDegrees.add(EducationModel(
           degree: degree,
@@ -76,18 +76,27 @@ class _OnboardingUserEducationPageBodyState
 
   void submitEducationData() {
     if (addedDegrees.isEmpty) {
-      CustomSnackBar.showSnackBar(
-        contentType: ContentType.failure,
-        message: "يرجى إضافة شهادة",
-        color: Colors.red,
-        context: context,
-        title: "",
-        duration: const Duration(seconds: 2),
-      );
+      showDialog(
+          context: context,
+          builder: (context) => CustomDialog(
+                icon: Icons.warning_rounded,
+                secondaryButtonText: "الغاء",
+                title: "المتابعة بدون شهادة",
+                description: "هل أنت متأكد من المتابعة بدون شهادة؟",
+                onPrimaryAction: () {
+                  context.read<OnboardingCubit>().addBasicInfo("education", []);
+                  GoRouter.of(context)
+                      .push(Routers.kOndboardingUserCertificationsPage);
+                },
+                onSecondaryAction: () {
+                  GoRouter.of(context).pop();
+                },
+                primaryButtonText: "موافق",
+              ));
     } else {
       final data = addedDegrees.map((e) => e.toJson()).toList();
       context.read<OnboardingCubit>().addBasicInfo("education", data);
-      GoRouter.of(context).push(Routers.kOndboardingUserExperiencePage);
+      GoRouter.of(context).push(Routers.kOndboardingUserCertificationsPage);
     }
   }
 
@@ -107,7 +116,7 @@ class _OnboardingUserEducationPageBodyState
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  EducationFormWidget(form: formItem, formKey: _formKey),
+                  EducationFormWidget(form: formItem, formKey: formKey),
                   if (addedDegrees.isNotEmpty) const SizedBox(height: 10),
                   if (addedDegrees.isNotEmpty) ...[
                     Text("الشهادات المضافة:",
@@ -123,7 +132,7 @@ class _OnboardingUserEducationPageBodyState
                         child: ListTile(
                           title: Text("${edu.degree} - ${edu.field}"),
                           subtitle: Text(
-                              "${edu.university} | ${edu.endYear} | GPA: ${edu.gpa}"),
+                              "${edu.university} | ${edu.endYear} | ${edu.gpa}%"),
                           trailing: IconButton(
                             icon: const Icon(Icons.delete_outline_outlined,
                                 color: Colors.red),

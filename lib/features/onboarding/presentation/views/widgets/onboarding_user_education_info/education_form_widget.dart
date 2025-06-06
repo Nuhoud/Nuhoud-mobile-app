@@ -11,8 +11,8 @@ class EducationFormWidget extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   const EducationFormWidget({
     super.key,
-    required this.form,
     required this.formKey,
+    required this.form,
   });
 
   @override
@@ -56,6 +56,7 @@ class EducationFormWidget extends StatelessWidget {
             ),
             CustomTextField(
               text: "سنة التخرج",
+              hintText: "او المتوقعة",
               isPassword: false,
               validatorFun: (val) =>
                   Validator.validate(val, ValidationState.price),
@@ -66,7 +67,7 @@ class EducationFormWidget extends StatelessWidget {
               keyboardType: TextInputType.number,
             ),
             CustomTextField(
-              text: "المعدل التراكمي (GPA)",
+              text: "المعدل",
               isPassword: false,
               keyboardType: TextInputType.number,
               validatorFun: (val) =>

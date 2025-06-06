@@ -1,9 +1,9 @@
 class EducationModel {
-  final String degree;
-  final String field;
-  final String university;
-  final int endYear;
-  final double gpa;
+  final String? degree;
+  final String? field;
+  final String? university;
+  final int? endYear;
+  final double? gpa;
 
   EducationModel({
     required this.degree,

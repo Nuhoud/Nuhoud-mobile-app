@@ -4,18 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../../core/utils/app_colors.dart';
-import '../../../../../../core/utils/enums.dart';
 import '../../../../../../core/utils/routs.dart';
 import '../../../../../../core/utils/styles.dart';
-import '../../../../../../core/utils/validation.dart';
 import '../../../../../../core/widgets/custom_snak_bar.dart';
-import '../../../../../../core/widgets/custom_text_filed.dart';
 import '../../../../data/model/experinces_model.dart';
 import '../../../view-model/onboarding_cuibt/onboarding_cubit.dart';
 import '../buttons_row.dart';
 import '../onboarding_container.dart';
-import '../custom_date_picker.dart';
 import 'experince_form_item.dart';
+import 'experince_form_widget.dart';
 
 class OnboardingUserExperiencePageBody extends StatefulWidget {
   const OnboardingUserExperiencePageBody({super.key});
@@ -77,7 +74,7 @@ class _OnboardingUserExperiencePageBodyState
         message: "يرجى إضافة خبرة عمل",
         color: Colors.red,
         context: context,
-        title: "",
+        title: "خطأ",
         duration: const Duration(seconds: 2),
       );
     } else {
@@ -140,62 +137,6 @@ class _OnboardingUserExperiencePageBodyState
             secondaryOnpressed: () => addExperience(),
             primaryText: "التالي",
             secondaryText: "إضافة خبرة",
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class ExperinceFormWidget extends StatelessWidget {
-  const ExperinceFormWidget(
-      {super.key, required this.formItem, required this.formKey});
-  final ExperinceFormItem formItem;
-  final GlobalKey<FormState> formKey;
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: Column(
-        children: [
-          CustomTextField(
-            text: "الوظيفة",
-            isPassword: false,
-            validatorFun: (val) =>
-                Validator.validate(val, ValidationState.normal),
-            hPadding: 0,
-            controller: formItem.jobTitleController,
-            fillColor: Colors.white,
-            prefixIcon: Icons.work_outline,
-          ),
-          CustomTextField(
-            text: "الشركة",
-            isPassword: false,
-            validatorFun: (val) =>
-                Validator.validate(val, ValidationState.normal),
-            hPadding: 0,
-            controller: formItem.companyController,
-            fillColor: Colors.white,
-            prefixIcon: Icons.workspaces_outline,
-          ),
-          CustomTextField(
-            text: "الوصف",
-            isPassword: false,
-            maxLine: 3,
-            validatorFun: (val) =>
-                Validator.validate(val, ValidationState.normal),
-            hPadding: 0,
-            controller: formItem.jobDescriptionController,
-            fillColor: Colors.white,
-            prefixIcon: Icons.description_outlined,
-          ),
-          CustomDatePicker(
-            text: "سنة البدء",
-            controller: formItem.jobStartDateController,
-          ),
-          CustomDatePicker(
-            text: "سنة الانتهاء",
-            controller: formItem.jobEndDateController,
           ),
         ],
       ),

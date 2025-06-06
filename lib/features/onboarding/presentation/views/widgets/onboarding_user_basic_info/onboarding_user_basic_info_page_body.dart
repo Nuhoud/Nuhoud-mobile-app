@@ -93,7 +93,7 @@ class _OnboardingUserBasicInfoPageBodyState
                 text: "الموقع",
                 prefixIcon: Icons.location_on_outlined,
                 controller: locationController,
-                hitText: "سوريا, دمشق",
+                hintText: "سوريا, دمشق",
                 isPassword: false,
                 fillColor: Colors.white,
               ),

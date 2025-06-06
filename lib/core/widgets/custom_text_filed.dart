@@ -18,10 +18,9 @@ class CustomTextField extends StatefulWidget {
     this.fillColor,
     this.hPadding,
     this.vPadding,
-    this.hitText,
+    this.hintText,
   });
   final String text;
-  final String? hitText;
   final bool isPassword;
   final int maxLine;
   final TextEditingController controller;
@@ -33,6 +32,7 @@ class CustomTextField extends StatefulWidget {
   final IconData? prefixIcon;
   final double? hPadding;
   final double? vPadding;
+  final String? hintText;
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
@@ -57,7 +57,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           vertical: widget.vPadding ?? 15, horizontal: widget.hPadding ?? 1),
       child: TextFormField(
         style: Styles.textStyle13.copyWith(
-          color: AppColors.secondaryText,
+          color: AppColors.blackTextColor,
           fontWeight: FontWeight.w500,
         ),
         onChanged: widget.onChange,
@@ -68,7 +68,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         maxLines: widget.maxLine,
         obscureText: widget.isPassword ? !showPassowrd : false,
         decoration: InputDecoration(
-          hintText: widget.hitText,
+          hintText: widget.hintText,
           hintStyle: Styles.textStyle13.copyWith(
             color: AppColors.secondaryText,
             fontWeight: FontWeight.w500,

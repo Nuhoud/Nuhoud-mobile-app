@@ -10,6 +10,7 @@ import '../../features/onboarding/presentation/views/onboarding_job_preferences_
 import '../../features/onboarding/presentation/views/onboarding_ueser_experince_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_upload_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_user_basic_info_page.dart';
+import '../../features/onboarding/presentation/views/onboarding_user_certifications_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_user_education_info_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_user_goals_page.dart';
 import '../../features/splash/presentation/views/splash_page.dart';
@@ -31,6 +32,8 @@ abstract class Routers {
   static const String kOndboardingUserGoalsPage = '/onboardingUserGoalsPage';
   static const String kOndboardingJobPreferencesPage =
       '/onboardingJobPreferencesPage';
+  static const String kOndboardingUserCertificationsPage =
+      '/onboardingUserCertificationsPage';
 
   static final router = GoRouter(
     routes: [
@@ -92,6 +95,10 @@ abstract class Routers {
       GoRoute(
         path: kOndboardingJobPreferencesPage,
         builder: (context, state) => const OnboardingJobPreferencesPage(),
+      ),
+      GoRoute(
+        path: kOndboardingUserCertificationsPage,
+        builder: (context, state) => const OnboardingUserCertificationsPage(),
       ),
     ],
   );
