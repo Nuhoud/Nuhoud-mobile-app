@@ -22,11 +22,17 @@ class OnboardingJobPreferencesPageBody extends StatefulWidget {
 class _OnboardingJobPreferencesPageBodyState
     extends State<OnboardingJobPreferencesPageBody> {
   final TextEditingController _locationController = TextEditingController();
-  String? _selectedWorkPlaceType;
-  String? _selectedJobType;
+  List<String> _selectedWorkPlaceTypes = [];
+  List<String> _selectedJobTypes = [];
 
-  final List<String> _workPlaceTypes = ['عن بعد', 'في الشركة', 'مزيج'];
-  final List<String> _jobTypes = ['دوام كامل', 'دوام جزئي', 'عقد', 'مستقل'];
+  final List<String> _workPlaceTypes = ['عن بعد', 'في الشركة', 'مزيج', 'الكل'];
+  final List<String> _jobTypes = [
+    'دوام كامل',
+    'دوام جزئي',
+    'عقد',
+    'مستقل',
+    'الكل'
+  ];
 
   @override
   void dispose() {
@@ -50,9 +56,8 @@ class _OnboardingJobPreferencesPageBodyState
             ),
 
             const SizedBox(height: 25),
-
             // Work Place Type Section
-            Text("نوع مكان العمل", style: Styles.textStyle16),
+            const Text("نوع مكان العمل", style: Styles.textStyle16),
             const SizedBox(height: 10),
             Wrap(
               spacing: 8,
@@ -61,15 +66,36 @@ class _OnboardingJobPreferencesPageBodyState
                 return ChoiceChip(
                   backgroundColor: Colors.white,
                   label: Text(type),
-                  selected: _selectedWorkPlaceType == type,
+                  selected: _selectedWorkPlaceTypes.contains(type),
                   onSelected: (selected) {
                     setState(() {
-                      _selectedWorkPlaceType = selected ? type : null;
+                      if (type == 'الكل') {
+                        if (selected) {
+                          _selectedWorkPlaceTypes = _workPlaceTypes
+                              .where((t) => t != 'الكل')
+                              .toList();
+                        } else {
+                          _selectedWorkPlaceTypes.clear();
+                        }
+                      } else {
+                        if (selected) {
+                          _selectedWorkPlaceTypes.add(type);
+                          // If all options except "الكل" are selected, select "الكل" too
+                          if (_selectedWorkPlaceTypes.length ==
+                              _workPlaceTypes.length - 1) {
+                            _selectedWorkPlaceTypes = _workPlaceTypes
+                                .where((t) => t != 'الكل')
+                                .toList();
+                          }
+                        } else {
+                          _selectedWorkPlaceTypes.remove(type);
+                        }
+                      }
                     });
                   },
                   selectedColor: AppColors.primaryColor,
                   labelStyle: TextStyle(
-                    color: _selectedWorkPlaceType == type
+                    color: _selectedWorkPlaceTypes.contains(type)
                         ? Colors.white
                         : Colors.black,
                   ),
@@ -88,16 +114,36 @@ class _OnboardingJobPreferencesPageBodyState
                 return ChoiceChip(
                   backgroundColor: Colors.white,
                   label: Text(type),
-                  selected: _selectedJobType == type,
+                  selected: _selectedJobTypes.contains(type),
                   onSelected: (selected) {
                     setState(() {
-                      _selectedJobType = selected ? type : null;
+                      if (type == 'الكل') {
+                        if (selected) {
+                          _selectedJobTypes =
+                              _jobTypes.where((t) => t != 'الكل').toList();
+                        } else {
+                          _selectedJobTypes.clear();
+                        }
+                      } else {
+                        if (selected) {
+                          _selectedJobTypes.add(type);
+                          // If all options except "الكل" are selected, select "الكل" too
+                          if (_selectedJobTypes.length ==
+                              _jobTypes.length - 1) {
+                            _selectedJobTypes =
+                                _jobTypes.where((t) => t != 'الكل').toList();
+                          }
+                        } else {
+                          _selectedJobTypes.remove(type);
+                        }
+                      }
                     });
                   },
                   selectedColor: AppColors.primaryColor,
                   labelStyle: TextStyle(
-                    color:
-                        _selectedJobType == type ? Colors.white : Colors.black,
+                    color: _selectedJobTypes.contains(type)
+                        ? Colors.white
+                        : Colors.black,
                   ),
                 );
               }).toList(),
@@ -122,15 +168,15 @@ class _OnboardingJobPreferencesPageBodyState
               child: Text("التالي",
                   style: Styles.textStyle16.copyWith(color: Colors.white)),
               onPressed: () => {
-                if (_selectedWorkPlaceType != null &&
-                    _selectedJobType != null &&
+                if (_selectedWorkPlaceTypes.isNotEmpty &&
+                    _selectedJobTypes.isNotEmpty &&
                     _locationController.text.isNotEmpty)
                   {
                     context
                         .read<OnboardingCubit>()
                         .addBasicInfo("jobPreferences", {
-                      "workPlaceType": _selectedWorkPlaceType,
-                      "jobType": _selectedJobType,
+                      "workPlaceType": _selectedWorkPlaceTypes,
+                      "jobType": _selectedJobTypes,
                       "jobLocation": _locationController.text,
                     }),
                     context.read<OnboardingCubit>().printData(),
