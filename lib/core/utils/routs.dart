@@ -1,10 +1,13 @@
 import 'package:go_router/go_router.dart';
+import 'package:nuhoud/features/home/data/models/job_model.dart';
+import 'package:nuhoud/features/profile/presentation/views/proflie_page.dart';
 
 import '../../features/auth/presentation/views/login/login_page.dart';
 import '../../features/auth/presentation/views/register/register_page.dart';
 import '../../features/auth/presentation/views/reset_password/reset_password_page.dart';
 import '../../features/auth/presentation/views/verification/verification_page.dart';
-import '../../features/home/presentation/views/home_page.dart';
+import '../../features/home/presentation/views/home_layout.dart';
+import '../../features/home/presentation/views/jobe_details_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_intro_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_job_preferences_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_ueser_experince_page.dart';
@@ -36,6 +39,8 @@ abstract class Routers {
   static const String kOndboardingUserCertificationsPage =
       '/onboardingUserCertificationsPage';
   static const String kOndboardingUserSkillsPage = '/onboardingUserSkillsPage';
+  static const String kJobDetailsPage = '/jobDetailsPage';
+  static const String kProfilePage = '/profilePage';
 
   static final router = GoRouter(
     routes: [
@@ -45,7 +50,7 @@ abstract class Routers {
       ),
       GoRoute(
         path: kHomePageRoute,
-        builder: (context, state) => const HomePage(),
+        builder: (context, state) => const HomeLayout(),
       ),
       GoRoute(
         path: kLoginPageRoute,
@@ -105,6 +110,15 @@ abstract class Routers {
       GoRoute(
         path: kOndboardingUserSkillsPage,
         builder: (context, state) => const OnboardingUserSkillsPage(),
+      ),
+      GoRoute(
+        path: kJobDetailsPage,
+        builder: (context, state) =>
+            JobDetailsPage(job: state.extra as JobModel),
+      ),
+      GoRoute(
+        path: kProfilePage,
+        builder: (context, state) => const ProfilePage(),
       ),
     ],
   );

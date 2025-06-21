@@ -18,7 +18,7 @@ class NuhoudMaterialApp extends StatelessWidget {
       builder: (context, state) {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          locale: state.locale,
+          locale: const Locale("ar"),
           supportedLocales: const [
             Locale("en"),
             Locale("ar"),
