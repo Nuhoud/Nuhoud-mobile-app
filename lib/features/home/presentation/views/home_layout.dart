@@ -6,6 +6,7 @@ import 'package:nuhoud/features/home/presentation/views/home_page.dart';
 
 import '../../../../core/utils/size_app.dart';
 import '../../../profile/presentation/views/proflie_page.dart';
+import '../../../user_plan/presentation/views/user_plan_page.dart';
 
 class HomeLayout extends StatefulWidget {
   final bool isViewBook;
@@ -20,7 +21,7 @@ class _HomeLayoutState extends State<HomeLayout> {
 
   final List<Widget> pages = const [
     HomePage(),
-    HomePage(),
+    UserPlanPage(),
     ProfilePage(),
   ];
 

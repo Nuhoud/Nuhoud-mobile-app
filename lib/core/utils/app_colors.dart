@@ -5,6 +5,8 @@ class AppColors {
   static const Color secodaryColor = Color(0xff9c8beb);
   static Color highLightShimmerColor =
       const Color(0xFFF5F5F5).withValues(alpha: 0.8);
+
+  //screens background color
   static const Color backgroundColor = Color(0xFFf7ffff);
   static const Color primaryText = Color(0xFFb1c7ff);
   static const Color secondaryText = Color(0xFF666666);

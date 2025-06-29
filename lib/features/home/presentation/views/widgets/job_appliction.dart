@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nuhoud/features/home/presentation/views/widgets/job_appliction_item.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/size_app.dart';
 import '../../../data/models/job_model.dart';
 
 class JobApplication extends StatelessWidget {
@@ -9,6 +10,7 @@ class JobApplication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(bottom: response(context, 65)),
       color: AppColors.backgroundColor,
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -28,7 +30,7 @@ class JobApplication extends StatelessWidget {
                           color: AppColors.headingTextColor,
                           fontWeight: FontWeight.bold,
                           fontSize:
-                              MediaQuery.sizeOf(context).shortestSide * 0.07,
+                              MediaQuery.sizeOf(context).shortestSide * 0.055,
                         ),
                       ),
                     ),

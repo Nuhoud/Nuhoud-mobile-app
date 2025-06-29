@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:nuhoud/core/utils/assets_data.dart';
 
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_constats.dart';
+import '../../../../../core/utils/size_app.dart';
 
 class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final double height;
@@ -23,16 +25,18 @@ class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             Row(
               children: [
+                const SizedBox(width: 8),
                 Expanded(
                   child: Container(
-                    height: 50,
+                    height: response(context, 55),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(kBorderRadius),
                     ),
                     child: const TextField(
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search),
+                        prefixIcon: Icon(Icons.search_outlined,
+                            color: AppColors.primaryColor),
                         hintText: 'ابحث عن وظيفة',
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(vertical: 12),
@@ -42,16 +46,21 @@ class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                 ),
                 const SizedBox(width: 8),
                 Container(
-                  width: 50,
-                  height: 50,
+                  width: response(context, 55),
+                  height: response(context, 55),
                   decoration: BoxDecoration(
                     color: AppColors.textWhite.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Center(
                     child: IconButton(
-                      icon: const Icon(Icons.filter_alt_rounded,
-                          color: Colors.white),
+                      icon: Image.asset(
+                        AssetsData.filter,
+                        color: Colors.white,
+                        width: response(context, 35),
+                        height: response(context, 35),
+                      ),
+                      color: Colors.white,
                       onPressed: () {},
                     ),
                   ),

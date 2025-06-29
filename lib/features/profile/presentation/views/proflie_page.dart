@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nuhoud/core/widgets/custom_app_bar.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/routs.dart';
+import '../../../../core/utils/size_app.dart';
+import '../../../../core/utils/styles.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -24,29 +29,29 @@ class ProfilePage extends StatelessWidget {
         'title': 'تسجيل الخروج',
         'icon': Icons.logout,
       },
+      {
+        'title': 'التعليم',
+        'icon': Icons.school_outlined,
+      },
     ];
 
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
+    return SafeArea(
+      bottom: false,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(response(context, 60)),
+          child: const CustomAppBar(
+            backBtn: false,
+            backgroundColor: AppColors.primaryColor,
+            title: 'الملف الشخصي',
+          ),
+        ),
+        body: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Header text
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 24.0),
-                  child: Text(
-                    'الملف الشخصي',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.headingTextColor,
-                    ),
-                  ),
-                ),
-
                 // Profile items list
                 ListView.separated(
                   shrinkWrap: true,
@@ -62,10 +67,10 @@ class ProfilePage extends StatelessWidget {
                       icon: item['icon'],
                       onTap: () {
                         // Handle item tap
-                        print('Tapped on: ${item['title']}');
                         if (item['title'] == 'تسجيل الخروج') {
                           _showLogoutConfirmation(context);
                         }
+                        if (item['title'] == 'التعليم') {}
                       },
                     );
                   },
@@ -138,18 +143,23 @@ class ProfilePage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('تأكيد تسجيل الخروج'),
-        content: const Text('هل أنت متأكد أنك تريد تسجيل الخروج؟'),
+        backgroundColor: Colors.white,
+        title: const Icon(Icons.warning_amber_outlined,
+            color: AppColors.textAlert, size: 50),
+        content: Text('هل أنت متأكد أنك تريد تسجيل الخروج؟',
+            style: Styles.textStyle16.copyWith(color: AppColors.textGrayDark)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('إلغاء'),
+            child: const Text('إلغاء', style: Styles.textStyle16),
           ),
           TextButton(
-            onPressed: () {},
-            child: const Text(
+            onPressed: () {
+              GoRouter.of(context).push(Routers.kLoginPageRoute);
+            },
+            child: Text(
               'تسجيل الخروج',
-              style: TextStyle(color: Colors.red),
+              style: Styles.textStyle16.copyWith(color: AppColors.textAlert),
             ),
           ),
         ],
