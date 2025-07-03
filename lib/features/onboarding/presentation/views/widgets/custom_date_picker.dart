@@ -9,6 +9,7 @@ class CustomDatePicker extends StatefulWidget {
   final String text;
   final String? Function(String?)? validatorFun;
   final bool allowPresent;
+  final Color? fillColor;
 
   const CustomDatePicker({
     super.key,
@@ -16,6 +17,7 @@ class CustomDatePicker extends StatefulWidget {
     required this.text,
     this.validatorFun,
     this.allowPresent = false,
+    this.fillColor,
   });
 
   @override
@@ -94,9 +96,8 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(kBorderRadius)),
+      decoration:
+          BoxDecoration(color: widget.fillColor ?? Colors.white, borderRadius: BorderRadius.circular(kBorderRadius)),
       padding: const EdgeInsets.only(top: 8),
       margin: const EdgeInsets.symmetric(vertical: 16),
       child: widget.allowPresent

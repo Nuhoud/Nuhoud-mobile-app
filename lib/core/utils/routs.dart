@@ -1,5 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:nuhoud/features/home/data/models/job_model.dart';
+import 'package:nuhoud/features/profile/data/models/profile_model.dart';
+import 'package:nuhoud/features/profile/presentation/views/profile_basic_info_page.dart';
+import 'package:nuhoud/features/profile/presentation/views/profile_experince_page.dart';
 import 'package:nuhoud/features/profile/presentation/views/proflie_page.dart';
 
 import '../../features/auth/presentation/views/login/login_page.dart';
@@ -17,6 +20,7 @@ import '../../features/onboarding/presentation/views/onboarding_user_certificati
 import '../../features/onboarding/presentation/views/onboarding_user_education_info_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_user_goals_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_user_skills_page.dart';
+import '../../features/profile/presentation/views/profile_eduction_page.dart';
 import '../../features/splash/presentation/views/splash_page.dart';
 
 abstract class Routers {
@@ -28,19 +32,18 @@ abstract class Routers {
   static const String kOndboardingIntroPage = '/onboardingIntroPage';
   static const String kOndboardingUploadPage = '/onboardingUploadPage';
   static const String kOndboardingUserInfoPage = '/onboardingUserInfoPage';
-  static const String kOndboardingUserEducationPage =
-      '/onboardingUserEducationPage';
-  static const String kOndboardingUserExperiencePage =
-      '/onboardingUserExperiencePage';
+  static const String kOndboardingUserEducationPage = '/onboardingUserEducationPage';
+  static const String kOndboardingUserExperiencePage = '/onboardingUserExperiencePage';
   static const String kOndboardingUserBasicPage = '/onboardingUserBasicPage';
   static const String kOndboardingUserGoalsPage = '/onboardingUserGoalsPage';
-  static const String kOndboardingJobPreferencesPage =
-      '/onboardingJobPreferencesPage';
-  static const String kOndboardingUserCertificationsPage =
-      '/onboardingUserCertificationsPage';
+  static const String kOndboardingJobPreferencesPage = '/onboardingJobPreferencesPage';
+  static const String kOndboardingUserCertificationsPage = '/onboardingUserCertificationsPage';
   static const String kOndboardingUserSkillsPage = '/onboardingUserSkillsPage';
   static const String kJobDetailsPage = '/jobDetailsPage';
   static const String kProfilePage = '/profilePage';
+  static const String kProfileBasicInfoPage = '/profileBasicInfoPage';
+  static const String kProfileEducationPage = '/profileEducationPage';
+  static const String kProfileExperiencePage = '/profileExperiencePage';
 
   static final router = GoRouter(
     routes: [
@@ -113,12 +116,29 @@ abstract class Routers {
       ),
       GoRoute(
         path: kJobDetailsPage,
-        builder: (context, state) =>
-            JobDetailsPage(job: state.extra as JobModel),
+        builder: (context, state) => JobDetailsPage(job: state.extra as JobModel),
       ),
       GoRoute(
         path: kProfilePage,
         builder: (context, state) => const ProfilePage(),
+      ),
+      GoRoute(
+        path: kProfileBasicInfoPage,
+        builder: (context, state) => ProfileBasicInfoPage(
+          basicInfo: state.extra as BasicInfo,
+        ),
+      ),
+      GoRoute(
+        path: kProfileEducationPage,
+        builder: (context, state) => ProfileEducationPage(
+          initialEducations: state.extra as List<Education>,
+        ),
+      ),
+      GoRoute(
+        path: kProfileExperiencePage,
+        builder: (context, state) => ProfileExperiencePage(
+          initialExperiences: state.extra as List<Experience>,
+        ),
       ),
     ],
   );

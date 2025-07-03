@@ -1,6 +1,8 @@
+import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nuhoud/core/widgets/custom_app_bar.dart';
+import 'package:nuhoud/features/profile/data/models/profile_model.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/routs.dart';
 import '../../../../core/utils/size_app.dart';
@@ -18,20 +20,28 @@ class ProfilePage extends StatelessWidget {
         'icon': Icons.person_outline,
       },
       {
-        'title': 'الشروط والاحكام',
-        'icon': Icons.description_outlined,
+        'title': 'التعليم',
+        'icon': Icons.school_outlined,
       },
       {
-        'title': 'سياسة الخصوصية',
-        'icon': Icons.privacy_tip_outlined,
+        'title': 'الخبرات',
+        'icon': Icons.work_outline,
+      },
+      {
+        'title': 'الشهادات',
+        'icon': Icons.badge_outlined,
+      },
+      {
+        'title': 'الاهداف',
+        'icon': Icons.golf_course_rounded,
+      },
+      {
+        'title': 'تفضيلات العمل',
+        'icon': Icons.workspace_premium_outlined,
       },
       {
         'title': 'تسجيل الخروج',
         'icon': Icons.logout,
-      },
-      {
-        'title': 'التعليم',
-        'icon': Icons.school_outlined,
       },
     ];
 
@@ -57,8 +67,7 @@ class ProfilePage extends StatelessWidget {
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: profileItems.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 12),
+                  separatorBuilder: (context, index) => const SizedBox(height: 12),
                   itemBuilder: (context, index) {
                     final item = profileItems[index];
                     return _buildProfileItem(
@@ -70,7 +79,65 @@ class ProfilePage extends StatelessWidget {
                         if (item['title'] == 'تسجيل الخروج') {
                           _showLogoutConfirmation(context);
                         }
-                        if (item['title'] == 'التعليم') {}
+                        if (item['title'] == 'التعليم') {
+                          List<Education> educations = [];
+                          educations.add(Education(
+                            degree: "بكالوريوس",
+                            field: "علوم",
+                            university: "جامعة القاهرة",
+                            endYear: 2022,
+                            gpa: 4.0,
+                          ));
+                          educations.add(Education(
+                            degree: "ماستر",
+                            field: "علوم",
+                            university: "جامعة القاهرة",
+                            endYear: 2022,
+                            gpa: 4.0,
+                          ));
+                          GoRouter.of(context).push(Routers.kProfileEducationPage, extra: educations);
+                        }
+                        if (item['title'] == 'المعلومات الشخصية') {
+                          GoRouter.of(context).push(Routers.kProfileBasicInfoPage, extra: {
+                            BasicInfo(
+                                gender: "ذكر",
+                                dateOfBirth: "1990-01-01",
+                                location: "القاهرة",
+                                languages: ["العربية", "الإنجليزية"])
+                          });
+                        }
+                        if (item['title'] == 'الخبرات') {
+                          List<Experience> experiences = [];
+                          experiences.add(Experience(
+                            company: "شركة",
+                            jobTitle: "وظيفة",
+                            startDate: "2022-01-01",
+                            endDate: "2022-01-01",
+                            description: "وصف",
+                            location: "القاهرة",
+                            isCurrent: false,
+                          ));
+                          experiences.add(Experience(
+                            company: "شركة",
+                            jobTitle: "وظيفة",
+                            startDate: "2022-01-01",
+                            endDate: "2022-01-01",
+                            description: "وصف",
+                            location: "القاهرة",
+                            isCurrent: true,
+                          ));
+                          GoRouter.of(context).push(Routers.kProfileExperiencePage, extra: experiences);
+                        }
+                        if (item['title'] == 'الشهادات') {}
+                        if (item['title'] == 'الاهداف') {
+                          //GoRouter.of(context).push(Routers.kProfileGoalsPage);
+                        }
+                        if (item['title'] == 'تفضيلات العمل') {
+                          //GoRouter.of(context).push(Routers.kProfileJobPreferencesPage);
+                        }
+                        if (item['title'] == 'تسجيل الخروج') {
+                          _showLogoutConfirmation(context);
+                        }
                       },
                     );
                   },
@@ -144,8 +211,7 @@ class ProfilePage extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: Colors.white,
-        title: const Icon(Icons.warning_amber_outlined,
-            color: AppColors.textAlert, size: 50),
+        title: const Icon(Icons.warning_amber_outlined, color: AppColors.textAlert, size: 50),
         content: Text('هل أنت متأكد أنك تريد تسجيل الخروج؟',
             style: Styles.textStyle16.copyWith(color: AppColors.textGrayDark)),
         actions: [
@@ -155,7 +221,9 @@ class ProfilePage extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              GoRouter.of(context).push(Routers.kLoginPageRoute);
+              GoRouter.of(context).push(
+                Routers.kLoginPageRoute,
+              );
             },
             child: Text(
               'تسجيل الخروج',
