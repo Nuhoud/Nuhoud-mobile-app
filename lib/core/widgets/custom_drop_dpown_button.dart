@@ -3,13 +3,14 @@ import '../../../../../core/utils/styles.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_constats.dart';
 
-class CustomDropdownButton extends StatelessWidget {
+class CustomDropdownButton<T> extends StatelessWidget {
   final String text;
-  final String? value;
-  final Function(String?) onChanged;
-  final List<String> items;
-  final String? Function(String?)? validator;
-  final List<String>? selectedItems;
+  final T? value;
+  final Function(T?) onChanged;
+  final List<T> items;
+  final String? Function(T?)? validator;
+  final List<T>? selectedItems;
+  final String Function(T)? itemToString;
 
   const CustomDropdownButton({
     super.key,
@@ -19,17 +20,25 @@ class CustomDropdownButton extends StatelessWidget {
     required this.onChanged,
     this.validator,
     this.selectedItems,
+    this.itemToString,
   });
+
+  String _getItemText(T item) {
+    if (itemToString != null) return itemToString!(item);
+    if (item is String) return item;
+    return item.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: const Color(0xffF4F7FE),
-          borderRadius: BorderRadius.circular(kBorderRadius)),
+        color: const Color(0xffF4F7FE),
+        borderRadius: BorderRadius.circular(kBorderRadius),
+      ),
       padding: const EdgeInsets.only(top: 8),
       margin: const EdgeInsets.symmetric(vertical: 16),
-      child: DropdownButtonFormField<String>(
+      child: DropdownButtonFormField<T>(
         dropdownColor: Colors.white,
         decoration: InputDecoration(
           labelText: text,
@@ -45,17 +54,16 @@ class CustomDropdownButton extends StatelessWidget {
           fillColor: const Color(0xffF4F7FE),
           filled: true,
         ),
-        items: items.map((value) {
-          final isSelected = selectedItems?.contains(value) ?? false;
-          return DropdownMenuItem<String>(
-            value: value,
+        items: items.map((item) {
+          final isSelected = selectedItems != null && selectedItems!.contains(item);
+          return DropdownMenuItem<T>(
+            value: item,
             child: Row(
               children: [
-                Text(value),
+                Text(_getItemText(item)),
                 if (isSelected) ...[
                   const SizedBox(width: 8),
-                  const Icon(Icons.check,
-                      color: AppColors.primaryColor, size: 18),
+                  const Icon(Icons.check, color: AppColors.primaryColor, size: 18),
                 ]
               ],
             ),

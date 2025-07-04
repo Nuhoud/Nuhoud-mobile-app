@@ -2,7 +2,11 @@ import 'package:go_router/go_router.dart';
 import 'package:nuhoud/features/home/data/models/job_model.dart';
 import 'package:nuhoud/features/profile/data/models/profile_model.dart';
 import 'package:nuhoud/features/profile/presentation/views/profile_basic_info_page.dart';
+import 'package:nuhoud/features/profile/presentation/views/profile_certifications_page.dart';
 import 'package:nuhoud/features/profile/presentation/views/profile_experince_page.dart';
+import 'package:nuhoud/features/profile/presentation/views/profile_goals_page.dart';
+import 'package:nuhoud/features/profile/presentation/views/profile_job_preferences_page.dart';
+import 'package:nuhoud/features/profile/presentation/views/profile_skils_page.dart';
 import 'package:nuhoud/features/profile/presentation/views/proflie_page.dart';
 
 import '../../features/auth/presentation/views/login/login_page.dart';
@@ -44,6 +48,10 @@ abstract class Routers {
   static const String kProfileBasicInfoPage = '/profileBasicInfoPage';
   static const String kProfileEducationPage = '/profileEducationPage';
   static const String kProfileExperiencePage = '/profileExperiencePage';
+  static const String kProfileCertificationsPage = '/profileCertificationsPage';
+  static const String kProfileGoalsPage = "/ProfileGoalsPage";
+  static const String kProfileJobPreferencesPage = '/profileJobPreferencesPage';
+  static const String kProfileSkillsPage = '/profileSkillsPage';
 
   static final router = GoRouter(
     routes: [
@@ -138,6 +146,30 @@ abstract class Routers {
         path: kProfileExperiencePage,
         builder: (context, state) => ProfileExperiencePage(
           initialExperiences: state.extra as List<Experience>,
+        ),
+      ),
+      GoRoute(
+        path: kProfileCertificationsPage,
+        builder: (context, state) => ProfileCertificationPage(
+          initialCertifications: state.extra as List<Certification>,
+        ),
+      ),
+      GoRoute(
+        path: kProfileGoalsPage,
+        builder: (context, state) => ProfileGoalsPage(
+          initialGoals: state.extra as Goals,
+        ),
+      ),
+      GoRoute(
+        path: kProfileJobPreferencesPage,
+        builder: (context, state) => ProfileJobPreferencesPage(
+          initialPreferences: state.extra as JobPreferences,
+        ),
+      ),
+      GoRoute(
+        path: kProfileSkillsPage,
+        builder: (context, state) => ProfileSkillsPage(
+          initialSkills: state.extra as Skills,
         ),
       ),
     ],

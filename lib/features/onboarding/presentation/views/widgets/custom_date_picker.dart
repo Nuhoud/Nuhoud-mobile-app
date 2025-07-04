@@ -127,7 +127,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                         ),
                         borderRadius: BorderRadius.circular(kBorderRadius),
                       ),
-                      fillColor: Colors.white,
+                      fillColor: widget.fillColor ?? Colors.white,
                       filled: true,
                       prefixIcon: const Icon(
                         Icons.calendar_today_outlined,
@@ -175,7 +175,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                   ),
                   borderRadius: BorderRadius.circular(kBorderRadius),
                 ),
-                fillColor: Colors.white,
+                fillColor: widget.fillColor ?? Colors.white,
                 filled: true,
                 prefixIcon: const Icon(
                   Icons.calendar_today_outlined,

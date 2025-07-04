@@ -1,4 +1,3 @@
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nuhoud/core/widgets/custom_app_bar.dart';
@@ -7,6 +6,7 @@ import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/routs.dart';
 import '../../../../core/utils/size_app.dart';
 import '../../../../core/utils/styles.dart';
+import '../../../../core/widgets/custom_dialog.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -26,6 +26,10 @@ class ProfilePage extends StatelessWidget {
       {
         'title': 'الخبرات',
         'icon': Icons.work_outline,
+      },
+      {
+        'title': 'المهارات',
+        'icon': Icons.workspace_premium_outlined,
       },
       {
         'title': 'الشهادات',
@@ -98,13 +102,12 @@ class ProfilePage extends StatelessWidget {
                           GoRouter.of(context).push(Routers.kProfileEducationPage, extra: educations);
                         }
                         if (item['title'] == 'المعلومات الشخصية') {
-                          GoRouter.of(context).push(Routers.kProfileBasicInfoPage, extra: {
-                            BasicInfo(
-                                gender: "ذكر",
-                                dateOfBirth: "1990-01-01",
-                                location: "القاهرة",
-                                languages: ["العربية", "الإنجليزية"])
-                          });
+                          GoRouter.of(context).push(Routers.kProfileBasicInfoPage,
+                              extra: BasicInfo(
+                                  dateOfBirth: "1990-01-01",
+                                  gender: "ذكر",
+                                  languages: ["العربية", "الإنجليزية"],
+                                  location: "القاهرة"));
                         }
                         if (item['title'] == 'الخبرات') {
                           List<Experience> experiences = [];
@@ -128,12 +131,42 @@ class ProfilePage extends StatelessWidget {
                           ));
                           GoRouter.of(context).push(Routers.kProfileExperiencePage, extra: experiences);
                         }
-                        if (item['title'] == 'الشهادات') {}
+                        if (item['title'] == 'الشهادات') {
+                          List<Certification> certifications = [];
+                          certifications.add(Certification(
+                            name: "شهادة",
+                            issuer: "جهة",
+                            issueDate: "2022-01-01",
+                          ));
+                          certifications.add(Certification(
+                            name: "شهادة",
+                            issuer: "جهة",
+                            issueDate: "2022-01-01",
+                          ));
+                          GoRouter.of(context).push(Routers.kProfileCertificationsPage, extra: certifications);
+                        }
                         if (item['title'] == 'الاهداف') {
-                          //GoRouter.of(context).push(Routers.kProfileGoalsPage);
+                          GoRouter.of(context).push(Routers.kProfileGoalsPage,
+                              extra: Goals(interests: ["اهتمام1", "اهتمام 2"], careerGoal: "الهدف المخصص"));
                         }
                         if (item['title'] == 'تفضيلات العمل') {
-                          //GoRouter.of(context).push(Routers.kProfileJobPreferencesPage);
+                          GoRouter.of(context).push(Routers.kProfileJobPreferencesPage,
+                              extra: JobPreferences(
+                                  workPlaceType: ["عن بعد", "في الشركة", "مزيج", "الكل"],
+                                  jobType: ["دوام كامل", "دوام جزئي", "عقد", "مستقل", "الكل"],
+                                  jobLocation: "القاهرة"));
+                        }
+                        if (item['title'] == 'المهارات') {
+                          GoRouter.of(context).push(
+                            Routers.kProfileSkillsPage,
+                            extra: Skills(softSkills: [
+                              TechnicalSkill(name: "مهارات1", level: 1),
+                              TechnicalSkill(name: "مهارات 2", level: 2)
+                            ], technicalSkills: [
+                              TechnicalSkill(name: "مهارات1", level: 1),
+                              TechnicalSkill(name: "مهارات 2", level: 2)
+                            ]),
+                          );
                         }
                         if (item['title'] == 'تسجيل الخروج') {
                           _showLogoutConfirmation(context);
@@ -209,28 +242,17 @@ class ProfilePage extends StatelessWidget {
   void _showLogoutConfirmation(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: Colors.white,
-        title: const Icon(Icons.warning_amber_outlined, color: AppColors.textAlert, size: 50),
-        content: Text('هل أنت متأكد أنك تريد تسجيل الخروج؟',
-            style: Styles.textStyle16.copyWith(color: AppColors.textGrayDark)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('إلغاء', style: Styles.textStyle16),
-          ),
-          TextButton(
-            onPressed: () {
-              GoRouter.of(context).push(
-                Routers.kLoginPageRoute,
-              );
-            },
-            child: Text(
-              'تسجيل الخروج',
-              style: Styles.textStyle16.copyWith(color: AppColors.textAlert),
-            ),
-          ),
-        ],
+      builder: (context) => CustomDialog(
+        primaryButtonColor: AppColors.textAlert,
+        icon: Icons.warning_rounded,
+        title: "تسجيل الخروج",
+        description: "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+        primaryButtonText: "تسجيل الخروج",
+        secondaryButtonText: "إلغاء",
+        onPrimaryAction: () {
+          GoRouter.of(context).push(Routers.kLoginPageRoute);
+        },
+        onSecondaryAction: () => Navigator.pop(context),
       ),
     );
   }

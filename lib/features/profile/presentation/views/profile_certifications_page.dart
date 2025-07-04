@@ -1,77 +1,63 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:nuhoud/core/utils/app_colors.dart';
 import 'package:nuhoud/core/utils/enums.dart';
+import 'package:nuhoud/core/utils/styles.dart';
 import 'package:nuhoud/core/utils/validation.dart';
+import 'package:nuhoud/core/widgets/custom_dialog.dart';
+import 'package:nuhoud/core/widgets/custom_snak_bar.dart';
+import 'package:nuhoud/core/widgets/custom_app_bar.dart';
+import 'package:nuhoud/core/widgets/custom_button.dart';
+import 'package:nuhoud/core/widgets/custom_text_filed.dart';
+import 'package:nuhoud/core/utils/size_app.dart';
+import 'package:nuhoud/features/onboarding/presentation/views/widgets/custom_date_picker.dart';
+import 'package:nuhoud/features/profile/data/models/profile_model.dart';
 
-import '../../../../../../core/utils/app_colors.dart';
-import '../../../../../../core/utils/styles.dart';
-import '../../../../../../core/widgets/custom_dialog.dart';
-import '../../../../../../core/widgets/custom_snak_bar.dart';
-import '../../../../core/utils/size_app.dart';
-import '../../../../core/widgets/custom_app_bar.dart';
-import '../../../../core/widgets/custom_button.dart';
+class ProfileCertificationPage extends StatefulWidget {
+  final List<Certification> initialCertifications;
 
-import '../../../../core/widgets/custom_text_filed.dart';
-import '../../../onboarding/presentation/views/widgets/custom_date_picker.dart';
-import '../../data/models/profile_model.dart';
-
-class ProfileExperiencePage extends StatefulWidget {
-  final List<Experience> initialExperiences;
-
-  const ProfileExperiencePage({
+  const ProfileCertificationPage({
     super.key,
-    required this.initialExperiences,
+    required this.initialCertifications,
   });
 
   @override
-  State<ProfileExperiencePage> createState() => _ProfileExperiencePageState();
+  State<ProfileCertificationPage> createState() => _ProfileCertificationPageState();
 }
 
-class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
-  late List<Experience> _experiences;
+class _ProfileCertificationPageState extends State<ProfileCertificationPage> {
+  late List<Certification> _certifications;
   int? _editingIndex;
   final _formKey = GlobalKey<FormState>();
 
   // Controllers for the form
-  late TextEditingController _jobTitleController;
-  late TextEditingController _companyController;
-  late TextEditingController _locationController;
-  late TextEditingController _startDateController;
-  late TextEditingController _endDateController;
-  late TextEditingController _descriptionController;
-  bool _isCurrentJob = false;
+  late TextEditingController _nameController;
+  late TextEditingController _issuerController;
+  late TextEditingController _issueDateController;
 
   @override
   void initState() {
     super.initState();
-    _experiences = List.from(widget.initialExperiences);
+    _certifications = List.from(widget.initialCertifications);
     _resetControllers();
   }
 
   void _resetControllers() {
-    _jobTitleController = TextEditingController();
-    _companyController = TextEditingController();
-    _locationController = TextEditingController();
-    _startDateController = TextEditingController();
-    _endDateController = TextEditingController();
-    _descriptionController = TextEditingController();
-    _isCurrentJob = false;
+    _nameController = TextEditingController();
+    _issuerController = TextEditingController();
+    _issueDateController = TextEditingController();
   }
 
-  void _populateControllers(Experience experience) {
-    _jobTitleController.text = experience.jobTitle ?? '';
-    _companyController.text = experience.company ?? '';
-    _locationController.text = experience.location ?? '';
-    _startDateController.text = experience.startDate ?? '';
-    _isCurrentJob = experience.isCurrent ?? false;
-    _endDateController.text = _isCurrentJob ? 'حالياً' : experience.endDate ?? '';
-    _descriptionController.text = experience.description ?? '';
+  void _populateControllers(Certification certification) {
+    _nameController.text = certification.name ?? '';
+    _issuerController.text = certification.issuer ?? '';
+    _issueDateController.text = certification.issueDate ?? '';
   }
 
   void _startEditing(int index) {
     setState(() {
       _editingIndex = index;
-      _populateControllers(_experiences[index]);
+      _populateControllers(_certifications[index]);
     });
   }
 
@@ -82,23 +68,19 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
     });
   }
 
-  void _saveExperience() {
+  void _saveCertification() {
     if (_formKey.currentState!.validate()) {
-      final experience = Experience(
-        jobTitle: _jobTitleController.text.trim(),
-        company: _companyController.text.trim(),
-        location: _locationController.text.trim(),
-        startDate: _startDateController.text.trim(),
-        isCurrent: _isCurrentJob,
-        endDate: _isCurrentJob ? null : _endDateController.text.trim(),
-        description: _descriptionController.text.trim(),
+      final certification = Certification(
+        name: _nameController.text.trim(),
+        issuer: _issuerController.text.trim(),
+        issueDate: _issueDateController.text.trim(),
       );
 
       setState(() {
         if (_editingIndex != null) {
-          _experiences[_editingIndex!] = experience;
+          _certifications[_editingIndex!] = certification;
         } else {
-          _experiences.add(experience);
+          _certifications.add(certification);
         }
         _editingIndex = null;
         _resetControllers();
@@ -106,9 +88,9 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
     }
   }
 
-  void _deleteExperience(int index) {
+  void _deleteCertification(int index) {
     setState(() {
-      _experiences.removeAt(index);
+      _certifications.removeAt(index);
       if (_editingIndex == index) {
         _editingIndex = null;
         _resetControllers();
@@ -121,12 +103,12 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
       context: context,
       builder: (context) => CustomDialog(
         icon: Icons.warning_rounded,
-        title: "حذف الخبرة",
-        description: "هل أنت متأكد أنك تريد حذف هذه الخبرة العملية؟",
+        title: "حذف الشهادة",
+        description: "هل أنت متأكد أنك تريد حذف هذه الشهادة؟",
         primaryButtonText: "حذف",
         secondaryButtonText: "إلغاء",
         onPrimaryAction: () {
-          _deleteExperience(index);
+          _deleteCertification(index);
           Navigator.pop(context);
         },
         onSecondaryAction: () => Navigator.pop(context),
@@ -135,23 +117,20 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
   }
 
   void _saveToBackend() {
-    // TODO: Implement save to backend using Cubit/Bloc
+    // TODO: Implement save to backend
     CustomSnackBar.showSnackBar(
       context: context,
       title: "تم الحفظ",
-      message: "تم تحديث الخبرات العملية بنجاح",
+      message: "تم تحديث الشهادات بنجاح",
       contentType: ContentType.success,
     );
   }
 
   @override
   void dispose() {
-    _jobTitleController.dispose();
-    _companyController.dispose();
-    _locationController.dispose();
-    _startDateController.dispose();
-    _endDateController.dispose();
-    _descriptionController.dispose();
+    _nameController.dispose();
+    _issuerController.dispose();
+    _issueDateController.dispose();
     super.dispose();
   }
 
@@ -164,7 +143,7 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
           child: const CustomAppBar(
             backBtn: true,
             backgroundColor: AppColors.primaryColor,
-            title: 'الخبرات العملية',
+            title: 'الشهادات',
           ),
         ),
         body: SingleChildScrollView(
@@ -172,9 +151,9 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Experience list title
+              // Certifications list title
               Text(
-                "الخبرات العملية:",
+                "الشهادات:",
                 style: Styles.textStyle18.copyWith(
                   fontWeight: FontWeight.bold,
                   color: AppColors.primaryColor,
@@ -182,17 +161,17 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
               ),
               const SizedBox(height: 16),
 
-              // Experience list
-              if (_experiences.isEmpty) _buildEmptyState(),
-              if (_experiences.isNotEmpty)
-                ..._experiences.asMap().entries.map((entry) {
+              // Certifications list
+              if (_certifications.isEmpty) _buildEmptyState(),
+              if (_certifications.isNotEmpty)
+                ..._certifications.asMap().entries.map((entry) {
                   final index = entry.key;
-                  final exp = entry.value;
-                  return _buildExperienceItem(exp, index);
+                  final cert = entry.value;
+                  return _buildCertificationItem(cert, index);
                 }),
               const SizedBox(height: 24),
 
-              if (_editingIndex != null) _buildExperienceForm(),
+              if (_editingIndex != null) _buildCertificationForm(),
 
               const SizedBox(height: 30),
 
@@ -223,7 +202,7 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
     );
   }
 
-  Widget _buildExperienceForm() {
+  Widget _buildCertificationForm() {
     return Form(
       key: _formKey,
       child: Container(
@@ -237,7 +216,7 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              _editingIndex == -1 ? "إضافة خبرة جديدة" : "تعديل الخبرة",
+              _editingIndex == -1 ? "إضافة شهادة جديدة" : "تعديل الشهادة",
               style: Styles.textStyle16.copyWith(
                 fontWeight: FontWeight.bold,
                 color: AppColors.primaryColor,
@@ -245,74 +224,32 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
             ),
             const SizedBox(height: 16),
 
-            // Job title field
+            // Certification name field
             CustomTextField(
-              controller: _jobTitleController,
-              hintText: "المسمى الوظيفي",
-              text: "المسمى الوظيفي",
+              controller: _nameController,
+              hintText: "اسم الشهادة",
+              text: "اسم الشهادة",
               isPassword: false,
               validatorFun: (value) => Validator.validate(value, ValidationState.normal),
             ),
             const SizedBox(height: 16),
 
-            // Company field
+            // Issuer field
             CustomTextField(
-                controller: _companyController,
-                hintText: "اسم الشركة أو المؤسسة",
-                text: "الشركة",
-                isPassword: false,
-                validatorFun: (value) => Validator.validate(value, ValidationState.normal)),
-            const SizedBox(height: 16),
-
-            // Location field
-            CustomTextField(
-              controller: _locationController,
-              hintText: "موقع العمل",
-              text: "الموقع",
+              controller: _issuerController,
+              hintText: "الجهة المانحة",
+              text: "الجهة المانحة",
               isPassword: false,
               validatorFun: (value) => Validator.validate(value, ValidationState.normal),
             ),
             const SizedBox(height: 16),
 
-            // Start date
+            // Issue date
             CustomDatePicker(
               fillColor: AppColors.fillTextFiledColor,
-              controller: _startDateController,
-              text: "تاريخ البدء",
+              controller: _issueDateController,
+              text: "تاريخ الإصدار",
               validatorFun: (value) => Validator.validate(value, ValidationState.normal),
-            ),
-            const SizedBox(height: 16),
-
-            // Current job checkbox
-            CustomCheckbox(
-              value: _isCurrentJob,
-              onChanged: (value) {
-                setState(() => _isCurrentJob = value!);
-                if (value!) {
-                  _endDateController.text = 'حالياً';
-                }
-              },
-              title: "أنا أعمل في هذه الوظيفة حالياً",
-            ),
-            const SizedBox(height: 16),
-
-            // End date (only if not current job)
-            if (!_isCurrentJob)
-              CustomDatePicker(
-                fillColor: AppColors.fillTextFiledColor,
-                controller: _endDateController,
-                text: "تاريخ الانتهاء",
-                validatorFun: (value) => Validator.validate(value, ValidationState.normal),
-              ),
-            if (!_isCurrentJob) const SizedBox(height: 16),
-
-            // Description field
-            CustomTextField(
-              isPassword: false,
-              controller: _descriptionController,
-              hintText: "وصف الوظيفة والمهام",
-              text: "الوصف",
-              maxLine: 3,
             ),
             const SizedBox(height: 20),
 
@@ -337,7 +274,7 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
                 const SizedBox(width: 16),
                 Expanded(
                   child: CustomButton(
-                    onPressed: _saveExperience,
+                    onPressed: _saveCertification,
                     child: Text(
                       "حفظ",
                       style: Styles.textStyle16.copyWith(color: Colors.white),
@@ -352,7 +289,7 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
     );
   }
 
-  Widget _buildExperienceItem(Experience experience, int index) {
+  Widget _buildCertificationItem(Certification certification, int index) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
@@ -371,9 +308,9 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Job title and company
+          // Certification name and issuer
           Text(
-            "${experience.jobTitle} - ${experience.company}",
+            certification.name ?? '',
             style: Styles.textStyle16.copyWith(
               fontWeight: FontWeight.bold,
               color: AppColors.primaryColor,
@@ -381,29 +318,18 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
           ),
           const SizedBox(height: 8),
 
-          // Location
-          if (experience.location != null)
+          // Issuer
+          if (certification.issuer != null)
             Text(
-              experience.location!,
+              certification.issuer!,
               style: Styles.textStyle15.copyWith(color: AppColors.blackTextColor),
             ),
 
-          // Dates
-          Text(
-            "${experience.startDate} - ${experience.isCurrent == true ? 'حالياً' : experience.endDate}",
-            style: Styles.textStyle15,
-          ),
-
-          // Description if available
-          if (experience.description != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                experience.description!,
-                style: Styles.textStyle15.copyWith(color: AppColors.blackTextColor),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
+          // Issue date
+          if (certification.issueDate != null)
+            Text(
+              certification.issueDate!,
+              style: Styles.textStyle15,
             ),
 
           // Edit/delete buttons
@@ -438,53 +364,20 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
       ),
       child: Column(
         children: [
-          Icon(Icons.work, size: 60, color: AppColors.primaryColor.withOpacity(0.3)),
+          Icon(Icons.card_membership, size: 60, color: AppColors.primaryColor.withOpacity(0.3)),
           const SizedBox(height: 16),
           Text(
-            "لا توجد خبرات مضافة",
+            "لا توجد شهادات مضافة",
             style: Styles.textStyle16.copyWith(color: AppColors.blackTextColor),
           ),
           const SizedBox(height: 8),
           Text(
-            "انقر على زر (+) لإضافة خبرة عملية",
+            "انقر على زر (+) لإضافة شهادة جديدة",
             style: Styles.textStyle15.copyWith(color: AppColors.blackTextColor),
             textAlign: TextAlign.center,
           ),
         ],
       ),
-    );
-  }
-}
-
-class CustomCheckbox extends StatelessWidget {
-  final bool value;
-  final ValueChanged<bool?> onChanged;
-  final String title;
-
-  const CustomCheckbox({
-    super.key,
-    required this.value,
-    required this.onChanged,
-    required this.title,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      textDirection: TextDirection.rtl,
-      children: [
-        Checkbox(
-          value: value,
-          onChanged: onChanged,
-          activeColor: AppColors.primaryColor,
-        ),
-        const SizedBox(width: 8),
-        Text(
-          title,
-          style: Styles.textStyle16.copyWith(color: AppColors.blackTextColor),
-          textDirection: TextDirection.rtl,
-        ),
-      ],
     );
   }
 }
