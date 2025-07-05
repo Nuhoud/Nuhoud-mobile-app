@@ -23,6 +23,7 @@ class CustomOptField extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: OtpTextField(
                 onSubmit: onSubmit,
+                keyboardType: TextInputType.text,
                 filled: true,
                 fillColor: AppColors.fillTextFiledColor,
                 borderColor: AppColors.secondaryText,
@@ -32,8 +33,7 @@ class CustomOptField extends StatelessWidget {
                 showFieldAsBox: true,
                 numberOfFields: 5,
                 borderRadius: BorderRadius.circular(kBorderRadius),
-                textStyle:
-                    Styles.textStyle18.copyWith(color: AppColors.secondaryText),
+                textStyle: Styles.textStyle18.copyWith(color: AppColors.secondaryText),
               ),
             ),
           ),

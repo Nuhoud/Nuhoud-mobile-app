@@ -27,4 +27,21 @@ abstract class AuthRepo {
     required String identifier,
     required AuthType authType,
   });
+  Future<Either<Failure, void>> requestResetPassword({
+    required String identifier,
+    required AuthType authType,
+  });
+  Future<Either<Failure, void>> verifyResetPasswordOtp({
+    required String identifier,
+    required String otp,
+    required AuthType authType,
+  });
+  Future<Either<Failure, void>> resetPassword({
+    required String password,
+  });
+
+  Future<Either<Failure, void>> logout({
+    required String identifier,
+    required AuthType authType,
+  });
 }

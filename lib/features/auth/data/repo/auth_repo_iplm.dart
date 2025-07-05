@@ -28,8 +28,7 @@ class AuthRepoImpl implements AuthRepo {
         "isMobile": _getAuthType(authType)
       });
       if (_isSuccessResponse(response.statusCode)) {
-        final token = response.data['access_token'] as String;
-        _saveUserInfo(token);
+        _saveUserInfo(data: response.data, onlyToken: false);
         return right(null);
       }
       return left(ServerFailure(ErrorHandler.defaultMessage()));
@@ -83,8 +82,7 @@ class AuthRepoImpl implements AuthRepo {
         },
       );
       if (_isSuccessResponse(response.statusCode)) {
-        final token = response.data['access_token'] as String;
-        _saveUserInfo(token);
+        _saveUserInfo(data: response.data);
         return right(null);
       }
       return left(ServerFailure(ErrorHandler.defaultMessage()));
@@ -119,6 +117,97 @@ class AuthRepoImpl implements AuthRepo {
     }
   }
 
+  @override
+  Future<Either<Failure, void>> requestResetPassword({
+    required String identifier,
+    required AuthType authType,
+  }) async {
+    try {
+      final response = await _apiServices.post(
+        endPoint: Urls.requestResetPassword,
+        data: {
+          'identifier': identifier,
+        },
+        queryParameters: {
+          "isMobile": _getAuthType(authType),
+        },
+      );
+      if (_isSuccessResponse(response.statusCode)) {
+        return right(null);
+      }
+      return left(ServerFailure(ErrorHandler.defaultMessage()));
+    } catch (e) {
+      debugPrint('Request Reset Password error: $e');
+      return left(ErrorHandler.handle(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> resetPassword({required String password}) async {
+    try {
+      final response = await _apiServices.post(
+        endPoint: Urls.resetPassword,
+        data: {
+          'newPassword': password,
+        },
+      );
+      if (_isSuccessResponse(response.statusCode)) {
+        return right(null);
+      }
+      return left(ServerFailure(ErrorHandler.defaultMessage()));
+    } catch (e) {
+      debugPrint('Reset Password error: $e');
+      return left(ErrorHandler.handle(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> verifyResetPasswordOtp(
+      {required String identifier, required String otp, required AuthType authType}) async {
+    try {
+      final response = await _apiServices.post(
+        endPoint: Urls.verifyResetPasswordOtp,
+        data: {
+          'identifier': identifier,
+          'otp': otp,
+        },
+        queryParameters: {
+          "isMobile": _getAuthType(authType),
+        },
+      );
+      if (_isSuccessResponse(response.statusCode)) {
+        _saveUserInfo(data: response.data);
+        return right(null);
+      }
+      return left(ServerFailure(ErrorHandler.defaultMessage()));
+    } catch (e) {
+      debugPrint('Verify Reset Password OTP error: $e');
+      return left(ErrorHandler.handle(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> logout({required String identifier, required AuthType authType}) async {
+    try {
+      final response = await _apiServices.post(
+        endPoint: Urls.logout,
+        data: {
+          'identifier': identifier,
+        },
+        queryParameters: {
+          "isMobile": _getAuthType(authType),
+        },
+      );
+      if (_isSuccessResponse(response.statusCode)) {
+        return right(null);
+      }
+      return left(ServerFailure(ErrorHandler.defaultMessage()));
+    } catch (e) {
+      debugPrint('Logout error: $e');
+      return left(ErrorHandler.handle(e));
+    }
+  }
+
   bool _getAuthType(AuthType authType) {
     return authType == AuthType.phone;
   }
@@ -127,7 +216,12 @@ class AuthRepoImpl implements AuthRepo {
     return statusCode == 200 || statusCode == 201;
   }
 
-  void _saveUserInfo(String token) async {
+  void _saveUserInfo({required dynamic data, bool onlyToken = true}) async {
+    String token = data['token'] as String;
     await CacheHelper.setString(key: 'token', value: token);
+    if (!onlyToken) {
+      bool isFirstTime = data['isFirstTime'] as bool;
+      await CacheHelper.setBool(key: 'isFisrtTime', value: isFirstTime);
+    }
   }
 }

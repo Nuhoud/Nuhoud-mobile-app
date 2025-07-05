@@ -75,18 +75,19 @@ class _LoginPageBodyState extends State<LoginPageBody> {
                     cubit: getit.get<AuthCubit>(),
                     buttonText: "login".tr(context),
                     onPressed: () {
-                      GoRouter.of(context).push(Routers.kOndboardingIntroPage);
-                      // if (_loginFormKey.currentState!.validate()) {
-                      //   final emailOrPhone = selectedAuthType == AuthType.email
-                      //       ? _emailController.text
-                      //       : _phoneController.text;
-                      //   context.read<AuthCubit>().login(
-                      //       emailOrPhone: emailOrPhone,
-                      //       password: _passwordController.text,
-                      //       authType: selectedAuthType);
-                      // }
+                      if (_loginFormKey.currentState!.validate()) {
+                        final emailOrPhone =
+                            selectedAuthType == AuthType.email ? _emailController.text : _phoneController.text;
+                        context.read<AuthCubit>().login(
+                              emailOrPhone: emailOrPhone,
+                              password: _passwordController.text,
+                              authType: selectedAuthType,
+                            );
+                      }
                     },
-                    onSuccess: () {},
+                    onSuccess: () {
+                      GoRouter.of(context).push(Routers.kHomePageRoute);
+                    },
                   )
                 ],
               ),

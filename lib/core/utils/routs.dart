@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:nuhoud/features/auth/presentation/views/reset_password/request_reset_password_page.dart';
 import 'package:nuhoud/features/home/data/models/job_model.dart';
 import 'package:nuhoud/features/profile/data/models/profile_model.dart';
 import 'package:nuhoud/features/profile/presentation/views/profile_basic_info_page.dart';
@@ -28,11 +29,15 @@ import '../../features/profile/presentation/views/profile_eduction_page.dart';
 import '../../features/splash/presentation/views/splash_page.dart';
 
 abstract class Routers {
+  //auth pages
   static const String kHomePageRoute = '/homePage';
   static const String kLoginPageRoute = '/loginPage';
   static const String kRegisterPageRoute = '/registerPage';
   static const String kVerificationPageRoute = '/verificationPage';
   static const String kRestPasswordPage = '/restPasswPage';
+  static const String kRequestResetPassowrdPage = "/RequestResetPassowrdPage";
+
+  //onboarding pages
   static const String kOndboardingIntroPage = '/onboardingIntroPage';
   static const String kOndboardingUploadPage = '/onboardingUploadPage';
   static const String kOndboardingUserInfoPage = '/onboardingUserInfoPage';
@@ -43,7 +48,10 @@ abstract class Routers {
   static const String kOndboardingJobPreferencesPage = '/onboardingJobPreferencesPage';
   static const String kOndboardingUserCertificationsPage = '/onboardingUserCertificationsPage';
   static const String kOndboardingUserSkillsPage = '/onboardingUserSkillsPage';
+
   static const String kJobDetailsPage = '/jobDetailsPage';
+
+  //profile pages
   static const String kProfilePage = '/profilePage';
   static const String kProfileBasicInfoPage = '/profileBasicInfoPage';
   static const String kProfileEducationPage = '/profileEducationPage';
@@ -85,6 +93,10 @@ abstract class Routers {
       GoRoute(
         path: kRestPasswordPage,
         builder: (context, state) => const ResetPasswordPage(),
+      ),
+      GoRoute(
+        path: kRequestResetPassowrdPage,
+        builder: (context, state) => const RequestResetPasswordPage(),
       ),
       GoRoute(
         path: kOndboardingIntroPage,

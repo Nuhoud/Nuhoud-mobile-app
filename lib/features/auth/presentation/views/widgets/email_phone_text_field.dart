@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
+import 'package:nuhoud/features/auth/presentation/views/widgets/custom_phone_field.dart';
 
 import '../../../../../core/utils/enums.dart';
 import '../../../../../core/utils/validation.dart';
@@ -10,10 +11,7 @@ class EmailPhoneTextField extends StatelessWidget {
   final TextEditingController emailController;
   final TextEditingController phoneController;
   const EmailPhoneTextField(
-      {super.key,
-      required this.selectedAuthType,
-      required this.emailController,
-      required this.phoneController});
+      {super.key, required this.selectedAuthType, required this.emailController, required this.phoneController});
   @override
   Widget build(BuildContext context) {
     return selectedAuthType == AuthType.email
@@ -24,14 +22,14 @@ class EmailPhoneTextField extends StatelessWidget {
             validatorFun: (p0) => Validator.validate(p0, ValidationState.email),
             controller: emailController,
           )
-        : CustomTextField(
-            text: "phone_num".tr(context),
-            isPassword: false,
-            prefixIcon: Icons.phone_iphone_outlined,
-            keyboardType: TextInputType.phone,
-            validatorFun: (p0) =>
-                Validator.validate(p0, ValidationState.phoneNumber),
-            controller: phoneController,
+        : CustomPhoneField(
+            onChanged: (value) {
+              String number = value.number;
+              if (value.countryCode == '+963' && number.startsWith('0')) {
+                number = number.substring(1);
+              }
+              phoneController.text = "${value.countryCode}$number".replaceAll("+", "");
+            },
           );
   }
 }

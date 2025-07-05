@@ -17,3 +17,10 @@ class AuthError extends AuthState {
 }
 
 class AuthSuccess extends AuthState {}
+
+class OptSendSuccess extends AuthState {}
+
+class OptError extends AuthState {
+  final String message;
+  const OptError(this.message);
+}

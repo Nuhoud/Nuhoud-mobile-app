@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
 import 'package:nuhoud/core/utils/assets_data.dart';
@@ -62,8 +63,7 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
     return GradientContainer(
       child: Column(
         children: [
-          SafeArea(
-              child: CustomAppBar(title: "sing_up".tr(context), backBtn: true)),
+          SafeArea(child: CustomAppBar(title: "sing_up".tr(context), backBtn: true)),
           SizedBox(
             height: MediaQuery.sizeOf(context).height * 0.02,
           ),
@@ -74,8 +74,7 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
               )),
           CustomAuthContainer(
             child: ListView(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: kHorizontalPadding),
+              padding: const EdgeInsets.symmetric(horizontal: kHorizontalPadding),
               children: [
                 RegisterForm(
                   registerFormKey: _registerFormKey,
@@ -92,23 +91,22 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
                   buttonText: "confirm".tr(context),
                   onPressed: () {
                     {
-                      final emailOrPhone = selectedAuthType == AuthType.email
-                          ? emailController.text
-                          : phoneController.text;
-                      GoRouter.of(context).pushReplacement(
-                          Routers.kVerificationPageRoute,
-                          extra: VerificationArgs(
-                              selectedAuthType: selectedAuthType,
-                              emailOrPhone: emailOrPhone,
-                              isFromRegister: true));
-                      // context.read<AuthCubit>().register(
-                      //     name: nameController.text,
-                      //     emailOrPhone: emailOrPhone,
-                      //     password: passwordController.text,
-                      //     authType: selectedAuthType);
+                      final emailOrPhone =
+                          selectedAuthType == AuthType.email ? emailController.text : phoneController.text;
+                      context.read<AuthCubit>().register(
+                          name: nameController.text,
+                          emailOrPhone: emailOrPhone,
+                          password: passwordController.text,
+                          authType: selectedAuthType);
                     }
                   },
-                  onSuccess: () {},
+                  onSuccess: () {
+                    final emailOrPhone =
+                        selectedAuthType == AuthType.email ? emailController.text : phoneController.text;
+                    GoRouter.of(context).pushReplacement(Routers.kVerificationPageRoute,
+                        extra: VerificationArgs(
+                            selectedAuthType: selectedAuthType, emailOrPhone: emailOrPhone, isFromRegister: true));
+                  },
                 )
               ],
             ),

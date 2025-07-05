@@ -44,7 +44,7 @@ class _JobCarouselState extends State<JobCarousel> {
     return Column(
       children: [
         SizedBox(
-          height: response(context, 330),
+          height: response(context, 510),
           child: PageView.builder(
             controller: _pageController,
             itemCount: widget.jobs.length,
@@ -77,13 +77,9 @@ class _JobCarouselState extends State<JobCarousel> {
               margin: const EdgeInsets.symmetric(horizontal: 4),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: _currentIndex == index
-                    ? AppColors.primaryColor
-                    : Colors.transparent,
+                color: _currentIndex == index ? AppColors.primaryColor : Colors.transparent,
                 border: Border.all(
-                  color: _currentIndex == index
-                      ? AppColors.primaryColor
-                      : AppColors.borderColor,
+                  color: _currentIndex == index ? AppColors.primaryColor : AppColors.borderColor,
                   width: 1,
                 ),
               ),

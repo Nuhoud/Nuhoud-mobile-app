@@ -25,7 +25,7 @@ class SignUpForgetPassWidget extends StatelessWidget {
         CustomTextButtonWidget(
           text: "forgot_password".tr(context),
           onPressed: () {
-            GoRouter.of(context).push(Routers.kRestPasswordPage);
+            GoRouter.of(context).push(Routers.kRequestResetPassowrdPage);
           },
         ),
       ],

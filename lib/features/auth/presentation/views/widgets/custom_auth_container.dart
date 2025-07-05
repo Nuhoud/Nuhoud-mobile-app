@@ -8,7 +8,7 @@ class CustomAuthContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-        flex: 2,
+        flex: 3,
         child: Container(
             width: double.infinity,
             decoration: const BoxDecoration(
