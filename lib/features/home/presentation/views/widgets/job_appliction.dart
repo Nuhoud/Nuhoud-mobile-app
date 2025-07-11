@@ -22,15 +22,13 @@ class JobApplication extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                       child: Text(
                         "الوظائف المقترحة",
                         style: TextStyle(
                           color: AppColors.headingTextColor,
                           fontWeight: FontWeight.bold,
-                          fontSize:
-                              MediaQuery.sizeOf(context).shortestSide * 0.055,
+                          fontSize: MediaQuery.sizeOf(context).shortestSide * 0.055,
                         ),
                       ),
                     ),

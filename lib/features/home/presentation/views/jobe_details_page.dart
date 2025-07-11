@@ -39,22 +39,22 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Company Image Section
-              Container(
-                height: response(context, 150),
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(25)),
-                  image: DecorationImage(
-                    image: AssetImage(widget.job.image),
-                    fit: BoxFit.cover,
-                    colorFilter: ColorFilter.mode(
-                      AppColors.primaryColor,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                ),
-              ),
+              // Container(
+              //   height: response(context, 150),
+              //   width: double.infinity,
+              //   padding: const EdgeInsets.symmetric(horizontal: 24),
+              //   decoration: BoxDecoration(
+              //     borderRadius: const BorderRadius.all(Radius.circular(25)),
+              //     image: DecorationImage(
+              //       image: AssetImage(widget.job.image),
+              //       fit: BoxFit.cover,
+              //       colorFilter: ColorFilter.mode(
+              //         AppColors.primaryColor,
+              //         BlendMode.srcIn,
+              //       ),
+              //     ),
+              //   ),
+              // ),
               const SizedBox(height: 24),
 
               // Job Title & Company
@@ -64,7 +64,7 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.job.name,
+                      widget.job.title,
                       style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -73,7 +73,7 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      widget.job.company,
+                      widget.job.companyName,
                       style: const TextStyle(
                         fontSize: 18,
                         color: AppColors.subHeadingTextColor,
@@ -114,22 +114,22 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                     children: [
                       _DetailChip(
                         icon: Icons.location_on_outlined,
-                        text: widget.job.location,
+                        text: widget.job.jobLocation,
                       ),
                       const SizedBox(width: 10),
                       _DetailChip(
                         icon: Icons.attach_money_outlined,
-                        text: widget.job.salary,
+                        text: widget.job.salaryRange.min.toString(),
                       ),
                       const SizedBox(width: 10),
                       _DetailChip(
                         icon: Icons.workspaces_outline,
-                        text: widget.job.experience,
+                        text: widget.job.experienceLevel,
                       ),
                       const SizedBox(width: 10),
                       _DetailChip(
                         icon: Icons.work_outline,
-                        text: widget.job.type,
+                        text: widget.job.jobType,
                       ),
                     ],
                   ),
@@ -140,21 +140,21 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
               // Description Section
               _buildExpandableSection(
                 title: "وصف العمل",
-                content: widget.job.jobDescription,
+                content: widget.job.description,
                 key: 'description',
               ),
 
               // Requirements Section
               _buildExpandableSection(
                 title: "متطلبات العمل",
-                content: widget.job.jobRequirements,
+                content: widget.job.requirements.join(", "),
                 key: 'requirements',
               ),
 
               // Responsibilities Section
               _buildExpandableSection(
                 title: "المسؤوليات",
-                content: widget.job.jobResponsibilities,
+                content: widget.job.skillsRequired.join(", "),
                 key: 'responsibilities',
               ),
 

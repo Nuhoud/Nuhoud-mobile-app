@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nuhoud/core/utils/assets_data.dart';
+import 'package:nuhoud/core/utils/routs.dart';
+import 'package:nuhoud/features/home/presentation/view-model/home_cubit/home_cubit.dart';
 
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_constats.dart';
@@ -15,6 +19,7 @@ class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController searchController = TextEditingController();
     return Container(
       color: AppColors.primaryColor,
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
@@ -33,13 +38,27 @@ class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(kBorderRadius),
                     ),
-                    child: const TextField(
+                    child: TextField(
+                      controller: searchController,
+                      onSubmitted: (value) {
+                        if (value.isNotEmpty) {
+                          context.read<HomeCubit>().search = value;
+                          context.read<HomeCubit>().getJobs(loadMore: false);
+                        }
+                      },
                       decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.search_outlined,
+                        prefixIcon: IconButton(
+                            onPressed: () {
+                              if (searchController.text.isNotEmpty) {
+                                context.read<HomeCubit>().search = searchController.text;
+                                context.read<HomeCubit>().getJobs(loadMore: false);
+                              }
+                            },
+                            icon: const Icon(Icons.search_outlined),
                             color: AppColors.primaryColor),
                         hintText: 'ابحث عن وظيفة',
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(vertical: 12),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 12),
                       ),
                     ),
                   ),
@@ -61,7 +80,9 @@ class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                         height: response(context, 35),
                       ),
                       color: Colors.white,
-                      onPressed: () {},
+                      onPressed: () {
+                        GoRouter.of(context).push(Routers.kFilterPage);
+                      },
                     ),
                   ),
                 ),

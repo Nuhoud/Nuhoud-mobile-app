@@ -42,7 +42,7 @@ class _SplashPageBodyState extends State<SplashPageBody> with SingleTickerProvid
     });
 
     Timer(const Duration(seconds: 3), () {
-      GoRouter.of(context).pushReplacement(Routers.kLoginPageRoute);
+      GoRouter.of(context).pushReplacement(Routers.kHomePageRoute);
     });
   }
 
