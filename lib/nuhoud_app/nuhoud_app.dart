@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nuhoud/core/utils/services_locater.dart';
 
 import '../core/locale/locale_cubit.dart';
 import '../features/onboarding/presentation/view-model/onboarding_cuibt/onboarding_cubit.dart';
@@ -12,7 +13,7 @@ class NuhoudApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => LocaleCubit()..getSaveLanguage()),
-        BlocProvider(create: (context) => OnboardingCubit()),
+        BlocProvider(create: (context) => getit.get<OnboardingCubit>()),
       ],
       child: const NuhoudMaterialApp(),
     );

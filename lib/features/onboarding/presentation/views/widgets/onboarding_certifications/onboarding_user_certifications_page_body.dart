@@ -19,12 +19,10 @@ class OnboardingUserCertificationsPageBody extends StatefulWidget {
   const OnboardingUserCertificationsPageBody({super.key});
 
   @override
-  State<OnboardingUserCertificationsPageBody> createState() =>
-      _OnboardingUserCertificationsPageBodyState();
+  State<OnboardingUserCertificationsPageBody> createState() => _OnboardingUserCertificationsPageBodyState();
 }
 
-class _OnboardingUserCertificationsPageBodyState
-    extends State<OnboardingUserCertificationsPageBody> {
+class _OnboardingUserCertificationsPageBodyState extends State<OnboardingUserCertificationsPageBody> {
   final CertificationFormItem formItem = CertificationFormItem();
   final formKey = GlobalKey<FormState>();
   final List<CertificationsModel> addedCertifications = [];
@@ -78,7 +76,7 @@ class _OnboardingUserCertificationsPageBodyState
           title: "المتابعة بدون شهادة",
           description: "هل أنت متأكد من المتابعة بدون شهادة؟",
           onPrimaryAction: () {
-            context.read<OnboardingCubit>().addBasicInfo("certifications", []);
+            context.read<OnboardingCubit>().addUserInfo("certifications", []);
             GoRouter.of(context).push(Routers.kOndboardingUserExperiencePage);
           },
           onSecondaryAction: () {
@@ -89,7 +87,7 @@ class _OnboardingUserCertificationsPageBodyState
       );
     } else {
       final data = addedCertifications.map((e) => e.toJson()).toList();
-      context.read<OnboardingCubit>().addBasicInfo("certifications", data);
+      context.read<OnboardingCubit>().addUserInfo("certifications", data);
       GoRouter.of(context).push(Routers.kOndboardingUserExperiencePage);
     }
   }
@@ -105,16 +103,13 @@ class _OnboardingUserCertificationsPageBodyState
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
               child: Text(
                 "الشهادات العملية",
-                style:
-                    Styles.textStyle18.copyWith(color: AppColors.primaryColor),
+                style: Styles.textStyle18.copyWith(color: AppColors.primaryColor),
               ),
             ),
             CertificationFormWidget(formItem: formItem, formKey: formKey),
             if (addedCertifications.isNotEmpty) const SizedBox(height: 10),
             if (addedCertifications.isNotEmpty) ...[
-              Text("الشهادات المضافة:",
-                  style: Styles.textStyle16
-                      .copyWith(color: AppColors.primaryColor)),
+              Text("الشهادات المضافة:", style: Styles.textStyle16.copyWith(color: AppColors.primaryColor)),
               const SizedBox(height: 10),
               ...addedCertifications.asMap().entries.map((entry) {
                 final index = entry.key;
@@ -126,8 +121,7 @@ class _OnboardingUserCertificationsPageBodyState
                     title: Text(cert.name),
                     subtitle: Text("${cert.issuer} | ${cert.issueDate}"),
                     trailing: IconButton(
-                      icon: const Icon(Icons.delete_outline_outlined,
-                          color: Colors.red),
+                      icon: const Icon(Icons.delete_outline_outlined, color: Colors.red),
                       onPressed: () => removeCertification(index),
                     ),
                   ),

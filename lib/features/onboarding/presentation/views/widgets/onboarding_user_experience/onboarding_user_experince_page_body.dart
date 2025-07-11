@@ -18,12 +18,10 @@ class OnboardingUserExperiencePageBody extends StatefulWidget {
   const OnboardingUserExperiencePageBody({super.key});
 
   @override
-  State<OnboardingUserExperiencePageBody> createState() =>
-      _OnboardingUserExperiencePageBodyState();
+  State<OnboardingUserExperiencePageBody> createState() => _OnboardingUserExperiencePageBodyState();
 }
 
-class _OnboardingUserExperiencePageBodyState
-    extends State<OnboardingUserExperiencePageBody> {
+class _OnboardingUserExperiencePageBodyState extends State<OnboardingUserExperiencePageBody> {
   final ExperinceFormItem formItem = ExperinceFormItem();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final List<ExperincesModel> addedExperiences = [];
@@ -42,7 +40,7 @@ class _OnboardingUserExperiencePageBodyState
   void addExperience() {
     final jobTitle = formItem.jobTitleController.text.trim();
     final company = formItem.companyController.text.trim();
-    final jobDescription = formItem.jobDescriptionController.text.trim();
+    final jobDescription = formItem.jobDescriptionController.text;
     final jobStartDate = formItem.jobStartDateController.text.trim();
     final jobEndDate = formItem.jobEndDateController.text.trim();
     final jobLocation = formItem.jobLocationController.text.trim();
@@ -95,8 +93,7 @@ class _OnboardingUserExperiencePageBodyState
       );
     } else {
       final data = addedExperiences.map((e) => e.toJson(!e.isCurrent)).toList();
-      BlocProvider.of<OnboardingCubit>(context)
-          .addBasicInfo("experiences", data);
+      BlocProvider.of<OnboardingCubit>(context).addUserInfo("experiences", data);
       GoRouter.of(context).push(Routers.kOndboardingUserGoalsPage);
     }
   }
@@ -120,9 +117,7 @@ class _OnboardingUserExperiencePageBodyState
                   ExperinceFormWidget(formItem: formItem, formKey: _formKey),
                   if (addedExperiences.isNotEmpty) const SizedBox(height: 10),
                   if (addedExperiences.isNotEmpty) ...[
-                    Text("الخبرات المضافة:",
-                        style: Styles.textStyle16
-                            .copyWith(color: AppColors.primaryColor)),
+                    Text("الخبرات المضافة:", style: Styles.textStyle16.copyWith(color: AppColors.primaryColor)),
                     const SizedBox(height: 10),
                     ...addedExperiences.asMap().entries.map((entry) {
                       final index = entry.key;
@@ -135,8 +130,7 @@ class _OnboardingUserExperiencePageBodyState
                           subtitle: Text(
                               "${exp.jobStartDate} | ${exp.isCurrent ? "حالياً" : exp.jobEndDate} | الموقع: ${exp.jobLocation}"),
                           trailing: IconButton(
-                            icon: const Icon(Icons.delete_outline_outlined,
-                                color: Colors.red),
+                            icon: const Icon(Icons.delete_outline_outlined, color: Colors.red),
                             onPressed: () => removeExperience(index),
                           ),
                         ),

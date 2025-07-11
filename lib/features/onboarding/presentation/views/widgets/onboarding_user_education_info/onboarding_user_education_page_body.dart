@@ -19,12 +19,10 @@ class OnboardingUserEducationPageBody extends StatefulWidget {
   const OnboardingUserEducationPageBody({super.key});
 
   @override
-  State<OnboardingUserEducationPageBody> createState() =>
-      _OnboardingUserEducationPageBodyState();
+  State<OnboardingUserEducationPageBody> createState() => _OnboardingUserEducationPageBodyState();
 }
 
-class _OnboardingUserEducationPageBodyState
-    extends State<OnboardingUserEducationPageBody> {
+class _OnboardingUserEducationPageBodyState extends State<OnboardingUserEducationPageBody> {
   final EducationFormItem formItem = EducationFormItem();
   final formKey = GlobalKey<FormState>();
   final List<EducationModel> addedDegrees = [];
@@ -84,9 +82,8 @@ class _OnboardingUserEducationPageBodyState
                 title: "المتابعة بدون شهادة",
                 description: "هل أنت متأكد من المتابعة بدون شهادة؟",
                 onPrimaryAction: () {
-                  context.read<OnboardingCubit>().addBasicInfo("education", []);
-                  GoRouter.of(context)
-                      .push(Routers.kOndboardingUserCertificationsPage);
+                  context.read<OnboardingCubit>().addUserInfo("education", []);
+                  GoRouter.of(context).push(Routers.kOndboardingUserCertificationsPage);
                 },
                 onSecondaryAction: () {
                   GoRouter.of(context).pop();
@@ -95,7 +92,7 @@ class _OnboardingUserEducationPageBodyState
               ));
     } else {
       final data = addedDegrees.map((e) => e.toJson()).toList();
-      context.read<OnboardingCubit>().addBasicInfo("education", data);
+      context.read<OnboardingCubit>().addUserInfo("education", data);
       GoRouter.of(context).push(Routers.kOndboardingUserCertificationsPage);
     }
   }
@@ -119,9 +116,7 @@ class _OnboardingUserEducationPageBodyState
                   EducationFormWidget(form: formItem, formKey: formKey),
                   if (addedDegrees.isNotEmpty) const SizedBox(height: 10),
                   if (addedDegrees.isNotEmpty) ...[
-                    Text("الشهادات المضافة:",
-                        style: Styles.textStyle16
-                            .copyWith(color: AppColors.primaryColor)),
+                    Text("الشهادات المضافة:", style: Styles.textStyle16.copyWith(color: AppColors.primaryColor)),
                     const SizedBox(height: 10),
                     ...addedDegrees.asMap().entries.map((entry) {
                       final index = entry.key;
@@ -131,11 +126,9 @@ class _OnboardingUserEducationPageBodyState
                         margin: const EdgeInsets.symmetric(vertical: 6),
                         child: ListTile(
                           title: Text("${edu.degree} - ${edu.field}"),
-                          subtitle: Text(
-                              "${edu.university} | ${edu.endYear} | ${edu.gpa}%"),
+                          subtitle: Text("${edu.university} | ${edu.endYear} | ${edu.gpa}%"),
                           trailing: IconButton(
-                            icon: const Icon(Icons.delete_outline_outlined,
-                                color: Colors.red),
+                            icon: const Icon(Icons.delete_outline_outlined, color: Colors.red),
                             onPressed: () => removeDegree(index),
                           ),
                         ),

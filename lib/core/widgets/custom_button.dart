@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nuhoud/core/widgets/custom_circular_progress_indicator.dart';
 
 import '../utils/app_colors.dart';
 import '../utils/app_constats.dart';
@@ -12,12 +13,14 @@ class CustomButton extends StatelessWidget {
       this.height,
       required this.child,
       this.primaryGradinetColor,
-      this.secodanryGradinetColor});
+      this.secodanryGradinetColor,
+      this.isLoading});
 
   final void Function() onPressed;
   final double? verticalHieght;
   final double? horizontalWidth;
   final double? height;
+  final bool? isLoading;
   final Widget child;
   final Color? primaryGradinetColor;
   final Color? secodanryGradinetColor;
@@ -58,7 +61,9 @@ class CustomButton extends StatelessWidget {
           child: AnimatedScale(
             duration: const Duration(milliseconds: 200),
             scale: 0.95,
-            child: child,
+            child: isLoading == true
+                ? const SizedBox(width: 20, height: 20, child: CustomCircularProgressIndicator())
+                : child,
           ),
         ),
       ),

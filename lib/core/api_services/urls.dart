@@ -1,5 +1,5 @@
 class Urls {
-  static String baseUrl = "http://localhost:3000/";
+  static String baseUrl = "http://10.0.2.2:3000/";
 
   //auth endpoint
   static String login = "auth/login";
@@ -10,4 +10,8 @@ class Urls {
   static String verifyResetPasswordOtp = "auth/verifyResetPasswordOtp";
   static String requestResetPassword = "auth/requestResetPassword";
   static String logout = "auth/logout";
+
+  //onboarding endpoint
+  static String saveUserInfoStepOne = "profile/profileInfoStepOne";
+  static String saveUserInfoStepTwo = "profile/profileInfoStepTwo";
 }

@@ -17,24 +17,16 @@ class OnboardingJobPreferencesPageBody extends StatefulWidget {
   const OnboardingJobPreferencesPageBody({super.key});
 
   @override
-  State<OnboardingJobPreferencesPageBody> createState() =>
-      _OnboardingJobPreferencesPageBodyState();
+  State<OnboardingJobPreferencesPageBody> createState() => _OnboardingJobPreferencesPageBodyState();
 }
 
-class _OnboardingJobPreferencesPageBodyState
-    extends State<OnboardingJobPreferencesPageBody> {
+class _OnboardingJobPreferencesPageBodyState extends State<OnboardingJobPreferencesPageBody> {
   final TextEditingController _locationController = TextEditingController();
   List<String> _selectedWorkPlaceTypes = [];
   List<String> _selectedJobTypes = [];
 
   final List<String> _workPlaceTypes = ['عن بعد', 'في الشركة', 'مزيج', 'الكل'];
-  final List<String> _jobTypes = [
-    'دوام كامل',
-    'دوام جزئي',
-    'عقد',
-    'مستقل',
-    'الكل'
-  ];
+  final List<String> _jobTypes = ['دوام كامل', 'دوام جزئي', 'عقد', 'مستقل', 'الكل'];
 
   @override
   void dispose() {
@@ -52,9 +44,7 @@ class _OnboardingJobPreferencesPageBodyState
           children: [
             Center(
               child: Text("تفضيلات العمل",
-                  textAlign: TextAlign.center,
-                  style: Styles.textStyle18
-                      .copyWith(color: AppColors.primaryColor)),
+                  textAlign: TextAlign.center, style: Styles.textStyle18.copyWith(color: AppColors.primaryColor)),
             ),
 
             const SizedBox(height: 25),
@@ -73,20 +63,15 @@ class _OnboardingJobPreferencesPageBodyState
                     setState(() {
                       if (type == 'الكل') {
                         if (selected) {
-                          _selectedWorkPlaceTypes = _workPlaceTypes
-                              .where((t) => t != 'الكل')
-                              .toList();
+                          _selectedWorkPlaceTypes = _workPlaceTypes.where((t) => t != 'الكل').toList();
                         } else {
                           _selectedWorkPlaceTypes.clear();
                         }
                       } else {
                         if (selected) {
                           _selectedWorkPlaceTypes.add(type);
-                          if (_selectedWorkPlaceTypes.length ==
-                              _workPlaceTypes.length - 1) {
-                            _selectedWorkPlaceTypes = _workPlaceTypes
-                                .where((t) => t != 'الكل')
-                                .toList();
+                          if (_selectedWorkPlaceTypes.length == _workPlaceTypes.length - 1) {
+                            _selectedWorkPlaceTypes = _workPlaceTypes.where((t) => t != 'الكل').toList();
                           }
                         } else {
                           _selectedWorkPlaceTypes.remove(type);
@@ -96,9 +81,7 @@ class _OnboardingJobPreferencesPageBodyState
                   },
                   selectedColor: AppColors.primaryColor,
                   labelStyle: TextStyle(
-                    color: _selectedWorkPlaceTypes.contains(type)
-                        ? Colors.white
-                        : Colors.black,
+                    color: _selectedWorkPlaceTypes.contains(type) ? Colors.white : Colors.black,
                   ),
                 );
               }).toList(),
@@ -120,8 +103,7 @@ class _OnboardingJobPreferencesPageBodyState
                     setState(() {
                       if (type == 'الكل') {
                         if (selected) {
-                          _selectedJobTypes =
-                              _jobTypes.where((t) => t != 'الكل').toList();
+                          _selectedJobTypes = _jobTypes.where((t) => t != 'الكل').toList();
                         } else {
                           _selectedJobTypes.clear();
                         }
@@ -129,10 +111,8 @@ class _OnboardingJobPreferencesPageBodyState
                         if (selected) {
                           _selectedJobTypes.add(type);
                           // If all options except "الكل" are selected, select "الكل" too
-                          if (_selectedJobTypes.length ==
-                              _jobTypes.length - 1) {
-                            _selectedJobTypes =
-                                _jobTypes.where((t) => t != 'الكل').toList();
+                          if (_selectedJobTypes.length == _jobTypes.length - 1) {
+                            _selectedJobTypes = _jobTypes.where((t) => t != 'الكل').toList();
                           }
                         } else {
                           _selectedJobTypes.remove(type);
@@ -142,9 +122,7 @@ class _OnboardingJobPreferencesPageBodyState
                   },
                   selectedColor: AppColors.primaryColor,
                   labelStyle: TextStyle(
-                    color: _selectedJobTypes.contains(type)
-                        ? Colors.white
-                        : Colors.black,
+                    color: _selectedJobTypes.contains(type) ? Colors.white : Colors.black,
                   ),
                 );
               }).toList(),
@@ -158,37 +136,50 @@ class _OnboardingJobPreferencesPageBodyState
               controller: _locationController,
               prefixIcon: Icons.location_on_outlined,
               fillColor: Colors.white,
-              validatorFun: (val) =>
-                  Validator.validate(val, ValidationState.normal),
+              validatorFun: (val) => Validator.validate(val, ValidationState.normal),
               isPassword: false,
             ),
 
             const SizedBox(height: 10),
 
-            CustomButton(
-              child: Text("التالي",
-                  style: Styles.textStyle16.copyWith(color: Colors.white)),
-              onPressed: () {
-                if (_selectedWorkPlaceTypes.isNotEmpty &&
-                    _selectedJobTypes.isNotEmpty &&
-                    _locationController.text.isNotEmpty) {
-                  context
-                      .read<OnboardingCubit>()
-                      .addBasicInfo("jobPreferences", {
-                    "workPlaceType": _selectedWorkPlaceTypes,
-                    "jobType": _selectedJobTypes,
-                    "jobLocation": _locationController.text,
-                  });
-                  context.read<OnboardingCubit>().printData();
-                  GoRouter.of(context).push(Routers.kOndboardingUserSkillsPage);
-                } else {
+            BlocConsumer<OnboardingCubit, OnboardingState>(
+              listener: (context, state) {
+                if (state is SaveUserInfoError) {
                   CustomSnackBar.showSnackBar(
                     context: context,
                     title: "خطأ",
-                    message: "الرجاء تعبئة جميع البيانات المطلوبة",
+                    message: state.message,
                     contentType: ContentType.failure,
                   );
                 }
+                if (state is SaveUserInfoSuccess) {
+                  GoRouter.of(context).push(Routers.kOndboardingUserSkillsPage);
+                }
+              },
+              builder: (context, state) {
+                return CustomButton(
+                  onPressed: () {
+                    if (_selectedWorkPlaceTypes.isNotEmpty &&
+                        _selectedJobTypes.isNotEmpty &&
+                        _locationController.text.isNotEmpty) {
+                      context.read<OnboardingCubit>().addUserInfo("jobPreferences", {
+                        "workPlaceType": _selectedWorkPlaceTypes,
+                        "jobType": _selectedJobTypes,
+                        "jobLocation": _locationController.text,
+                      });
+                      context.read<OnboardingCubit>().saveUserInfo();
+                    } else {
+                      CustomSnackBar.showSnackBar(
+                        context: context,
+                        title: "خطأ",
+                        message: "الرجاء تعبئة جميع البيانات المطلوبة",
+                        contentType: ContentType.failure,
+                      );
+                    }
+                  },
+                  isLoading: state is SaveUserInfoLoading,
+                  child: Text("التالي", style: Styles.textStyle16.copyWith(color: Colors.white)),
+                );
               },
             ),
           ],

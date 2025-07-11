@@ -15,8 +15,7 @@ class SplashPageBody extends StatefulWidget {
   State<SplashPageBody> createState() => _SplashPageBodyState();
 }
 
-class _SplashPageBodyState extends State<SplashPageBody>
-    with SingleTickerProviderStateMixin {
+class _SplashPageBodyState extends State<SplashPageBody> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _opacityAnimation;
   late Animation<double> _scaleAnimation;
@@ -43,7 +42,7 @@ class _SplashPageBodyState extends State<SplashPageBody>
     });
 
     Timer(const Duration(seconds: 3), () {
-      GoRouter.of(context).pushReplacement(Routers.kHomePageRoute);
+      GoRouter.of(context).pushReplacement(Routers.kLoginPageRoute);
     });
   }
 

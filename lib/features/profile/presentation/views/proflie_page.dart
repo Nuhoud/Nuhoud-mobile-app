@@ -250,7 +250,7 @@ class ProfilePage extends StatelessWidget {
         primaryButtonText: "تسجيل الخروج",
         secondaryButtonText: "إلغاء",
         onPrimaryAction: () {
-          GoRouter.of(context).push(Routers.kLoginPageRoute);
+          GoRouter.of(context).push(Routers.kOndboardingIntroPage);
         },
         onSecondaryAction: () => Navigator.pop(context),
       ),

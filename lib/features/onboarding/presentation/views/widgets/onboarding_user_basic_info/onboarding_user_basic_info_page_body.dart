@@ -18,12 +18,10 @@ class OnboardingUserBasicInfoPageBody extends StatefulWidget {
   const OnboardingUserBasicInfoPageBody({super.key});
 
   @override
-  State<OnboardingUserBasicInfoPageBody> createState() =>
-      _OnboardingUserBasicInfoPageBodyState();
+  State<OnboardingUserBasicInfoPageBody> createState() => _OnboardingUserBasicInfoPageBodyState();
 }
 
-class _OnboardingUserBasicInfoPageBodyState
-    extends State<OnboardingUserBasicInfoPageBody> {
+class _OnboardingUserBasicInfoPageBodyState extends State<OnboardingUserBasicInfoPageBody> {
   String? gender;
   List<String> languages = [];
   late final TextEditingController locationController;
@@ -69,9 +67,7 @@ class _OnboardingUserBasicInfoPageBodyState
           child: Column(
             children: [
               Text("المعلومات الأساسية",
-                  style: Styles.textStyle20.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryColor)),
+                  style: Styles.textStyle20.copyWith(fontWeight: FontWeight.bold, color: AppColors.primaryColor)),
               const SizedBox(height: 20),
               GenderDropdown(
                 gender: gender,
@@ -113,17 +109,13 @@ class _OnboardingUserBasicInfoPageBodyState
                         languages.isNotEmpty) {
                       final data = {
                         "gender": gender,
-                        "dateOfBirth":
-                            parseDateFromController(dateController.text),
+                        "dateOfBirth": dateController.text.trim(),
                         "location": locationController.text.trim(),
                         "languages": languages,
                       };
-                      context
-                          .read<OnboardingCubit>()
-                          .addBasicInfo("basicInfo", data);
+                      context.read<OnboardingCubit>().addUserInfo("basicInfo", data);
 
-                      GoRouter.of(context)
-                          .push(Routers.kOndboardingUserEducationPage);
+                      GoRouter.of(context).push(Routers.kOndboardingUserEducationPage);
                     } else {
                       CustomSnackBar.showSnackBar(
                         context: context,
@@ -135,9 +127,8 @@ class _OnboardingUserBasicInfoPageBodyState
                   },
                   child: Text(
                     "التالي",
-                    style: Styles.textStyle16.copyWith(
-                        color: AppColors.fillTextFiledColor,
-                        fontWeight: FontWeight.bold),
+                    style:
+                        Styles.textStyle16.copyWith(color: AppColors.fillTextFiledColor, fontWeight: FontWeight.bold),
                   )),
             ],
           ),

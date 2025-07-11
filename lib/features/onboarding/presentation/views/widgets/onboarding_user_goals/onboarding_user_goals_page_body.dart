@@ -17,16 +17,12 @@ class OnboardingUserGoalsPageBody extends StatefulWidget {
   const OnboardingUserGoalsPageBody({super.key});
 
   @override
-  State<OnboardingUserGoalsPageBody> createState() =>
-      _OnboardingUserGoalsPageBodyState();
+  State<OnboardingUserGoalsPageBody> createState() => _OnboardingUserGoalsPageBodyState();
 }
 
-class _OnboardingUserGoalsPageBodyState
-    extends State<OnboardingUserGoalsPageBody> {
+class _OnboardingUserGoalsPageBodyState extends State<OnboardingUserGoalsPageBody> {
   late final TextEditingController goalController;
-  late final List<TextEditingController> interestControllers = [
-    TextEditingController()
-  ];
+  late final List<TextEditingController> interestControllers = [TextEditingController()];
 
   void _addInterestField() {
     setState(() {
@@ -68,8 +64,7 @@ class _OnboardingUserGoalsPageBodyState
               child: CustomTextField(
                 text: "الاهتمام ${index + 1}",
                 isPassword: false,
-                validatorFun: (val) =>
-                    Validator.validate(val, ValidationState.normal),
+                validatorFun: (val) => Validator.validate(val, ValidationState.normal),
                 hPadding: 0,
                 controller: interestControllers[index],
                 fillColor: Colors.white,
@@ -78,8 +73,7 @@ class _OnboardingUserGoalsPageBodyState
             ),
             if (index > 0)
               IconButton(
-                icon: const Icon(Icons.delete_outline_outlined,
-                    color: Colors.red),
+                icon: const Icon(Icons.delete_outline_outlined, color: Colors.red),
                 onPressed: () => _removeInterestField(index),
               ),
           ],
@@ -104,8 +98,7 @@ class _OnboardingUserGoalsPageBodyState
               text: "الهدف",
               isPassword: false,
               maxLine: 3,
-              validatorFun: (val) =>
-                  Validator.validate(val, ValidationState.normal),
+              validatorFun: (val) => Validator.validate(val, ValidationState.normal),
               hPadding: 0,
               controller: goalController,
               fillColor: Colors.white,
@@ -127,20 +120,15 @@ class _OnboardingUserGoalsPageBodyState
               ),
             ),
             CustomButton(
-              child: Text("التالي",
-                  style: Styles.textStyle16.copyWith(color: Colors.white)),
+              child: Text("التالي", style: Styles.textStyle16.copyWith(color: Colors.white)),
               onPressed: () {
-                if (goalController.text.isNotEmpty &&
-                    interestControllers.isNotEmpty) {
-                  final interests =
-                      interestControllers.map((e) => e.text).toList();
-                  BlocProvider.of<OnboardingCubit>(context)
-                      .addBasicInfo("goals", {
+                if (goalController.text.isNotEmpty && interestControllers.isNotEmpty) {
+                  final interests = interestControllers.map((e) => e.text).toList();
+                  BlocProvider.of<OnboardingCubit>(context).addUserInfo("goals", {
                     "careerGoal": goalController.text,
                     "interests": interests,
                   });
-                  GoRouter.of(context)
-                      .push(Routers.kOndboardingJobPreferencesPage);
+                  GoRouter.of(context).push(Routers.kOndboardingJobPreferencesPage);
                 } else {
                   CustomSnackBar.showSnackBar(
                     context: context,
