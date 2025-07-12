@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:nuhoud/core/api_services/urls.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import '../utils/cache_helper.dart';
@@ -7,7 +6,6 @@ import '../utils/cache_helper.dart';
 class ApiServices {
   final Dio _dio;
   ApiServices(this._dio) {
-    _dio.options.baseUrl = Urls.baseUrl;
     _dio.interceptors.add(PrettyDioLogger(
         requestHeader: true,
         requestBody: true,
@@ -28,37 +26,19 @@ class ApiServices {
     };
   }
 
-  Future<Response> get(
-      {required String endPoint, Map<String, dynamic>? queryParameters}) {
-    return _dio.get(endPoint,
-        queryParameters: queryParameters,
-        options: Options(headers: _headers()));
+  Future<Response> get({required String endPoint, Map<String, dynamic>? queryParameters}) {
+    return _dio.get(endPoint, queryParameters: queryParameters, options: Options(headers: _headers()));
   }
 
-  Future<Response> post(
-      {required String endPoint,
-      required dynamic data,
-      Map<String, dynamic>? queryParameters}) {
-    return _dio.post(endPoint,
-        queryParameters: queryParameters,
-        data: data,
-        options: Options(headers: _headers()));
+  Future<Response> post({required String endPoint, required dynamic data, Map<String, dynamic>? queryParameters}) {
+    return _dio.post(endPoint, queryParameters: queryParameters, data: data, options: Options(headers: _headers()));
   }
 
-  Future<Response> put(
-      {required String endPoint,
-      required dynamic data,
-      Map<String, dynamic>? queryParameters}) {
-    return _dio.put(endPoint,
-        queryParameters: queryParameters,
-        data: data,
-        options: Options(headers: _headers()));
+  Future<Response> put({required String endPoint, required dynamic data, Map<String, dynamic>? queryParameters}) {
+    return _dio.put(endPoint, queryParameters: queryParameters, data: data, options: Options(headers: _headers()));
   }
 
-  Future<Response> delete(
-      {required String endPoint, Map<String, dynamic>? queryParameters}) {
-    return _dio.delete(endPoint,
-        queryParameters: queryParameters,
-        options: Options(headers: _headers()));
+  Future<Response> delete({required String endPoint, Map<String, dynamic>? queryParameters}) {
+    return _dio.delete(endPoint, queryParameters: queryParameters, options: Options(headers: _headers()));
   }
 }

@@ -13,7 +13,6 @@ class HomeRepoImpl implements HomeRepo {
   HomeRepoImpl(this.apiServices);
   @override
   Future<Either<Failure, JobDataModel>> getJobs(JobParams params, {bool isSearch = false}) async {
-    Urls.isJobUrl = true;
     try {
       final response = await apiServices.get(
           endPoint: isSearch ? Urls.getSearchJobs : Urls.getJobs, queryParameters: params.toMap());
@@ -26,8 +25,6 @@ class HomeRepoImpl implements HomeRepo {
     } catch (e) {
       debugPrint("get jobs error: ${e.toString()}");
       return Left(ErrorHandler.handle(e));
-    } finally {
-      Urls.isJobUrl = false;
     }
   }
 

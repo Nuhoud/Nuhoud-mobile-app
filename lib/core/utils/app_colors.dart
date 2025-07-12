@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color primaryColor = Color(0xff643eb6);
   static const Color secodaryColor = Color(0xff9c8beb);
-  static Color highLightShimmerColor =
-      const Color(0xFFF5F5F5).withValues(alpha: 0.8);
+  static Color highLightShimmerColor = const Color(0xFFF5F5F5).withValues(alpha: 0.8);
 
   //screens background color
   static const Color backgroundColor = Color(0xFFf7ffff);
@@ -44,4 +43,6 @@ class AppColors {
 
 //border color
   static const Color borderColor = Color(0xFFDDDDDD);
+// light grey
+  static const Color lightGrey = Color(0xFFe5f5f5);
 }

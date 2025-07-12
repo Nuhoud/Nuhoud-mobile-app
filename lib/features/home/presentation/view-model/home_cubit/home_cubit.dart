@@ -56,6 +56,7 @@ class HomeCubit extends Cubit<HomeState> {
             orderBy: filterSortOrder,
           ),
           isSearch: search != null);
+      if (isClosed) return;
       result.fold((failure) {
         emit(GetJobsFailure(message: failure.message));
       }, (jobDataModel) {
@@ -82,25 +83,22 @@ class HomeCubit extends Cubit<HomeState> {
     filterSortOrder = null;
     search = null;
     filterSkills.clear();
-    emit(FilterUpdated());
+    emit(HomeInitial());
   }
 
   void addSkill() {
     filterSkills.add('');
-    emit(FilterUpdated());
   }
 
   void removeSkill(int index) {
     if (index >= 0 && index < filterSkills.length) {
       filterSkills.removeAt(index);
-      emit(FilterUpdated());
     }
   }
 
   void updateSkill(int index, String value) {
     if (index >= 0 && index < filterSkills.length) {
       filterSkills[index] = value;
-      emit(FilterUpdated());
     }
   }
 }

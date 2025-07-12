@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:nuhoud/core/api_services/urls.dart';
 import 'package:nuhoud/core/shared/cubits/refresh_cubit/refresh_cubit.dart';
 import 'package:nuhoud/features/home/data/repos/home_repo.dart';
 import 'package:nuhoud/features/home/data/repos/home_repo_iplm.dart';
@@ -16,28 +17,35 @@ import '../api_services/api_services.dart';
 final getit = GetIt.instance;
 
 void setupLocatorServices() {
-  //Dio
+  // Dio for main server
   getit.registerLazySingleton<Dio>(() => Dio(BaseOptions(
+      baseUrl: Urls.mainBaseUrl,
       connectTimeout: const Duration(minutes: 1),
       sendTimeout: const Duration(minutes: 1),
       receiveTimeout: const Duration(minutes: 1))));
-  // API Services
-  getit.registerLazySingleton<ApiServices>(() => ApiServices(getit()));
-  //Refresh Cubit
-  getit.registerLazySingleton<RefreshCubit>(() => RefreshCubit());
 
-  //Auth Repo
+  // Dio for jobs server
+  getit.registerLazySingleton<Dio>(
+      () => Dio(BaseOptions(
+          baseUrl: Urls.jobsBaseUrl,
+          connectTimeout: const Duration(minutes: 1),
+          sendTimeout: const Duration(minutes: 1),
+          receiveTimeout: const Duration(minutes: 1))),
+      instanceName: 'jobsDio');
+
+  // ApiServices
+  getit.registerLazySingleton<ApiServices>(() => ApiServices(getit<Dio>()));
+  getit.registerLazySingleton<ApiServices>(() => ApiServices(getit<Dio>(instanceName: 'jobsDio')),
+      instanceName: 'jobsApiServices');
+
+  //repos
   getit.registerLazySingleton<AuthRepo>(() => AuthRepoImpl(getit.get<ApiServices>()));
-  // Auth Cubit (factory registration)
-  getit.registerFactory<AuthCubit>(() => AuthCubit(getit.get<AuthRepo>()));
-
-  //Onboarding Repo
   getit.registerLazySingleton<OnboardingRepo>(() => OnboardingRepoImpl(apiServices: getit.get<ApiServices>()));
-  //Onboarding Cubit (factory registration)
-  getit.registerFactory<OnboardingCubit>(() => OnboardingCubit(onboardingRepo: getit.get<OnboardingRepo>()));
+  getit.registerLazySingleton<HomeRepo>(() => HomeRepoImpl(getit.get<ApiServices>(instanceName: 'jobsApiServices')));
 
-  //Home Repo
-  getit.registerLazySingleton<HomeRepo>(() => HomeRepoImpl(getit.get<ApiServices>()));
-  //Home Cubit (factory registration)
+  //cubits
+  getit.registerLazySingleton<RefreshCubit>(() => RefreshCubit());
+  getit.registerFactory<AuthCubit>(() => AuthCubit(getit.get<AuthRepo>()));
+  getit.registerFactory<OnboardingCubit>(() => OnboardingCubit(onboardingRepo: getit.get<OnboardingRepo>()));
   getit.registerFactory<HomeCubit>(() => HomeCubit(getit.get<HomeRepo>()));
 }

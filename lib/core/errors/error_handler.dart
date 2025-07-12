@@ -36,8 +36,7 @@ class ErrorHandler {
     "validationError": "بيانات غير صالحة",
     "error_tryAgain": "هنالك خطأ ما الرجاء المحاولة لاحقاً",
   };
-  static Map<String, String> get _messages =>
-      lang == 'en' ? _enMessages : _arMessages;
+  static Map<String, String> get _messages => lang == 'en' ? _enMessages : _arMessages;
   static String defaultMessage() => _messages['error_tryAgain']!;
 
   static Failure handle(dynamic error) {
@@ -80,18 +79,15 @@ class ErrorHandler {
       case 400:
       case 401:
       case 403:
-        return ServerFailure(
-            response.data['message'] ?? _messages['error_tryAgain']!);
+        return ServerFailure(response.data['error'] ?? _messages['error_tryAgain']!);
       case 404:
         return ServerFailure(_messages['notFound']!);
       case 422:
         return ValidationFailure(_handleValidationErrors(response.data));
       case 500:
-        return ServerFailure(
-            response.data['message'] ?? _messages['internalServerError']!);
+        return ServerFailure(response.data['message'] ?? _messages['internalServerError']!);
       case 503:
-        return ServerFailure(
-            response.data['message'] ?? _messages['serverError']!);
+        return ServerFailure(response.data['message'] ?? _messages['serverError']!);
       default:
         return ServerFailure(_messages['serverError']!);
     }

@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nuhoud/features/auth/presentation/views/reset_password/request_reset_password_page.dart';
 import 'package:nuhoud/features/home/data/models/job_model.dart';
 import 'package:nuhoud/features/home/presentation/views/filter_page.dart';
+import 'package:nuhoud/features/home/presentation/views/widgets/filter_result_screen.dart';
 import 'package:nuhoud/features/profile/data/models/profile_model.dart';
 import 'package:nuhoud/features/profile/presentation/views/profile_basic_info_page.dart';
 import 'package:nuhoud/features/profile/presentation/views/profile_certifications_page.dart';
@@ -62,6 +63,7 @@ abstract class Routers {
   static const String kProfileJobPreferencesPage = '/profileJobPreferencesPage';
   static const String kProfileSkillsPage = '/profileSkillsPage';
   static const String kFilterPage = '/filterPage';
+  static const String kFilterResultScreen = '/filterResultScreen';
 
   static final router = GoRouter(
     routes: [
@@ -189,6 +191,10 @@ abstract class Routers {
       GoRoute(
         path: kFilterPage,
         builder: (context, state) => const FilterPage(),
+      ),
+      GoRoute(
+        path: kFilterResultScreen,
+        builder: (context, state) => const FilterResultScreen(),
       ),
     ],
   );

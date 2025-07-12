@@ -9,8 +9,6 @@ sealed class HomeState extends Equatable {
 
 final class HomeInitial extends HomeState {}
 
-final class FilterUpdated extends HomeState {}
-
 final class GetJobsLoading extends HomeState {
   final bool isFirstLoading;
   const GetJobsLoading({required this.isFirstLoading});
