@@ -21,4 +21,5 @@ class Urls {
   //job endpoint
   static String getJobs = "job-offers";
   static String getSearchJobs = "job-offers/search";
+  static String submitOffer = "application/submit";
 }

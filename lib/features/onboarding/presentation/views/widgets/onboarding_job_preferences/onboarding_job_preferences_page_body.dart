@@ -165,7 +165,7 @@ class _OnboardingJobPreferencesPageBodyState extends State<OnboardingJobPreferen
                       context.read<OnboardingCubit>().addUserInfo("jobPreferences", {
                         "workPlaceType": _selectedWorkPlaceTypes,
                         "jobType": _selectedJobTypes,
-                        "jobLocation": _locationController.text,
+                        "jobLocation": _locationController.text
                       });
                       context.read<OnboardingCubit>().saveUserInfo();
                     } else {

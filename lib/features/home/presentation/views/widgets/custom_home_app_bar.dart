@@ -40,20 +40,10 @@ class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                     child: TextField(
                       controller: searchController,
-                      onSubmitted: (value) {
-                        if (value.isNotEmpty) {
-                          context.read<HomeCubit>().search = value;
-                          context.read<HomeCubit>().getJobs(loadMore: false);
-                        }
-                      },
+                      onSubmitted: (value) => _startSearsh(context, searchController),
                       decoration: InputDecoration(
                         prefixIcon: IconButton(
-                            onPressed: () {
-                              if (searchController.text.isNotEmpty) {
-                                context.read<HomeCubit>().search = searchController.text;
-                                context.read<HomeCubit>().getJobs(loadMore: false);
-                              }
-                            },
+                            onPressed: () => _startSearsh(context, searchController),
                             icon: const Icon(Icons.search_outlined),
                             color: AppColors.primaryColor),
                         hintText: 'ابحث عن وظيفة',
@@ -92,5 +82,13 @@ class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
     );
+  }
+
+  void _startSearsh(BuildContext context, TextEditingController searchController) {
+    if (searchController.text.isEmpty) return;
+    context.read<HomeCubit>().search = searchController.text;
+    context.read<HomeCubit>().getJobs(loadMore: false);
+    searchController.clear();
+    context.read<HomeCubit>().search = null;
   }
 }

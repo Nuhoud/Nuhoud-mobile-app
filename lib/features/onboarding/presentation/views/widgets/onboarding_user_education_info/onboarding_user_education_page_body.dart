@@ -45,13 +45,8 @@ class _OnboardingUserEducationPageBodyState extends State<OnboardingUserEducatio
       final endYear = int.tryParse(formItem.endYearController.text.trim());
       final gpa = double.tryParse(formItem.gpaController.text.trim());
       setState(() {
-        addedDegrees.add(EducationModel(
-          degree: degree,
-          field: field,
-          university: university,
-          endYear: endYear,
-          gpa: gpa,
-        ));
+        addedDegrees
+            .add(EducationModel(degree: degree, field: field, university: university, endYear: endYear, gpa: gpa));
         formItem.clear();
       });
     } else {

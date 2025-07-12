@@ -13,11 +13,6 @@ class EducationModel {
     required this.gpa,
   });
 
-  Map<String, dynamic> toJson() => {
-        "degree": degree,
-        "field": field,
-        "university": university,
-        "endYear": endYear,
-        "GPA": gpa,
-      };
+  Map<String, dynamic> toJson() =>
+      {"degree": degree, "field": field, "university": university, "endYear": endYear, "GPA": gpa};
 }

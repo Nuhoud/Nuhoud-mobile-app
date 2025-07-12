@@ -33,11 +33,11 @@ class ExperincesModel {
     return {
       'jobTitle': jobTitle,
       'company': company,
-      'location': jobDescription,
       'startDate': jobStartDate,
-      if (withEndDate) 'endDate': jobEndDate,
-      'description': jobLocation,
+      'location': jobLocation,
       'isCurrent': isCurrent,
+      if (withEndDate) 'endDate': jobEndDate,
+      'description': jobDescription
     };
   }
 }

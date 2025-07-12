@@ -12,6 +12,27 @@ class JobApplicationItem extends StatelessWidget {
     required this.job,
   });
   final JobModel job;
+
+  String _getDeadlineText(int days) {
+    if (days == 0) return "ينتهي اليوم";
+    if (days == 1) return "يوم واحد";
+    return "$days أيام";
+  }
+
+  // Helper function to get deadline background color
+  Color _getDeadlineBackgroundColor(int days) {
+    if (days == 0) return Colors.red[100]!;
+    if (days <= 2) return Colors.orange[100]!;
+    return AppColors.primaryColor.withOpacity(0.1);
+  }
+
+  // Helper function to get deadline text color
+  Color _getDeadlineTextColor(int days) {
+    if (days == 0) return Colors.red[800]!;
+    if (days <= 2) return Colors.orange[800]!;
+    return AppColors.subHeadingTextColor;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -35,12 +56,14 @@ class JobApplicationItem extends StatelessWidget {
                   color: AppColors.primaryColor,
                 ),
                 const SizedBox(width: 15),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(job.title, style: headingTextStyle),
-                    Text(job.companyName, style: subHeadingTextStyle),
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(job.title, style: headingTextStyle),
+                      Text(job.companyName, style: subHeadingTextStyle),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -73,9 +96,41 @@ class JobApplicationItem extends StatelessWidget {
                     style: subHeadingTextStyle,
                   ),
                 ),
-                Text(job.salaryRange.min.toString(), style: subHeadingTextStyle),
+                Text("${job.salaryRange.min}-${job.salaryRange.max} ${getCurrencyArabic(job.salaryRange.currency)}",
+                    style: subHeadingTextStyle),
               ],
             ),
+            if (job.daysRemaining >= 0) ...[
+              const SizedBox(height: 8),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: _getDeadlineBackgroundColor(job.daysRemaining),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.access_time,
+                        size: 16,
+                        color: _getDeadlineTextColor(job.daysRemaining),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        _getDeadlineText(job.daysRemaining),
+                        style: subHeadingTextStyle.copyWith(
+                          color: _getDeadlineTextColor(job.daysRemaining),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ],
         ),
       ),

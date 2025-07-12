@@ -2,8 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:nuhoud/core/api_services/urls.dart';
 import 'package:nuhoud/core/shared/cubits/refresh_cubit/refresh_cubit.dart';
+import 'package:nuhoud/features/home/data/repos/appliction_repo.dart';
+import 'package:nuhoud/features/home/data/repos/appliction_repo_iplm.dart';
 import 'package:nuhoud/features/home/data/repos/home_repo.dart';
 import 'package:nuhoud/features/home/data/repos/home_repo_iplm.dart';
+import 'package:nuhoud/features/home/presentation/view-model/appliction_cubit/appliction_cubit.dart';
 import 'package:nuhoud/features/home/presentation/view-model/home_cubit/home_cubit.dart';
 import 'package:nuhoud/features/onboarding/data/repo/onboarding_repo.dart';
 import 'package:nuhoud/features/onboarding/data/repo/onboarding_rpeo_iplm.dart';
@@ -42,10 +45,12 @@ void setupLocatorServices() {
   getit.registerLazySingleton<AuthRepo>(() => AuthRepoImpl(getit.get<ApiServices>()));
   getit.registerLazySingleton<OnboardingRepo>(() => OnboardingRepoImpl(apiServices: getit.get<ApiServices>()));
   getit.registerLazySingleton<HomeRepo>(() => HomeRepoImpl(getit.get<ApiServices>(instanceName: 'jobsApiServices')));
+  getit.registerLazySingleton<ApplicationRepo>(() => ApplicationRepoImpl(getit.get<ApiServices>()));
 
   //cubits
   getit.registerLazySingleton<RefreshCubit>(() => RefreshCubit());
   getit.registerFactory<AuthCubit>(() => AuthCubit(getit.get<AuthRepo>()));
   getit.registerFactory<OnboardingCubit>(() => OnboardingCubit(onboardingRepo: getit.get<OnboardingRepo>()));
   getit.registerFactory<HomeCubit>(() => HomeCubit(getit.get<HomeRepo>()));
+  getit.registerFactory<ApplictionCubit>(() => ApplictionCubit(getit.get<ApplicationRepo>()));
 }

@@ -111,7 +111,7 @@ class _OnboardingUserBasicInfoPageBodyState extends State<OnboardingUserBasicInf
                         "gender": gender,
                         "dateOfBirth": dateController.text.trim(),
                         "location": locationController.text.trim(),
-                        "languages": languages,
+                        "languages": languages
                       };
                       context.read<OnboardingCubit>().addUserInfo("basicInfo", data);
 

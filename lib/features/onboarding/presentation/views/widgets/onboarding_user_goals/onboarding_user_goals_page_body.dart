@@ -124,10 +124,8 @@ class _OnboardingUserGoalsPageBodyState extends State<OnboardingUserGoalsPageBod
               onPressed: () {
                 if (goalController.text.isNotEmpty && interestControllers.isNotEmpty) {
                   final interests = interestControllers.map((e) => e.text).toList();
-                  BlocProvider.of<OnboardingCubit>(context).addUserInfo("goals", {
-                    "careerGoal": goalController.text,
-                    "interests": interests,
-                  });
+                  BlocProvider.of<OnboardingCubit>(context)
+                      .addUserInfo("goals", {"careerGoal": goalController.text, "interests": interests});
                   GoRouter.of(context).push(Routers.kOndboardingJobPreferencesPage);
                 } else {
                   CustomSnackBar.showSnackBar(
