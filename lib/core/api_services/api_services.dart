@@ -41,4 +41,8 @@ class ApiServices {
   Future<Response> delete({required String endPoint, Map<String, dynamic>? queryParameters}) {
     return _dio.delete(endPoint, queryParameters: queryParameters, options: Options(headers: _headers()));
   }
+
+  Future<Response> patch({required String endPoint, required dynamic data, Map<String, dynamic>? queryParameters}) {
+    return _dio.patch(endPoint, queryParameters: queryParameters, data: data, options: Options(headers: _headers()));
+  }
 }

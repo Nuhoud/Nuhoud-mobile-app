@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nuhoud/features/home/data/models/job_model.dart';
 import 'package:nuhoud/features/home/presentation/views/widgets/job_appliction_item.dart';
+import 'package:nuhoud/features/profile/presentation/views/proflie_page.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class SkeletonizerHelper {
@@ -37,6 +38,21 @@ class SkeletonizerHelper {
         },
         separatorBuilder: (context, index) => const SizedBox(height: 16),
       ),
+    );
+  }
+
+  static Widget profileSkeletonizer() {
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      itemCount: 7,
+      itemBuilder: (context, index) {
+        return ProfileItem(
+          title: "random text",
+          icon: Icons.person,
+          onTap: () {},
+        );
+      },
+      separatorBuilder: (context, index) => const SizedBox(height: 16),
     );
   }
 }

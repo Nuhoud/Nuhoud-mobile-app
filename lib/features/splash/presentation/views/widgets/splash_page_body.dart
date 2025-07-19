@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nuhoud/core/utils/cache_helper.dart';
 
 import '../../../../../core/utils/assets_data.dart';
 import '../../../../../core/utils/routs.dart';
@@ -42,7 +43,8 @@ class _SplashPageBodyState extends State<SplashPageBody> with SingleTickerProvid
     });
 
     Timer(const Duration(seconds: 3), () {
-      GoRouter.of(context).pushReplacement(Routers.kHomePageRoute);
+      //_checkUser();
+      GoRouter.of(context).pushReplacement(Routers.kLoginPageRoute);
     });
   }
 
@@ -79,4 +81,13 @@ class _SplashPageBodyState extends State<SplashPageBody> with SingleTickerProvid
       ),
     );
   }
+
+  // _checkUser() {
+  //   final token = CacheHelper.getData(key: "token");
+  //   if (token == null) {
+  //     GoRouter.of(context).pushReplacement(Routers.kLoginPageRoute);
+  //   } else {
+  //     GoRouter.of(context).pushReplacement(Routers.kHomePageRoute);
+  //   }
+  // }
 }

@@ -23,7 +23,7 @@ class JobApplicationItem extends StatelessWidget {
   Color _getDeadlineBackgroundColor(int days) {
     if (days == 0) return Colors.red[100]!;
     if (days <= 2) return Colors.orange[100]!;
-    return AppColors.primaryColor.withOpacity(0.1);
+    return const Color.fromARGB(255, 162, 250, 167).withValues(alpha: 0.8);
   }
 
   // Helper function to get deadline text color

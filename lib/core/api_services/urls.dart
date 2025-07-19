@@ -22,4 +22,7 @@ class Urls {
   static String getJobs = "job-offers";
   static String getSearchJobs = "job-offers/search";
   static String submitOffer = "application/submit";
+
+  //profile endpoint
+  static String getProfile = "/profile/my-profile";
 }

@@ -16,7 +16,7 @@ class OnboardingRepoImpl implements OnboardingRepo {
         endPoint: Urls.saveUserInfoStepOne,
         data: data,
       );
-      if (_isSuccessResponse(response)) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return const Right(null);
       }
       return Left(ServerFailure(ErrorHandler.defaultMessage()));
@@ -24,9 +24,5 @@ class OnboardingRepoImpl implements OnboardingRepo {
       debugPrint('Save user info error: $e');
       return Left(ErrorHandler.handle(e));
     }
-  }
-
-  bool _isSuccessResponse(dynamic response) {
-    return (response.statusCode == 200 || response.statusCode == 201) && response.data['success'] as bool;
   }
 }

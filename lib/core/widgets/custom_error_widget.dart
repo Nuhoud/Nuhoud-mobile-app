@@ -53,7 +53,7 @@ class CustomErrorWidget extends StatelessWidget {
               ),
             ),
             icon: const Icon(Icons.refresh_rounded),
-            label: Text(retryButtonText ?? "".tr(context),
+            label: Text(retryButtonText ?? "اعادة المحاولة",
                 style: Styles.textStyle16.copyWith(fontWeight: FontWeight.w600, color: Colors.white)),
           ),
         ],
