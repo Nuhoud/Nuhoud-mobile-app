@@ -18,3 +18,13 @@ final class SaveUserInfoError extends OnboardingState {
 
   const SaveUserInfoError({required this.message});
 }
+
+final class SaveUserSkillsLoading extends OnboardingState {}
+
+final class SaveUserSkillsSuccess extends OnboardingState {}
+
+final class SaveUserSkillsError extends OnboardingState {
+  final String message;
+
+  const SaveUserSkillsError({required this.message});
+}

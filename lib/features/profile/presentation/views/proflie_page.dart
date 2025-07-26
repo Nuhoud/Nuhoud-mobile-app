@@ -179,7 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
         primaryButtonText: "تسجيل الخروج",
         secondaryButtonText: "إلغاء",
         onPrimaryAction: () {
-          GoRouter.of(context).pushReplacement(Routers.kLoginPageRoute);
+          GoRouter.of(context).pushReplacement(Routers.kOndboardingUserSkillsPage);
         },
         onSecondaryAction: () => Navigator.pop(context),
       ),
