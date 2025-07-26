@@ -4,19 +4,20 @@ import 'package:nuhoud/core/api_services/api_services.dart';
 import 'package:nuhoud/core/api_services/urls.dart';
 import 'package:nuhoud/core/errors/error_handler.dart';
 import 'package:nuhoud/core/errors/failuer.dart';
-import 'package:nuhoud/features/user_plan/data/models/user_plan_model.dart';
-import 'package:nuhoud/features/user_plan/data/repos/user_plan_repo.dart';
+import 'package:nuhoud/core/shared/repos/skills_repo/skills_repo.dart';
+import 'package:nuhoud/features/profile/data/models/profile_model.dart';
 
-class UserPlanRepoImpl implements UserPlanRepo {
+class SkillsRepoImpl implements SkillsRepo {
   final ApiServices apiServices;
-  UserPlanRepoImpl(this.apiServices);
+
+  SkillsRepoImpl(this.apiServices);
   @override
-  Future<Either<Failure, UserPlanModel>> getUserPlan() async {
+  Future<Either<Failure, Skills>> getSkills() async {
     try {
-      final response = await apiServices.get(endPoint: Urls.getUserPlan);
+      final response = await apiServices.get(endPoint: Urls.getSkills);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final userPlanModel = UserPlanModel.fromJson(response.data['data']);
-        return Right(userPlanModel);
+        final skills = Skills.fromJson(response.data['data']);
+        return Right(skills);
       }
       return Left(ServerFailure(ErrorHandler.defaultMessage()));
     } catch (e) {

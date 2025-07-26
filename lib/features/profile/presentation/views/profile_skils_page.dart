@@ -1,11 +1,15 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nuhoud/core/shared/cubits/skills_cubit/skills_cubit.dart';
 import 'package:nuhoud/core/utils/app_colors.dart';
+import 'package:nuhoud/core/utils/services_locater.dart';
 import 'package:nuhoud/core/utils/styles.dart';
 import 'package:nuhoud/core/widgets/custom_app_bar.dart';
 import 'package:nuhoud/core/widgets/custom_button.dart';
+import 'package:nuhoud/core/widgets/custom_circular_progress_indicator.dart';
 import 'package:nuhoud/core/widgets/custom_drop_dpown_button.dart';
+import 'package:nuhoud/core/widgets/custom_error_widget.dart';
 import 'package:nuhoud/core/widgets/custom_snak_bar.dart';
 import 'package:nuhoud/features/profile/data/models/profile_model.dart';
 import 'package:nuhoud/features/profile/presentation/view-model/cubit/profile_cubit.dart';
@@ -24,31 +28,20 @@ class ProfileSkillsPage extends StatefulWidget {
 
 class _ProfileSkillsPageState extends State<ProfileSkillsPage> {
   late Skills _skills;
-  Skills allSkills = Skills(
-    softSkills: [
-      TechnicalSkill(name: "مهارات1", level: 1),
-      TechnicalSkill(name: "مهارات 2", level: 2),
-    ],
-    technicalSkills: [
-      TechnicalSkill(name: "مهارات1", level: 1),
-      TechnicalSkill(name: "مهارات 2", level: 2),
-    ],
-  );
-
-  List<TechnicalSkill> _availableSoftSkills = [];
-  List<TechnicalSkill> _availableTechnicalSkills = [];
-
+  ProfileModel? profile;
   List<TechnicalSkill> _selectedSoftSkills = [];
   List<TechnicalSkill> _selectedTechnicalSkills = [];
 
   @override
   void initState() {
     super.initState();
+    // profile = context.read<ProfileCubit>().profile;
+    // if (profile != null) {
+    //   context.read<OnboardingCubit>().saveUserInfo();
+    // }
     _skills = Skills.fromJson(widget.initialSkills.toJson());
     _selectedSoftSkills = List.from(_skills.softSkills ?? []);
     _selectedTechnicalSkills = List.from(_skills.technicalSkills ?? []);
-    _availableSoftSkills = List.from(allSkills.softSkills ?? []);
-    _availableTechnicalSkills = List.from(allSkills.technicalSkills ?? []);
   }
 
   void _removeSoftSkill(TechnicalSkill skill) {
@@ -82,22 +75,44 @@ class _ProfileSkillsPageState extends State<ProfileSkillsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(60),
-          child: CustomAppBar(
-            backBtn: true,
-            backgroundColor: AppColors.primaryColor,
-            title: 'المهارات',
+    return BlocProvider(
+      create: (context) => getit<SkillsCubit>()..getSkills(),
+      child: SafeArea(
+        child: Scaffold(
+          appBar: const PreferredSize(
+            preferredSize: Size.fromHeight(60),
+            child: CustomAppBar(
+              backBtn: true,
+              backgroundColor: AppColors.primaryColor,
+              title: 'المهارات',
+            ),
+          ),
+          body: BlocBuilder<SkillsCubit, SkillsState>(
+            builder: (context, state) {
+              if (state is SkillsLoading) {
+                return const CustomCircularProgressIndicator(
+                  color: AppColors.primaryColor,
+                );
+              }
+              if (state is SkillsError) {
+                return CustomErrorWidget(
+                    errorMessage: state.message,
+                    onRetry: () {
+                      context.read<SkillsCubit>().getSkills();
+                    });
+              }
+              if (state is SkillsSuccess) {
+                return SingleChildScrollView(padding: const EdgeInsets.all(20), child: _buildEditView(state.skills));
+              }
+              return const SizedBox();
+            },
           ),
         ),
-        body: SingleChildScrollView(padding: const EdgeInsets.all(20), child: _buildEditView()),
       ),
     );
   }
 
-  Widget _buildEditView() {
+  Widget _buildEditView(Skills skills) {
     return Column(
       children: [
         // Soft Skills Section
@@ -108,7 +123,7 @@ class _ProfileSkillsPageState extends State<ProfileSkillsPage> {
         const SizedBox(height: 10),
         CustomDropdownButton<TechnicalSkill>(
           text: "المهارات الشخصية",
-          items: _availableSoftSkills,
+          items: skills.softSkills!.map((skill) => skill).toList(),
           itemToString: (skill) => skill.name ?? '',
           value: null,
           onChanged: (newValue) {
@@ -143,7 +158,7 @@ class _ProfileSkillsPageState extends State<ProfileSkillsPage> {
         const SizedBox(height: 10),
         CustomDropdownButton<TechnicalSkill>(
           text: "اختر مهارة تقنية",
-          items: _availableTechnicalSkills,
+          items: skills.technicalSkills!.map((skill) => skill).toList(),
           itemToString: (skill) => skill.name ?? '',
           value: null, // Always reset after selection
           onChanged: (newValue) {

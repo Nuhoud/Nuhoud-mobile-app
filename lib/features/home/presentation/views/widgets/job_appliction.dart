@@ -41,6 +41,7 @@ class _JobApplicationState extends State<JobApplication> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           return CustomScrollView(
+            physics: const BouncingScrollPhysics(),
             controller: _scrollController,
             slivers: [
               // Title Section

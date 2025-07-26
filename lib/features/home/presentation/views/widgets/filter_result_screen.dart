@@ -77,16 +77,20 @@ class _FilterResultScreenState extends State<FilterResultScreen> {
             return const Center(child: EmptyWidget());
           }
           return CustomScrollView(
+            physics: const BouncingScrollPhysics(),
             controller: _scrollController,
             slivers: [
-              SliverList.separated(
-                itemBuilder: (context, index) {
-                  return JobApplicationItem(job: homeCubit.jobs[index]);
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(height: 16);
-                },
-                itemCount: homeCubit.jobs.length,
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                sliver: SliverList.separated(
+                  itemBuilder: (context, index) {
+                    return JobApplicationItem(job: homeCubit.jobs[index]);
+                  },
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(height: 16);
+                  },
+                  itemCount: homeCubit.jobs.length,
+                ),
               ),
               if (!homeCubit.hasReachedMax && homeCubit.isFetchingJobs)
                 const SliverToBoxAdapter(

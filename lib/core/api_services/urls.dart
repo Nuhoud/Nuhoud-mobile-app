@@ -24,8 +24,11 @@ class Urls {
   static String submitOffer = "application/submit";
 
   //profile endpoint
-  static String getProfile = "/profile/my-profile";
+  static String getProfile = "profile/my-profile";
 
   //user plan endpoint
-  static String getUserPlan = "/user-plan";
+  static String getUserPlan = "aiservice/devplan";
+
+  //skills endpoint
+  static String getSkills = "/aiservice/skills";
 }

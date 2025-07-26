@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:nuhoud/core/utils/cache_helper.dart';
 import 'package:nuhoud/core/widgets/custom_app_bar.dart';
 import 'package:nuhoud/core/widgets/custom_error_widget.dart';
 import 'package:nuhoud/core/widgets/skeletonizer_helper.dart';
@@ -179,6 +180,7 @@ class _ProfilePageState extends State<ProfilePage> {
         primaryButtonText: "تسجيل الخروج",
         secondaryButtonText: "إلغاء",
         onPrimaryAction: () {
+          //CacheHelper.removeData(key: "token");
           GoRouter.of(context).pushReplacement(Routers.kOndboardingUserSkillsPage);
         },
         onSecondaryAction: () => Navigator.pop(context),

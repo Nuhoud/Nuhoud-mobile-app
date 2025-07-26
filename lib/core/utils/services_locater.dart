@@ -2,6 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:nuhoud/core/api_services/urls.dart';
 import 'package:nuhoud/core/shared/cubits/refresh_cubit/refresh_cubit.dart';
+import 'package:nuhoud/core/shared/cubits/skills_cubit/skills_cubit.dart';
+import 'package:nuhoud/core/shared/repos/skills_repo/skills_repo.dart';
+import 'package:nuhoud/core/shared/repos/skills_repo/skills_repo_iplm.dart';
 import 'package:nuhoud/features/home/data/repos/appliction_repo.dart';
 import 'package:nuhoud/features/home/data/repos/appliction_repo_iplm.dart';
 import 'package:nuhoud/features/home/data/repos/home_repo.dart';
@@ -54,6 +57,7 @@ void setupLocatorServices() {
   getit.registerLazySingleton<ApplicationRepo>(() => ApplicationRepoImpl(getit.get<ApiServices>()));
   getit.registerLazySingleton<ProfileRepo>(() => ProfileRepoImpl(getit.get<ApiServices>()));
   getit.registerLazySingleton<UserPlanRepo>(() => UserPlanRepoImpl(getit.get<ApiServices>()));
+  getit.registerLazySingleton<SkillsRepo>(() => SkillsRepoImpl(getit.get<ApiServices>()));
 
   //cubits
   getit.registerLazySingleton<RefreshCubit>(() => RefreshCubit());
@@ -63,4 +67,5 @@ void setupLocatorServices() {
   getit.registerFactory<ApplictionCubit>(() => ApplictionCubit(getit.get<ApplicationRepo>()));
   getit.registerFactory<ProfileCubit>(() => ProfileCubit(getit.get<ProfileRepo>()));
   getit.registerFactory<UserPlanCubit>(() => UserPlanCubit(getit.get<UserPlanRepo>()));
+  getit.registerFactory<SkillsCubit>(() => SkillsCubit(getit.get<SkillsRepo>()));
 }

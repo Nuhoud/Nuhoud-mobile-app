@@ -14,7 +14,8 @@ import '../../../../../../core/widgets/custom_drop_dpown_button.dart';
 import '../onboarding_container.dart';
 
 class OnboardingUserSkillsPageBody extends StatefulWidget {
-  const OnboardingUserSkillsPageBody({super.key});
+  final Skills skills;
+  const OnboardingUserSkillsPageBody({super.key, required this.skills});
 
   @override
   State<OnboardingUserSkillsPageBody> createState() => _OnboardingUserSkillsPageBodyState();
@@ -23,23 +24,8 @@ class OnboardingUserSkillsPageBody extends StatefulWidget {
 class _OnboardingUserSkillsPageBodyState extends State<OnboardingUserSkillsPageBody> {
   final List<String> _selectedSoftSkills = [];
   final List<String> _selectedHardSkills = [];
-
   @override
   Widget build(BuildContext context) {
-    final List<String> softSkills = [
-      "التعاون",
-      "التعلم",
-      "التحدي",
-      "التنظيم",
-      "التفكير الإبداعي",
-    ];
-    final List<String> hardSkills = [
-      "التعاون",
-      "التعلم",
-      "التحدي",
-      "التنظيم",
-      "التفكير الإبداعي",
-    ];
     return OnBoardingContainer(
       withFixedHight: false,
       child: SingleChildScrollView(
@@ -49,7 +35,7 @@ class _OnboardingUserSkillsPageBodyState extends State<OnboardingUserSkillsPageB
             const SizedBox(height: 10),
             CustomDropdownButton(
               text: "المهارات الشخصية",
-              items: softSkills,
+              items: widget.skills.softSkills!.map((e) => e.name!).toList(),
               value: _selectedSoftSkills.isNotEmpty ? _selectedSoftSkills.first : null,
               onChanged: (value) {
                 if (value != null && !_selectedSoftSkills.contains(value)) {
@@ -78,7 +64,7 @@ class _OnboardingUserSkillsPageBodyState extends State<OnboardingUserSkillsPageB
             const SizedBox(height: 10),
             CustomDropdownButton(
               text: "المهارات التقنية",
-              items: hardSkills,
+              items: widget.skills.technicalSkills!.map((e) => e.name!).toList(),
               value: _selectedHardSkills.isNotEmpty ? _selectedHardSkills.first : null,
               onChanged: (value) {
                 if (value != null && !_selectedHardSkills.contains(value)) {
@@ -144,8 +130,14 @@ class _OnboardingUserSkillsPageBodyState extends State<OnboardingUserSkillsPageB
   void _saveUserSkills() {
     if (_selectedSoftSkills.isNotEmpty || _selectedHardSkills.isNotEmpty) {
       final skills = Skills(
-        softSkills: _selectedSoftSkills.map((e) => TechnicalSkill(name: e)).toList(),
-        technicalSkills: _selectedHardSkills.map((e) => TechnicalSkill(name: e)).toList(),
+        softSkills: _selectedSoftSkills
+            .map((e) =>
+                TechnicalSkill(name: e, level: widget.skills.softSkills!.firstWhere((skill) => skill.name == e).level))
+            .toList(),
+        technicalSkills: _selectedHardSkills
+            .map((e) => TechnicalSkill(
+                name: e, level: widget.skills.technicalSkills!.firstWhere((skill) => skill.name == e).level))
+            .toList(),
       );
       context.read<OnboardingCubit>().saveUserSkills(skills);
     }
