@@ -14,6 +14,9 @@ import 'package:nuhoud/features/onboarding/presentation/view-model/onboarding_cu
 import 'package:nuhoud/features/profile/data/repos/profile_repo.dart';
 import 'package:nuhoud/features/profile/data/repos/profile_repo_iplm.dart';
 import 'package:nuhoud/features/profile/presentation/view-model/cubit/profile_cubit.dart';
+import 'package:nuhoud/features/user_plan/data/repos/user_plan_repo.dart';
+import 'package:nuhoud/features/user_plan/data/repos/user_plan_repo_iplm.dart';
+import 'package:nuhoud/features/user_plan/presentation/viwe-model/cubit/user_plan_cubit.dart';
 
 import '../../features/auth/data/repo/auth_repo.dart';
 import '../../features/auth/data/repo/auth_repo_iplm.dart';
@@ -50,6 +53,7 @@ void setupLocatorServices() {
   getit.registerLazySingleton<HomeRepo>(() => HomeRepoImpl(getit.get<ApiServices>(instanceName: 'jobsApiServices')));
   getit.registerLazySingleton<ApplicationRepo>(() => ApplicationRepoImpl(getit.get<ApiServices>()));
   getit.registerLazySingleton<ProfileRepo>(() => ProfileRepoImpl(getit.get<ApiServices>()));
+  getit.registerLazySingleton<UserPlanRepo>(() => UserPlanRepoImpl(getit.get<ApiServices>()));
 
   //cubits
   getit.registerLazySingleton<RefreshCubit>(() => RefreshCubit());
@@ -58,4 +62,5 @@ void setupLocatorServices() {
   getit.registerFactory<HomeCubit>(() => HomeCubit(getit.get<HomeRepo>()));
   getit.registerFactory<ApplictionCubit>(() => ApplictionCubit(getit.get<ApplicationRepo>()));
   getit.registerFactory<ProfileCubit>(() => ProfileCubit(getit.get<ProfileRepo>()));
+  getit.registerFactory<UserPlanCubit>(() => UserPlanCubit(getit.get<UserPlanRepo>()));
 }

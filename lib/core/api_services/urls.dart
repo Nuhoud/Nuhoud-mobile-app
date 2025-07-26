@@ -25,4 +25,7 @@ class Urls {
 
   //profile endpoint
   static String getProfile = "/profile/my-profile";
+
+  //user plan endpoint
+  static String getUserPlan = "/user-plan";
 }
