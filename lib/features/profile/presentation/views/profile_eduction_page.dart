@@ -1,9 +1,10 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nuhoud/core/utils/enums.dart';
 import 'package:nuhoud/core/utils/validation.dart';
 import 'package:nuhoud/features/profile/data/models/profile_model.dart';
-
+import 'package:nuhoud/features/profile/presentation/view-model/cubit/profile_cubit.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/styles.dart';
 import '../../../../../../core/widgets/custom_dialog.dart';
@@ -85,7 +86,7 @@ class _ProfileEducationPageState extends State<ProfileEducationPage> {
       );
 
       setState(() {
-        if (_editingIndex != null) {
+        if (_editingIndex != null && _editingIndex! >= 0) {
           _educations[_editingIndex!] = education;
         } else {
           _educations.add(education);
@@ -125,13 +126,20 @@ class _ProfileEducationPageState extends State<ProfileEducationPage> {
   }
 
   void _saveToBackend() {
-    // TODO: Implement save to backend using Cubit/Bloc
-    CustomSnackBar.showSnackBar(
-      context: context,
-      title: "تم الحفظ",
-      message: "تم تحديث المؤهلات التعليمية بنجاح",
-      contentType: ContentType.success,
-    );
+    final cubit = context.read<ProfileCubit>();
+    final currentProfile = cubit.profile;
+    if (currentProfile != null) {
+      final updatedProfile = ProfileModel(
+        basicInfo: currentProfile.basicInfo,
+        education: _educations, // 🔁 Updated education list
+        experiences: currentProfile.experiences,
+        certifications: currentProfile.certifications,
+        jobPreferences: currentProfile.jobPreferences,
+        goals: currentProfile.goals,
+        skills: currentProfile.skills,
+      );
+      cubit.updateProfile(updatedProfile); // 🔄 Calls Cubit's update method
+    }
   }
 
   @override
@@ -170,7 +178,6 @@ class _ProfileEducationPageState extends State<ProfileEducationPage> {
                 ),
               ),
               const SizedBox(height: 16),
-
               // Education list
               if (_educations.isEmpty) _buildEmptyState(),
               if (_educations.isNotEmpty)
@@ -182,16 +189,39 @@ class _ProfileEducationPageState extends State<ProfileEducationPage> {
               const SizedBox(height: 24),
               // Education form (visible when adding/editing)
               if (_editingIndex != null) _buildEducationForm(),
-
               const SizedBox(height: 30),
-
               // Save all button
-              CustomButton(
-                onPressed: _saveToBackend,
-                child: Text(
-                  "حفظ التغييرات",
-                  style: Styles.textStyle16.copyWith(color: Colors.white),
-                ),
+              BlocConsumer<ProfileCubit, ProfileState>(
+                listener: (context, state) {
+                  if (state is UpdateProfileSuccess) {
+                    Navigator.pop(context);
+                    context.read<ProfileCubit>().getProfile();
+                    CustomSnackBar.showSnackBar(
+                      context: context,
+                      title: "تم الحفظ",
+                      message: "تم تحديث المؤهلات التعليمية بنجاح",
+                      contentType: ContentType.success,
+                    );
+                  }
+                  if (state is UpdateProfileError) {
+                    CustomSnackBar.showSnackBar(
+                      context: context,
+                      title: "خطأ",
+                      message: state.message,
+                      contentType: ContentType.failure,
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  return CustomButton(
+                    isLoading: state is UpdateProfileLoading,
+                    onPressed: _saveToBackend,
+                    child: Text(
+                      "حفظ التغييرات",
+                      style: Styles.textStyle16.copyWith(color: Colors.white),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -233,7 +263,6 @@ class _ProfileEducationPageState extends State<ProfileEducationPage> {
               ),
             ),
             const SizedBox(height: 16),
-
             // Degree field
             CustomTextField(
               controller: _degreeController,
@@ -243,7 +272,6 @@ class _ProfileEducationPageState extends State<ProfileEducationPage> {
               validatorFun: (text) => Validator.validate(text, ValidationState.normal),
             ),
             const SizedBox(height: 16),
-
             // Field of study
             CustomTextField(
               controller: _fieldController,
@@ -253,7 +281,6 @@ class _ProfileEducationPageState extends State<ProfileEducationPage> {
               validatorFun: (text) => Validator.validate(text, ValidationState.normal),
             ),
             const SizedBox(height: 16),
-
             // University
             CustomTextField(
               controller: _universityController,
@@ -263,7 +290,6 @@ class _ProfileEducationPageState extends State<ProfileEducationPage> {
               validatorFun: (text) => Validator.validate(text, ValidationState.normal),
             ),
             const SizedBox(height: 16),
-
             Row(
               children: [
                 // End Year
@@ -287,7 +313,6 @@ class _ProfileEducationPageState extends State<ProfileEducationPage> {
                   ),
                 ),
                 const SizedBox(width: 16),
-
                 // GPA
                 Expanded(
                   child: CustomTextField(
@@ -309,7 +334,6 @@ class _ProfileEducationPageState extends State<ProfileEducationPage> {
               ],
             ),
             const SizedBox(height: 20),
-
             // Form buttons
             Row(
               children: [
@@ -374,13 +398,11 @@ class _ProfileEducationPageState extends State<ProfileEducationPage> {
             ),
           ),
           const SizedBox(height: 8),
-
           // University and year
           Text(
             "${education.university} | ${education.endYear}",
             style: Styles.textStyle15,
           ),
-
           // GPA if available
           if (education.gpa != null)
             Padding(
@@ -390,7 +412,6 @@ class _ProfileEducationPageState extends State<ProfileEducationPage> {
                 style: Styles.textStyle15,
               ),
             ),
-
           // Edit/delete buttons
           Align(
             alignment: Alignment.centerLeft,

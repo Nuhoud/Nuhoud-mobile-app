@@ -25,6 +25,29 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
     'requirements': false,
     'responsibilities': false,
   };
+  String _getDeadlineText(int days) {
+    if (days == 0) return "ينتهي اليوم";
+    if (days == 1) return "يوم واحد";
+    return "$days أيام";
+  }
+
+  Color _getDeadlineBackgroundColor(int days) {
+    if (days == 0) return Colors.red[100]!;
+    if (days <= 2) return Colors.orange[100]!;
+    return const Color.fromARGB(255, 162, 250, 167);
+  }
+
+  Color _getDeadlineTextColor(int days) {
+    if (days == 0) return Colors.red[800]!;
+    if (days <= 2) return Colors.orange[800]!;
+    return AppColors.subHeadingTextColor;
+  }
+
+  String getCurrencyArabic(String currency) {
+    if (currency == "USD") return "دولار";
+    if (currency == "SAR") return "ريال";
+    return currency;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,25 +66,7 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Company Image Section
-                // Container(
-                //   height: response(context, 150),
-                //   width: double.infinity,
-                //   padding: const EdgeInsets.symmetric(horizontal: 24),
-                //   decoration: BoxDecoration(
-                //     borderRadius: const BorderRadius.all(Radius.circular(25)),
-                //     image: DecorationImage(
-                //       image: AssetImage(widget.job.image),
-                //       fit: BoxFit.cover,
-                //       colorFilter: ColorFilter.mode(
-                //         AppColors.primaryColor,
-                //         BlendMode.srcIn,
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 const SizedBox(height: 24),
-
                 // Job Title & Company
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -122,9 +127,11 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                           text: widget.job.jobLocation,
                         ),
                         const SizedBox(width: 10),
+                        // Updated salary chip
                         _DetailChip(
                           icon: Icons.attach_money_outlined,
-                          text: widget.job.salaryRange.min.toString(),
+                          text:
+                              "${widget.job.salaryRange.min}-${widget.job.salaryRange.max} ${getCurrencyArabic(widget.job.salaryRange.currency)}",
                         ),
                         const SizedBox(width: 10),
                         _DetailChip(
@@ -133,13 +140,47 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                         ),
                         const SizedBox(width: 10),
                         _DetailChip(
-                          icon: Icons.work_outline,
+                          icon: Icons.business_center_outlined,
                           text: widget.job.jobType,
                         ),
                       ],
                     ),
                   ),
                 ),
+
+                // Deadline chip
+                if (widget.job.daysRemaining >= 0) ...[
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: _getDeadlineBackgroundColor(widget.job.daysRemaining),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.access_time,
+                            size: 18,
+                            color: _getDeadlineTextColor(widget.job.daysRemaining),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            _getDeadlineText(widget.job.daysRemaining),
+                            style: TextStyle(
+                              color: _getDeadlineTextColor(widget.job.daysRemaining),
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 32),
 
                 // Description Section

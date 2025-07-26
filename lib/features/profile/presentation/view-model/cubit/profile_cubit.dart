@@ -8,11 +8,14 @@ part 'profile_state.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   final ProfileRepo profileRepo;
   ProfileCubit(this.profileRepo) : super(ProfileInitial());
-
+  ProfileModel? profile;
   void getProfile() async {
     emit(GetProfileLoading());
     final result = await profileRepo.getProfile();
-    result.fold((failure) => emit(GetProfileError(failure.message)), (profile) => emit(GetProfileSuccess(profile)));
+    result.fold((failure) => emit(GetProfileError(failure.message)), (profile) {
+      this.profile = profile;
+      emit(GetProfileSuccess(profile));
+    });
   }
 
   void updateProfile(ProfileModel profile) async {

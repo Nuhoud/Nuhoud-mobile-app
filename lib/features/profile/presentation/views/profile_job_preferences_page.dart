@@ -1,5 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nuhoud/core/utils/app_colors.dart';
 import 'package:nuhoud/core/utils/enums.dart';
 import 'package:nuhoud/core/utils/styles.dart';
@@ -10,6 +11,7 @@ import 'package:nuhoud/core/widgets/custom_snak_bar.dart';
 import 'package:nuhoud/core/widgets/custom_text_filed.dart';
 
 import 'package:nuhoud/features/profile/data/models/profile_model.dart';
+import 'package:nuhoud/features/profile/presentation/view-model/cubit/profile_cubit.dart';
 
 class ProfileJobPreferencesPage extends StatefulWidget {
   final JobPreferences initialPreferences;
@@ -64,13 +66,11 @@ class _ProfileJobPreferencesPageState extends State<ProfileJobPreferencesPage> {
   }
 
   void _saveToBackend() {
-    // TODO: Implement save to backend
-    CustomSnackBar.showSnackBar(
-      context: context,
-      title: "تم الحفظ",
-      message: "تم تحديث تفضيلات العمل بنجاح",
-      contentType: ContentType.success,
-    );
+    if (_selectedWorkPlaceTypes.isNotEmpty && _selectedJobTypes.isNotEmpty && _locationController.text.isNotEmpty) {
+      final profile = context.read<ProfileCubit>().profile;
+      profile!.jobPreferences = _preferences;
+      context.read<ProfileCubit>().updateProfile(profile);
+    }
   }
 
   void _updateWorkPlaceTypeSelection(String type, bool selected) {
@@ -129,17 +129,15 @@ class _ProfileJobPreferencesPageState extends State<ProfileJobPreferencesPage> {
             title: 'تفضيلات العمل',
           ),
         ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: _isEditing ? _buildEditForm() : _buildDisplayView(),
-        ),
-        floatingActionButton: _isEditing
-            ? null
-            : FloatingActionButton(
-                onPressed: _startEditing,
-                backgroundColor: AppColors.primaryColor,
-                child: const Icon(Icons.edit, color: Colors.white),
-              ),
+        body: SingleChildScrollView(padding: const EdgeInsets.all(20), child: _buildEditForm() //: _buildDisplayView(),
+            ),
+        // floatingActionButton: _isEditing
+        //     ? null
+        //     : FloatingActionButton(
+        //         onPressed: _startEditing,
+        //         backgroundColor: AppColors.primaryColor,
+        //         child: const Icon(Icons.edit, color: Colors.white),
+        //       ),
       ),
     );
   }
@@ -292,15 +290,40 @@ class _ProfileJobPreferencesPageState extends State<ProfileJobPreferencesPage> {
         ),
         const SizedBox(height: 30),
         // Save to backend button
-        CustomButton(
-          onPressed: () {
-            _savePreferences();
-            _saveToBackend();
+        BlocConsumer<ProfileCubit, ProfileState>(
+          listener: (context, state) {
+            if (state is UpdateProfileError) {
+              CustomSnackBar.showSnackBar(
+                context: context,
+                title: "خطأ",
+                message: state.message,
+                contentType: ContentType.failure,
+              );
+            }
+            if (state is UpdateProfileSuccess) {
+              Navigator.pop(context);
+              context.read<ProfileCubit>().getProfile();
+              CustomSnackBar.showSnackBar(
+                context: context,
+                title: "تم الحفظ",
+                message: "تم تحديث تفضيلات العمل بنجاح",
+                contentType: ContentType.success,
+              );
+            }
           },
-          child: Text(
-            "حفظ التغييرات",
-            style: Styles.textStyle16.copyWith(color: Colors.white),
-          ),
+          builder: (context, state) {
+            return CustomButton(
+              isLoading: state is UpdateProfileLoading,
+              onPressed: () {
+                _savePreferences();
+                _saveToBackend();
+              },
+              child: Text(
+                "حفظ التغييرات",
+                style: Styles.textStyle16.copyWith(color: Colors.white),
+              ),
+            );
+          },
         ),
       ],
     );

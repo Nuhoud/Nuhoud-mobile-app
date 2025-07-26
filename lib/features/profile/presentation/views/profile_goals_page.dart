@@ -1,5 +1,6 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nuhoud/core/utils/app_colors.dart';
 import 'package:nuhoud/core/utils/enums.dart';
 import 'package:nuhoud/core/utils/styles.dart';
@@ -9,6 +10,7 @@ import 'package:nuhoud/core/widgets/custom_app_bar.dart';
 import 'package:nuhoud/core/widgets/custom_button.dart';
 import 'package:nuhoud/core/widgets/custom_text_filed.dart';
 import 'package:nuhoud/features/profile/data/models/profile_model.dart';
+import 'package:nuhoud/features/profile/presentation/view-model/cubit/profile_cubit.dart';
 
 class ProfileGoalsPage extends StatefulWidget {
   final Goals initialGoals;
@@ -75,13 +77,11 @@ class _ProfileGoalsPageState extends State<ProfileGoalsPage> {
   }
 
   void _saveToBackend() {
-    // TODO: Implement save to backend
-    CustomSnackBar.showSnackBar(
-      context: context,
-      title: "تم الحفظ",
-      message: "تم تحديث الأهداف والاهتمامات بنجاح",
-      contentType: ContentType.success,
-    );
+    if (_goals.careerGoal!.isNotEmpty && _goals.interests!.isNotEmpty) {
+      final profile = context.read<ProfileCubit>().profile;
+      profile!.goals = _goals;
+      context.read<ProfileCubit>().updateProfile(profile);
+    }
   }
 
   @override
@@ -162,15 +162,40 @@ class _ProfileGoalsPageState extends State<ProfileGoalsPage> {
           const SizedBox(height: 30),
 
           // Save to backend button
-          CustomButton(
-            onPressed: () {
-              _saveGoals();
-              _saveToBackend();
+          BlocConsumer<ProfileCubit, ProfileState>(
+            listener: (context, state) {
+              if (state is UpdateProfileSuccess) {
+                Navigator.pop(context);
+                context.read<ProfileCubit>().getProfile();
+                CustomSnackBar.showSnackBar(
+                  context: context,
+                  title: "تم الحفظ",
+                  message: "تم تحديث الأهداف والاهتمامات بنجاح",
+                  contentType: ContentType.success,
+                );
+              }
+              if (state is UpdateProfileError) {
+                CustomSnackBar.showSnackBar(
+                  context: context,
+                  title: "خطأ",
+                  message: state.message,
+                  contentType: ContentType.failure,
+                );
+              }
             },
-            child: Text(
-              "حفظ التغييرات",
-              style: Styles.textStyle16.copyWith(color: Colors.white),
-            ),
+            builder: (context, state) {
+              return CustomButton(
+                isLoading: state is UpdateProfileLoading,
+                onPressed: () {
+                  _saveGoals();
+                  _saveToBackend();
+                },
+                child: Text(
+                  "حفظ التغييرات",
+                  style: Styles.textStyle16.copyWith(color: Colors.white),
+                ),
+              );
+            },
           ),
         ],
       ),

@@ -18,7 +18,7 @@ class ProfileModel {
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
-        basicInfo: json["basicInfo"] == null ? null : BasicInfo.fromJson(json["basicInfo"]),
+        basicInfo: json["basic"] == null ? null : BasicInfo.fromJson(json["basic"]),
         education:
             json["education"] == null ? [] : List<Education>.from(json["education"]!.map((x) => Education.fromJson(x))),
         experiences: json["experiences"] == null

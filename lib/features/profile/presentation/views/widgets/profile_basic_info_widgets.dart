@@ -120,11 +120,13 @@ class LanguagesSection extends StatelessWidget {
 
 class SaveProfileButton extends StatelessWidget {
   final VoidCallback onPressed;
-  const SaveProfileButton({super.key, required this.onPressed});
+  final bool isLoading;
+  const SaveProfileButton({super.key, required this.onPressed, required this.isLoading});
 
   @override
   Widget build(BuildContext context) {
     return CustomButton(
+      isLoading: isLoading,
       onPressed: onPressed,
       child: Text("حفظ", style: Styles.textStyle16.copyWith(color: Colors.white)),
     );

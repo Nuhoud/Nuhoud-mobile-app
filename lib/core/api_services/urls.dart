@@ -1,8 +1,8 @@
 class Urls {
   static const String mainPort = "3000";
   static const String jobPort = "4000";
-  static const String mainBaseUrl = "http://10.0.2.2:$mainPort/";
-  static const String jobsBaseUrl = "http://10.0.2.2:$jobPort/";
+  static const String mainBaseUrl = "http://192.168.1.10:$mainPort/";
+  static const String jobsBaseUrl = "http://192.168.1.10:$jobPort/";
 
   //auth endpoint
   static String login = "auth/login";

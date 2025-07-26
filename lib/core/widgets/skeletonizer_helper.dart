@@ -42,17 +42,20 @@ class SkeletonizerHelper {
   }
 
   static Widget profileSkeletonizer() {
-    return ListView.separated(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-      itemCount: 7,
-      itemBuilder: (context, index) {
-        return ProfileItem(
-          title: "random text",
-          icon: Icons.person,
-          onTap: () {},
-        );
-      },
-      separatorBuilder: (context, index) => const SizedBox(height: 16),
-    );
+    return Skeletonizer(
+        enabled: true,
+        justifyMultiLineText: true,
+        child: ListView.separated(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          itemCount: 7,
+          itemBuilder: (context, index) {
+            return ProfileItem(
+              title: "random text",
+              icon: Icons.person,
+              onTap: () {},
+            );
+          },
+          separatorBuilder: (context, index) => const SizedBox(height: 16),
+        ));
   }
 }

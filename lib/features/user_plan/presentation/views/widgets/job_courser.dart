@@ -44,7 +44,7 @@ class _JobCarouselState extends State<JobCarousel> {
     return Column(
       children: [
         SizedBox(
-          height: response(context, 510),
+          height: response(context, 330),
           child: PageView.builder(
             controller: _pageController,
             itemCount: widget.jobs.length,

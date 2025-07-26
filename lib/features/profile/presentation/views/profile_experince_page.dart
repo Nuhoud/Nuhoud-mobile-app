@@ -1,8 +1,10 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nuhoud/core/utils/enums.dart';
 import 'package:nuhoud/core/utils/validation.dart';
-
+import 'package:nuhoud/features/profile/data/models/profile_model.dart';
+import 'package:nuhoud/features/profile/presentation/view-model/cubit/profile_cubit.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/styles.dart';
 import '../../../../../../core/widgets/custom_dialog.dart';
@@ -10,10 +12,8 @@ import '../../../../../../core/widgets/custom_snak_bar.dart';
 import '../../../../core/utils/size_app.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../../../../core/widgets/custom_button.dart';
-
 import '../../../../core/widgets/custom_text_filed.dart';
 import '../../../onboarding/presentation/views/widgets/custom_date_picker.dart';
-import '../../data/models/profile_model.dart';
 
 class ProfileExperiencePage extends StatefulWidget {
   final List<Experience> initialExperiences;
@@ -95,7 +95,7 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
       );
 
       setState(() {
-        if (_editingIndex != null) {
+        if (_editingIndex != null && _editingIndex! >= 0) {
           _experiences[_editingIndex!] = experience;
         } else {
           _experiences.add(experience);
@@ -135,13 +135,20 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
   }
 
   void _saveToBackend() {
-    // TODO: Implement save to backend using Cubit/Bloc
-    CustomSnackBar.showSnackBar(
-      context: context,
-      title: "تم الحفظ",
-      message: "تم تحديث الخبرات العملية بنجاح",
-      contentType: ContentType.success,
-    );
+    final cubit = context.read<ProfileCubit>();
+    final currentProfile = cubit.profile;
+    if (currentProfile != null) {
+      final updatedProfile = ProfileModel(
+        basicInfo: currentProfile.basicInfo,
+        education: currentProfile.education,
+        experiences: _experiences, // 🔁 Updated experiences list
+        certifications: currentProfile.certifications,
+        jobPreferences: currentProfile.jobPreferences,
+        goals: currentProfile.goals,
+        skills: currentProfile.skills,
+      );
+      cubit.updateProfile(updatedProfile); // 🔄 Calls Cubit's update method
+    }
   }
 
   @override
@@ -181,7 +188,6 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
                 ),
               ),
               const SizedBox(height: 16),
-
               // Experience list
               if (_experiences.isEmpty) _buildEmptyState(),
               if (_experiences.isNotEmpty)
@@ -191,18 +197,40 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
                   return _buildExperienceItem(exp, index);
                 }),
               const SizedBox(height: 24),
-
               if (_editingIndex != null) _buildExperienceForm(),
-
               const SizedBox(height: 30),
-
               // Save all button
-              CustomButton(
-                onPressed: _saveToBackend,
-                child: Text(
-                  "حفظ التغييرات",
-                  style: Styles.textStyle16.copyWith(color: Colors.white),
-                ),
+              BlocConsumer<ProfileCubit, ProfileState>(
+                listener: (context, state) {
+                  if (state is UpdateProfileSuccess) {
+                    Navigator.pop(context);
+                    context.read<ProfileCubit>().getProfile();
+                    CustomSnackBar.showSnackBar(
+                      context: context,
+                      title: "تم الحفظ",
+                      message: "تم تحديث الخبرات العملية بنجاح",
+                      contentType: ContentType.success,
+                    );
+                  }
+                  if (state is UpdateProfileError) {
+                    CustomSnackBar.showSnackBar(
+                      context: context,
+                      title: "خطأ",
+                      message: state.message,
+                      contentType: ContentType.failure,
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  return CustomButton(
+                    isLoading: state is UpdateProfileLoading,
+                    onPressed: _saveToBackend,
+                    child: Text(
+                      "حفظ التغييرات",
+                      style: Styles.textStyle16.copyWith(color: Colors.white),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -244,7 +272,6 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
               ),
             ),
             const SizedBox(height: 16),
-
             // Job title field
             CustomTextField(
               controller: _jobTitleController,
@@ -254,7 +281,6 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
               validatorFun: (value) => Validator.validate(value, ValidationState.normal),
             ),
             const SizedBox(height: 16),
-
             // Company field
             CustomTextField(
                 controller: _companyController,
@@ -263,7 +289,6 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
                 isPassword: false,
                 validatorFun: (value) => Validator.validate(value, ValidationState.normal)),
             const SizedBox(height: 16),
-
             // Location field
             CustomTextField(
               controller: _locationController,
@@ -273,7 +298,6 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
               validatorFun: (value) => Validator.validate(value, ValidationState.normal),
             ),
             const SizedBox(height: 16),
-
             // Start date
             CustomDatePicker(
               fillColor: AppColors.fillTextFiledColor,
@@ -282,7 +306,6 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
               validatorFun: (value) => Validator.validate(value, ValidationState.normal),
             ),
             const SizedBox(height: 16),
-
             // Current job checkbox
             CustomCheckbox(
               value: _isCurrentJob,
@@ -295,7 +318,6 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
               title: "أنا أعمل في هذه الوظيفة حالياً",
             ),
             const SizedBox(height: 16),
-
             // End date (only if not current job)
             if (!_isCurrentJob)
               CustomDatePicker(
@@ -305,7 +327,6 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
                 validatorFun: (value) => Validator.validate(value, ValidationState.normal),
               ),
             if (!_isCurrentJob) const SizedBox(height: 16),
-
             // Description field
             CustomTextField(
               isPassword: false,
@@ -315,7 +336,6 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
               maxLine: 3,
             ),
             const SizedBox(height: 20),
-
             // Form buttons
             Row(
               children: [
@@ -380,20 +400,17 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
             ),
           ),
           const SizedBox(height: 8),
-
           // Location
           if (experience.location != null)
             Text(
               experience.location!,
               style: Styles.textStyle15.copyWith(color: AppColors.blackTextColor),
             ),
-
           // Dates
           Text(
             "${experience.startDate} - ${experience.isCurrent == true ? 'حالياً' : experience.endDate}",
             style: Styles.textStyle15,
           ),
-
           // Description if available
           if (experience.description != null)
             Padding(
@@ -405,7 +422,6 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-
           // Edit/delete buttons
           Align(
             alignment: Alignment.centerLeft,
@@ -460,7 +476,6 @@ class CustomCheckbox extends StatelessWidget {
   final bool value;
   final ValueChanged<bool?> onChanged;
   final String title;
-
   const CustomCheckbox({
     super.key,
     required this.value,

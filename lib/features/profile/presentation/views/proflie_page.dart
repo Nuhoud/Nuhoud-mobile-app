@@ -92,7 +92,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Profile items list
                       ListView.separated(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -105,93 +104,36 @@ class _ProfilePageState extends State<ProfilePage> {
                             title: item['title'],
                             icon: item['icon'],
                             onTap: () {
-                              // Handle item tap
                               if (item['title'] == 'تسجيل الخروج') {
                                 _showLogoutConfirmation(context);
                               }
                               if (item['title'] == 'التعليم') {
-                                List<Education> educations = [];
-                                educations.add(Education(
-                                  degree: "بكالوريوس",
-                                  field: "علوم",
-                                  university: "جامعة القاهرة",
-                                  endYear: 2022,
-                                  gpa: 4.0,
-                                ));
-                                educations.add(Education(
-                                  degree: "ماستر",
-                                  field: "علوم",
-                                  university: "جامعة القاهرة",
-                                  endYear: 2022,
-                                  gpa: 4.0,
-                                ));
-                                GoRouter.of(context).push(Routers.kProfileEducationPage, extra: educations);
+                                GoRouter.of(context)
+                                    .push(Routers.kProfileEducationPage, extra: state.profile.education);
                               }
                               if (item['title'] == 'المعلومات الشخصية') {
-                                GoRouter.of(context).push(Routers.kProfileBasicInfoPage,
-                                    extra: BasicInfo(
-                                        dateOfBirth: "1990-01-01",
-                                        gender: "ذكر",
-                                        languages: ["العربية", "الإنجليزية"],
-                                        location: "القاهرة"));
+                                GoRouter.of(context)
+                                    .push(Routers.kProfileBasicInfoPage, extra: state.profile.basicInfo);
                               }
                               if (item['title'] == 'الخبرات') {
-                                List<Experience> experiences = [];
-                                experiences.add(Experience(
-                                  company: "شركة",
-                                  jobTitle: "وظيفة",
-                                  startDate: "2022-01-01",
-                                  endDate: "2022-01-01",
-                                  description: "وصف",
-                                  location: "القاهرة",
-                                  isCurrent: false,
-                                ));
-                                experiences.add(Experience(
-                                  company: "شركة",
-                                  jobTitle: "وظيفة",
-                                  startDate: "2022-01-01",
-                                  endDate: "2022-01-01",
-                                  description: "وصف",
-                                  location: "القاهرة",
-                                  isCurrent: true,
-                                ));
-                                GoRouter.of(context).push(Routers.kProfileExperiencePage, extra: experiences);
+                                GoRouter.of(context)
+                                    .push(Routers.kProfileExperiencePage, extra: state.profile.experiences);
                               }
                               if (item['title'] == 'الشهادات') {
-                                List<Certification> certifications = [];
-                                certifications.add(Certification(
-                                  name: "شهادة",
-                                  issuer: "جهة",
-                                  issueDate: "2022-01-01",
-                                ));
-                                certifications.add(Certification(
-                                  name: "شهادة",
-                                  issuer: "جهة",
-                                  issueDate: "2022-01-01",
-                                ));
-                                GoRouter.of(context).push(Routers.kProfileCertificationsPage, extra: certifications);
+                                GoRouter.of(context)
+                                    .push(Routers.kProfileCertificationsPage, extra: state.profile.certifications);
                               }
                               if (item['title'] == 'الاهداف') {
-                                GoRouter.of(context).push(Routers.kProfileGoalsPage,
-                                    extra: Goals(interests: ["اهتمام1", "اهتمام 2"], careerGoal: "الهدف المخصص"));
+                                GoRouter.of(context).push(Routers.kProfileGoalsPage, extra: state.profile.goals);
                               }
                               if (item['title'] == 'تفضيلات العمل') {
-                                GoRouter.of(context).push(Routers.kProfileJobPreferencesPage,
-                                    extra: JobPreferences(
-                                        workPlaceType: ["عن بعد", "في الشركة", "مزيج", "الكل"],
-                                        jobType: ["دوام كامل", "دوام جزئي", "عقد", "مستقل", "الكل"],
-                                        jobLocation: "القاهرة"));
+                                GoRouter.of(context)
+                                    .push(Routers.kProfileJobPreferencesPage, extra: state.profile.jobPreferences);
                               }
                               if (item['title'] == 'المهارات') {
                                 GoRouter.of(context).push(
                                   Routers.kProfileSkillsPage,
-                                  extra: Skills(softSkills: [
-                                    TechnicalSkill(name: "مهارات1", level: 1),
-                                    TechnicalSkill(name: "مهارات 2", level: 2)
-                                  ], technicalSkills: [
-                                    TechnicalSkill(name: "مهارات1", level: 1),
-                                    TechnicalSkill(name: "مهارات 2", level: 2)
-                                  ]),
+                                  extra: state.profile.skills,
                                 );
                               }
                               if (item['title'] == 'تسجيل الخروج') {
@@ -237,7 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
         primaryButtonText: "تسجيل الخروج",
         secondaryButtonText: "إلغاء",
         onPrimaryAction: () {
-          GoRouter.of(context).push(Routers.kOndboardingIntroPage);
+          GoRouter.of(context).pushReplacement(Routers.kLoginPageRoute);
         },
         onSecondaryAction: () => Navigator.pop(context),
       ),
