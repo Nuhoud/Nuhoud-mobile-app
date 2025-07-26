@@ -1,13 +1,12 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:go_router/go_router.dart';
 import 'package:nuhoud/core/utils/cache_helper.dart';
-
+import 'package:nuhoud/core/utils/routs.dart';
+import 'package:nuhoud/core/widgets/gradient_container.dart';
+import 'package:nuhoud/features/profile/presentation/view-model/cubit/profile_cubit.dart';
 import '../../../../../core/utils/assets_data.dart';
-import '../../../../../core/utils/routs.dart';
-import '../../../../../core/widgets/gradient_container.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SplashPageBody extends StatefulWidget {
   const SplashPageBody({super.key});
@@ -37,15 +36,24 @@ class _SplashPageBodyState extends State<SplashPageBody> with SingleTickerProvid
     _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
       CurvedAnimation(parent: _controller, curve: Curves.easeOutBack),
     );
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _checkUser();
+      }
+    });
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
       _controller.forward();
     });
+  }
 
-    Timer(const Duration(seconds: 3), () {
-      //_checkUser();
+  void _checkUser() {
+    final token = CacheHelper.getData(key: "token");
+    if (token == null) {
       GoRouter.of(context).pushReplacement(Routers.kLoginPageRoute);
-    });
+      return;
+    }
+    context.read<ProfileCubit>().getProfile();
   }
 
   @override
@@ -58,36 +66,53 @@ class _SplashPageBodyState extends State<SplashPageBody> with SingleTickerProvid
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
 
-    return GradientContainer(
-      child: Center(
-        child: AnimatedBuilder(
-          animation: _controller,
-          builder: (context, child) {
-            return Opacity(
-              opacity: _opacityAnimation.value,
-              child: Transform.scale(
-                scale: _scaleAnimation.value,
-                child: child,
+    return BlocConsumer<ProfileCubit, ProfileState>(
+      listener: (context, state) {
+        if (state is GetProfileSuccess) {
+          GoRouter.of(context).pushReplacement(Routers.kHomePageRoute);
+        } else if (state is GetProfileError) {
+          GoRouter.of(context).pushReplacement(Routers.kLoginPageRoute);
+        }
+      },
+      builder: (context, state) {
+        return GradientContainer(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Center(
+                child: AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Opacity(
+                      opacity: _opacityAnimation.value,
+                      child: Transform.scale(
+                        scale: _scaleAnimation.value,
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: Image.asset(
+                    AssetsData.logo,
+                    width: size.width * 0.35,
+                    height: size.height * 0.35,
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ),
-            );
-          },
-          child: Image.asset(
-            AssetsData.logo,
-            width: size.width * 0.35,
-            height: size.height * 0.35,
-            fit: BoxFit.contain,
+              if (state is GetProfileLoading && _controller.status == AnimationStatus.completed) ...[
+                const SizedBox(height: 20),
+                const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    color: Colors.white,
+                  ),
+                ),
+              ]
+            ],
           ),
-        ),
-      ),
+        );
+      },
     );
   }
-
-  // _checkUser() {
-  //   final token = CacheHelper.getData(key: "token");
-  //   if (token == null) {
-  //     GoRouter.of(context).pushReplacement(Routers.kLoginPageRoute);
-  //   } else {
-  //     GoRouter.of(context).pushReplacement(Routers.kHomePageRoute);
-  //   }
-  // }
 }
