@@ -1,8 +1,9 @@
 class Urls {
   static const String mainPort = "3000";
   static const String jobPort = "4000";
-  static const String mainBaseUrl = "http://192.168.1.10:$mainPort/";
-  static const String jobsBaseUrl = "http://192.168.1.10:$jobPort/";
+  static const String ip = "10.0.2.2";
+  static const String mainBaseUrl = "http://$ip:$mainPort/";
+  static const String jobsBaseUrl = "http://$ip:$jobPort/";
 
   //auth endpoint
   static String login = "auth/login";
@@ -31,4 +32,7 @@ class Urls {
 
   //skills endpoint
   static String getSkills = "/aiservice/skills";
+
+  //job applcations
+  static String getMyJobApplications = "application/my-applications";
 }

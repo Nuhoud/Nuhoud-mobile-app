@@ -71,7 +71,7 @@ class JobApplicationItem extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(job.jobType, style: subHeadingTextStyle),
+                Text("${job.jobType}/ ${job.workPlaceType}", style: subHeadingTextStyle),
                 Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(

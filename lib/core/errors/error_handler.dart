@@ -79,7 +79,9 @@ class ErrorHandler {
       case 400:
       case 401:
       case 403:
-        return ServerFailure(response.data['error'] ?? _messages['error_tryAgain']!);
+        return ServerFailure(response.data['message'] is String
+            ? response.data['message']
+            : response.data['error'] ?? _messages['error_tryAgain']!);
       case 404:
         return ServerFailure(_messages['notFound']!);
       case 422:

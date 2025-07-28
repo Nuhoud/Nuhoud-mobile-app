@@ -143,6 +143,11 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                           icon: Icons.business_center_outlined,
                           text: widget.job.jobType,
                         ),
+                        const SizedBox(width: 10),
+                        _DetailChip(
+                          icon: Icons.business_outlined,
+                          text: widget.job.workPlaceType,
+                        ),
                       ],
                     ),
                   ),

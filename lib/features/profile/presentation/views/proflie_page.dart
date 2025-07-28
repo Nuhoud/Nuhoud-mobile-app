@@ -10,7 +10,6 @@ import 'package:nuhoud/features/profile/presentation/view-model/cubit/profile_cu
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/routs.dart';
 import '../../../../core/utils/size_app.dart';
-import '../../../../core/utils/styles.dart';
 import '../../../../core/widgets/custom_dialog.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -34,6 +33,10 @@ class _ProfilePageState extends State<ProfilePage> {
       {
         'title': 'المعلومات الشخصية',
         'icon': Icons.person_outline,
+      },
+      {
+        'title': 'طلبات التوظيف',
+        'icon': Icons.business_center_outlined,
       },
       {
         'title': 'التعليم',
@@ -78,6 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         body: BlocBuilder<ProfileCubit, ProfileState>(
           builder: (context, state) {
+            final ProfileModel? profile = context.read<ProfileCubit>().profile;
             if (state is GetProfileError) {
               return CustomErrorWidget(
                 errorMessage: state.message,
@@ -86,70 +90,72 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
               );
             }
-            if (state is GetProfileSuccess) {
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: profileItems.length,
-                        separatorBuilder: (context, index) => const SizedBox(height: 12),
-                        itemBuilder: (context, index) {
-                          final item = profileItems[index];
-                          return _buildProfileItem(
-                            context: context,
-                            title: item['title'],
-                            icon: item['icon'],
-                            onTap: () {
-                              if (item['title'] == 'تسجيل الخروج') {
-                                _showLogoutConfirmation(context);
-                              }
-                              if (item['title'] == 'التعليم') {
-                                GoRouter.of(context)
-                                    .push(Routers.kProfileEducationPage, extra: state.profile.education);
-                              }
-                              if (item['title'] == 'المعلومات الشخصية') {
-                                GoRouter.of(context)
-                                    .push(Routers.kProfileBasicInfoPage, extra: state.profile.basicInfo);
-                              }
-                              if (item['title'] == 'الخبرات') {
-                                GoRouter.of(context)
-                                    .push(Routers.kProfileExperiencePage, extra: state.profile.experiences);
-                              }
-                              if (item['title'] == 'الشهادات') {
-                                GoRouter.of(context)
-                                    .push(Routers.kProfileCertificationsPage, extra: state.profile.certifications);
-                              }
-                              if (item['title'] == 'الاهداف') {
-                                GoRouter.of(context).push(Routers.kProfileGoalsPage, extra: state.profile.goals);
-                              }
-                              if (item['title'] == 'تفضيلات العمل') {
-                                GoRouter.of(context)
-                                    .push(Routers.kProfileJobPreferencesPage, extra: state.profile.jobPreferences);
-                              }
-                              if (item['title'] == 'المهارات') {
-                                GoRouter.of(context).push(
-                                  Routers.kProfileSkillsPage,
-                                  extra: state.profile.skills,
-                                );
-                              }
-                              if (item['title'] == 'تسجيل الخروج') {
-                                _showLogoutConfirmation(context);
-                              }
-                            },
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              );
+
+            if (state is GetProfileLoading) {
+              return SkeletonizerHelper.profileSkeletonizer();
             }
-            return SkeletonizerHelper.profileSkeletonizer();
+
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: profileItems.length,
+                      separatorBuilder: (context, index) => const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        final item = profileItems[index];
+                        return _buildProfileItem(
+                          context: context,
+                          title: item['title'],
+                          icon: item['icon'],
+                          onTap: () {
+                            if (item['title'] == 'تسجيل الخروج') {
+                              _showLogoutConfirmation(context);
+                            }
+                            if (item['title'] == 'التعليم') {
+                              GoRouter.of(context).push(Routers.kProfileEducationPage, extra: profile!.education);
+                            }
+                            if (item['title'] == 'المعلومات الشخصية') {
+                              GoRouter.of(context).push(Routers.kProfileBasicInfoPage, extra: profile!.basicInfo);
+                            }
+                            if (item['title'] == 'الخبرات') {
+                              GoRouter.of(context).push(Routers.kProfileExperiencePage, extra: profile!.experiences);
+                            }
+                            if (item['title'] == 'الشهادات') {
+                              GoRouter.of(context)
+                                  .push(Routers.kProfileCertificationsPage, extra: profile!.certifications);
+                            }
+                            if (item['title'] == 'الاهداف') {
+                              GoRouter.of(context).push(Routers.kProfileGoalsPage, extra: profile!.goals);
+                            }
+                            if (item['title'] == 'تفضيلات العمل') {
+                              GoRouter.of(context)
+                                  .push(Routers.kProfileJobPreferencesPage, extra: profile!.jobPreferences);
+                            }
+                            if (item['title'] == 'المهارات') {
+                              GoRouter.of(context).push(
+                                Routers.kProfileSkillsPage,
+                                extra: profile!.skills,
+                              );
+                            }
+                            if (item['title'] == 'طلبات التوظيف') {
+                              GoRouter.of(context).push(Routers.kJobApplicationsScreen);
+                            }
+                            if (item['title'] == 'تسجيل الخروج') {
+                              _showLogoutConfirmation(context);
+                            }
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
           },
         ),
       ),
@@ -180,8 +186,8 @@ class _ProfilePageState extends State<ProfilePage> {
         primaryButtonText: "تسجيل الخروج",
         secondaryButtonText: "إلغاء",
         onPrimaryAction: () {
-          //CacheHelper.removeData(key: "token");
-          GoRouter.of(context).pushReplacement(Routers.kOndboardingUserSkillsPage);
+          CacheHelper.removeData(key: "token");
+          GoRouter.of(context).pushReplacement(Routers.kLoginPageRoute);
         },
         onSecondaryAction: () => Navigator.pop(context),
       ),
