@@ -1,4 +1,12 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nuhoud/core/utils/functions.dart';
+import 'package:nuhoud/core/utils/routs.dart';
+import 'package:nuhoud/core/widgets/custom_snak_bar.dart';
+import 'package:nuhoud/features/home/presentation/params/appliction_params.dart';
+import 'package:nuhoud/features/home/presentation/view-model/appliction_cubit/appliction_cubit.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/styles.dart';
 import '../../../../../core/widgets/custom_button.dart';
@@ -90,8 +98,7 @@ class JobDetailsBottomSheet extends StatelessWidget {
                             width: 50,
                             height: 50,
                             decoration: BoxDecoration(
-                              color:
-                                  AppColors.primaryColor.withValues(alpha: 0.1),
+                              color: AppColors.primaryColor.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
                             ),
                             child: Center(
@@ -160,29 +167,64 @@ class JobDetailsBottomSheet extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 24),
-                CustomButton(
-                  onPressed: () {
-                    // Handle job application
-                    Navigator.pop(context);
+                BlocConsumer<ApplictionCubit, ApplictionState>(
+                  listener: (context, state) {
+                    if (state is SubmitApplictionError) {
+                      CustomSnackBar.showSnackBar(
+                          context: context, title: "خطأ", message: state.message, contentType: ContentType.failure);
+                    }
+                    if (state is SubmitApplictionSuccess) {
+                      showCustomDialog(
+                        context: context,
+                        icon: Icons.check,
+                        withAvatar: true,
+                        iconColor: Colors.green[400],
+                        title: "تم تقديم الطلب",
+                        description: "تم تقديم طلبك بنجاح سيتم التحقق من طلبك في اقرب وقت",
+                        primaryButtonText: "اذهب الى طلباتي",
+                        onPrimaryAction: () {
+                          Navigator.pop(context);
+                          GoRouter.of(context).push(Routers.kJobApplicationsScreen);
+                        },
+                        onSecondaryAction: () {
+                          Navigator.pop(context);
+                        },
+                      );
+                    }
                   },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.send_outlined,
-                        color: Colors.white,
-                        size: 20,
+                  builder: (context, state) {
+                    return CustomButton(
+                      isLoading: state is SubmitApplictionLoading,
+                      onPressed: () {
+                        context.read<ApplictionCubit>().submitOffer(
+                              OfferParams(
+                                title: job.title,
+                                employerId: job.employerId,
+                                companyName: job.company,
+                              ),
+                              job.id,
+                            );
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.send_outlined,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'تقديم على العمل',
+                            style: Styles.textStyle16.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 8),
-                      Text(
-                        'تقديم على العمل',
-                        style: Styles.textStyle16.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
               ],
             ),

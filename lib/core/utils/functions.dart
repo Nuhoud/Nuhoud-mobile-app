@@ -47,6 +47,8 @@ void showCustomDialog({
   Color? secondaryButtonColor,
   IconData? icon,
   bool? oneButton,
+  bool? withAvatar,
+  Color? iconColor,
   required void Function() onPrimaryAction,
   void Function()? onSecondaryAction,
 }) {
@@ -56,6 +58,8 @@ void showCustomDialog({
     builder: (BuildContext context) {
       return CustomDialog(
         title: title,
+        withAvatar: withAvatar,
+        iconColor: iconColor,
         oneButton: oneButton,
         description: description,
         primaryButtonText: primaryButtonText,

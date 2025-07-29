@@ -181,6 +181,7 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: (context) => CustomDialog(
         primaryButtonColor: AppColors.textAlert,
         icon: Icons.warning_rounded,
+        iconColor: AppColors.textAlert,
         title: "تسجيل الخروج",
         description: "هل أنت متأكد أنك تريد تسجيل الخروج؟",
         primaryButtonText: "تسجيل الخروج",

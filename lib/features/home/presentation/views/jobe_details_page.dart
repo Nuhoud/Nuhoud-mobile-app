@@ -1,7 +1,11 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:nuhoud/core/utils/functions.dart';
+import 'package:nuhoud/core/utils/routs.dart';
 import 'package:nuhoud/core/utils/size_app.dart';
+import 'package:nuhoud/core/utils/styles.dart';
 import 'package:nuhoud/core/widgets/custom_button.dart';
 import 'package:nuhoud/core/widgets/custom_snak_bar.dart';
 import 'package:nuhoud/features/home/presentation/params/appliction_params.dart';
@@ -221,8 +225,22 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                   context: context, title: "خطأ", message: state.message, contentType: ContentType.failure);
             }
             if (state is SubmitApplictionSuccess) {
-              CustomSnackBar.showSnackBar(
-                  context: context, title: "نجاح", message: "تم تقديم طلبك بنجاح", contentType: ContentType.success);
+              showCustomDialog(
+                context: context,
+                icon: Icons.check,
+                withAvatar: true,
+                iconColor: Colors.green[400],
+                title: "تم تقديم الطلب",
+                description: "تم تقديم طلبك بنجاح سيتم التحقق من طلبك في اقرب وقت",
+                primaryButtonText: "اذهب الى طلباتي",
+                onPrimaryAction: () {
+                  Navigator.pop(context);
+                  GoRouter.of(context).push(Routers.kJobApplicationsScreen);
+                },
+                onSecondaryAction: () {
+                  Navigator.pop(context);
+                },
+              );
             }
           },
           builder: (context, state) {
@@ -238,13 +256,23 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                       widget.job.id,
                     );
               },
-              child: const Text(
-                "تقدم على العمل",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.send_outlined,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'تقديم على العمل',
+                    style: Styles.textStyle16.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             );
           },

@@ -46,6 +46,7 @@ class Job {
   final String company;
   final String match;
   final int matchScore;
+  final String employerId;
 
   Job({
     required this.id,
@@ -53,6 +54,7 @@ class Job {
     required this.company,
     required this.match,
     required this.matchScore,
+    required this.employerId,
   });
 
   factory Job.fromJson(Map<String, dynamic> json) {
@@ -62,6 +64,7 @@ class Job {
       company: json['company'],
       match: json['match'],
       matchScore: json['matchScore'],
+      employerId: json['employerId'],
     );
   }
 
@@ -72,6 +75,7 @@ class Job {
       'company': company,
       'match': match,
       'matchScore': matchScore,
+      'employerId': employerId,
     };
   }
 }
@@ -83,8 +87,7 @@ class Step2 {
 
   factory Step2.fromJson(Map<String, dynamic> json) {
     var monthsList = json['months'] as List;
-    List<Month> months =
-        monthsList.map((month) => Month.fromJson(month)).toList();
+    List<Month> months = monthsList.map((month) => Month.fromJson(month)).toList();
 
     return Step2(
       months: months,
@@ -106,8 +109,7 @@ class Month {
 
   factory Month.fromJson(Map<String, dynamic> json) {
     var tasksList = json['tasks'] as List;
-    List<WeekTasks> tasks =
-        tasksList.map((task) => WeekTasks.fromJson(task)).toList();
+    List<WeekTasks> tasks = tasksList.map((task) => WeekTasks.fromJson(task)).toList();
 
     return Month(
       month: json['month'],

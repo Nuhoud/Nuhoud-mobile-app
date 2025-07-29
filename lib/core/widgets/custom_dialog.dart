@@ -14,6 +14,8 @@ class CustomDialog extends StatelessWidget {
   final Color? secondaryButtonColor;
   final IconData? icon;
   final bool? oneButton;
+  final bool? withAvatar;
+  final Color? iconColor;
   const CustomDialog({
     super.key,
     required this.title,
@@ -26,6 +28,8 @@ class CustomDialog extends StatelessWidget {
     this.secondaryButtonColor,
     this.icon,
     this.oneButton,
+    this.withAvatar,
+    this.iconColor,
   });
 
   @override
@@ -34,8 +38,7 @@ class CustomDialog extends StatelessWidget {
       backgroundColor: Colors.transparent,
       elevation: 4,
       insetPadding: const EdgeInsets.all(24),
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(kBorderRadius))),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(kBorderRadius))),
       child: Container(
         padding: const EdgeInsets.fromLTRB(24, 15, 24, 15),
         decoration: BoxDecoration(
@@ -56,11 +59,22 @@ class CustomDialog extends StatelessWidget {
           children: [
             // Icon at the top (optional)
             if (icon != null)
-              Icon(
-                icon,
-                size: 45,
-                color: primaryButtonColor ?? AppColors.primaryColor,
-              ),
+              if (withAvatar == true) ...[
+                CircleAvatar(
+                  radius: 30,
+                  backgroundColor: iconColor?.withValues(alpha: 0.3) ?? AppColors.primaryColor.withValues(alpha: 0.3),
+                  child: Icon(
+                    icon,
+                    size: 45,
+                    color: iconColor ?? AppColors.primaryColor,
+                  ),
+                ),
+              ] else
+                Icon(
+                  icon,
+                  size: 45,
+                  color: iconColor ?? AppColors.primaryColor,
+                ),
             const SizedBox(height: 12),
             // Title
             Text(
@@ -90,10 +104,8 @@ class CustomDialog extends StatelessWidget {
                 TextButton(
                   onPressed: onSecondaryAction,
                   style: TextButton.styleFrom(
-                    foregroundColor:
-                        secondaryButtonColor ?? AppColors.primaryColor,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 12),
+                    foregroundColor: secondaryButtonColor ?? AppColors.primaryColor,
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   ),
                   child: Text(
                     secondaryButtonText,
@@ -110,10 +122,8 @@ class CustomDialog extends StatelessWidget {
                   TextButton(
                     onPressed: onSecondaryAction,
                     style: TextButton.styleFrom(
-                      foregroundColor:
-                          secondaryButtonColor ?? AppColors.primaryColor,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 12),
+                      foregroundColor: secondaryButtonColor ?? AppColors.secondaryText,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                     ),
                     child: Text(
                       secondaryButtonText,
@@ -126,11 +136,9 @@ class CustomDialog extends StatelessWidget {
                   ElevatedButton(
                     onPressed: onPrimaryAction,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          primaryButtonColor ?? AppColors.primaryColor,
+                      backgroundColor: primaryButtonColor ?? AppColors.primaryColor,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 24, vertical: 12),
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),

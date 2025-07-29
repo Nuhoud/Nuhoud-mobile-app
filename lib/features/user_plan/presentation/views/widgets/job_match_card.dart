@@ -99,7 +99,7 @@ class JobMatchCard extends StatelessWidget {
           Text(
             matchReason,
             style: _subHeadingTextStyle,
-            maxLines: 3,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 16),
@@ -107,7 +107,7 @@ class JobMatchCard extends StatelessWidget {
             onPressed: onReadMore,
             primaryGradinetColor: AppColors.skipButtonStartColor,
             secodanryGradinetColor: AppColors.skipButtonEndColor,
-            height: 40,
+            height: 35,
             verticalHieght: 0,
             horizontalWidth: 0,
             child: Text(
@@ -123,12 +123,12 @@ class JobMatchCard extends StatelessWidget {
     );
   }
 
-  TextStyle get _headingTextStyle => Styles.textStyle18.copyWith(
+  TextStyle get _headingTextStyle => Styles.textStyle16.copyWith(
         color: AppColors.headingTextColor,
         fontWeight: FontWeight.bold,
       );
 
-  TextStyle get _subHeadingTextStyle => Styles.textStyle16.copyWith(
+  TextStyle get _subHeadingTextStyle => Styles.textStyle13.copyWith(
         color: AppColors.subHeadingTextColor,
       );
 }
