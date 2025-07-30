@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nuhoud/core/utils/cache_helper.dart';
 
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/utils/styles.dart';
@@ -13,7 +14,7 @@ class IntroInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          'مرحبا أيهم، أنا سند',
+          'مرحبا ${CacheHelper.getData(key: "userName")}، أنا سند',
           style: Styles.textStyle30.copyWith(
             fontWeight: FontWeight.bold,
             color: AppColors.primaryColor,

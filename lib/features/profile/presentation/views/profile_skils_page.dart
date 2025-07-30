@@ -11,6 +11,7 @@ import 'package:nuhoud/core/widgets/custom_circular_progress_indicator.dart';
 import 'package:nuhoud/core/widgets/custom_drop_dpown_button.dart';
 import 'package:nuhoud/core/widgets/custom_error_widget.dart';
 import 'package:nuhoud/core/widgets/custom_snak_bar.dart';
+import 'package:nuhoud/core/widgets/waiting_message_with_dots.dart';
 import 'package:nuhoud/features/profile/data/models/profile_model.dart';
 import 'package:nuhoud/features/profile/presentation/view-model/cubit/profile_cubit.dart';
 
@@ -39,6 +40,7 @@ class _ProfileSkillsPageState extends State<ProfileSkillsPage> {
     // if (profile != null) {
     //   context.read<OnboardingCubit>().saveUserInfo();
     // }
+    context.read<SkillsCubit>().getSkills();
     _skills = Skills.fromJson(widget.initialSkills.toJson());
     _selectedSoftSkills = List.from(_skills.softSkills ?? []);
     _selectedTechnicalSkills = List.from(_skills.technicalSkills ?? []);
@@ -75,38 +77,40 @@ class _ProfileSkillsPageState extends State<ProfileSkillsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getit<SkillsCubit>()..getSkills(),
-      child: SafeArea(
-        child: Scaffold(
-          appBar: const PreferredSize(
-            preferredSize: Size.fromHeight(60),
-            child: CustomAppBar(
-              backBtn: true,
-              backgroundColor: AppColors.primaryColor,
-              title: 'المهارات',
-            ),
+    return SafeArea(
+      child: Scaffold(
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(60),
+          child: CustomAppBar(
+            backBtn: true,
+            backgroundColor: AppColors.primaryColor,
+            title: 'المهارات',
           ),
-          body: BlocBuilder<SkillsCubit, SkillsState>(
-            builder: (context, state) {
-              if (state is SkillsLoading) {
-                return const CustomCircularProgressIndicator(
-                  color: AppColors.primaryColor,
-                );
-              }
-              if (state is SkillsError) {
-                return CustomErrorWidget(
-                    errorMessage: state.message,
-                    onRetry: () {
-                      context.read<SkillsCubit>().getSkills();
-                    });
-              }
-              if (state is SkillsSuccess) {
-                return SingleChildScrollView(padding: const EdgeInsets.all(20), child: _buildEditView(state.skills));
-              }
-              return const SizedBox();
-            },
-          ),
+        ),
+        body: BlocBuilder<SkillsCubit, SkillsState>(
+          builder: (context, state) {
+            if (state is GetSkillsFromAI) {
+              return const WaitingMessageWithDots(
+                message: "يتم إنشاء مهاراتك الشخصية بناءً على معلوماتك",
+              );
+            }
+            if (state is SkillsLoading) {
+              return const CustomCircularProgressIndicator(
+                color: AppColors.primaryColor,
+              );
+            }
+            if (state is SkillsError) {
+              return CustomErrorWidget(
+                  errorMessage: state.message,
+                  onRetry: () {
+                    context.read<SkillsCubit>().getSkills();
+                  });
+            }
+            if (state is SkillsSuccess) {
+              return SingleChildScrollView(padding: const EdgeInsets.all(20), child: _buildEditView(state.skills));
+            }
+            return const SizedBox();
+          },
         ),
       ),
     );

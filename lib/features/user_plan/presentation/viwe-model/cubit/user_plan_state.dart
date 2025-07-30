@@ -26,3 +26,5 @@ final class UserPlanError extends UserPlanState {
   @override
   List<Object> get props => [message];
 }
+
+final class GetPlanFromAI extends UserPlanState {}

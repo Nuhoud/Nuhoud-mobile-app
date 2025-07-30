@@ -153,7 +153,7 @@ class _OnboardingJobPreferencesPageBodyState extends State<OnboardingJobPreferen
                   );
                 }
                 if (state is SaveUserInfoSuccess) {
-                  GoRouter.of(context).push(Routers.kOndboardingUserSkillsPage);
+                  GoRouter.of(context).pushReplacement(Routers.kOndboardingUserSkillsPage);
                 }
               },
               builder: (context, state) {

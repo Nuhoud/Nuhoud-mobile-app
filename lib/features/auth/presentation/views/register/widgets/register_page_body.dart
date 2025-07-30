@@ -105,7 +105,10 @@ class _RegisterPageBodyState extends State<RegisterPageBody> {
                         selectedAuthType == AuthType.email ? emailController.text : phoneController.text;
                     GoRouter.of(context).pushReplacement(Routers.kVerificationPageRoute,
                         extra: VerificationArgs(
-                            selectedAuthType: selectedAuthType, emailOrPhone: emailOrPhone, isFromRegister: true));
+                            userName: nameController.text,
+                            selectedAuthType: selectedAuthType,
+                            emailOrPhone: emailOrPhone,
+                            isFromRegister: true));
                   },
                 )
               ],

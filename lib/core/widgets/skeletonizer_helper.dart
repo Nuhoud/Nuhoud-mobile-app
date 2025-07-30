@@ -68,12 +68,12 @@ class SkeletonizerHelper {
             jobs: List.generate(
                 3,
                 (index) => Job(
-                      id: 'dummy$index',
-                      title: 'Job Title',
-                      company: 'Company Name',
-                      match: 'Job match description',
-                      matchScore: 0,
-                    ))),
+                    id: 'dummy$index',
+                    title: 'Job Title',
+                    company: 'Company Name',
+                    match: 'Job match description',
+                    matchScore: 0,
+                    employerId: ""))),
         step2: Step2(
           months: List.generate(
               2,

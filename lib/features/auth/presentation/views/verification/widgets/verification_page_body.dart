@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nuhoud/core/utils/app_constats.dart';
 import 'package:nuhoud/core/utils/app_localizations.dart';
 import 'package:nuhoud/core/utils/assets_data.dart';
+import 'package:nuhoud/core/utils/cache_helper.dart';
 import 'package:nuhoud/core/utils/enums.dart';
 import 'package:nuhoud/core/utils/routs.dart';
 import 'package:nuhoud/core/widgets/custom_snak_bar.dart';
@@ -24,10 +25,15 @@ import 'verification_msg.dart';
 
 class VerificationPagebody extends StatefulWidget {
   const VerificationPagebody(
-      {super.key, required this.identifier, required this.isFromRigster, required this.selectedAuthType});
+      {super.key,
+      required this.identifier,
+      required this.isFromRigster,
+      required this.selectedAuthType,
+      this.userName});
   final String identifier;
   final bool isFromRigster;
   final AuthType selectedAuthType;
+  final String? userName;
   @override
   State<VerificationPagebody> createState() => _VerificationPagebodyState();
 }
@@ -140,6 +146,7 @@ class _VerificationPagebodyState extends State<VerificationPagebody> {
                         onSuccess: () {
                           if (widget.isFromRigster) {
                             GoRouter.of(context).pushReplacement(Routers.kOndboardingIntroPage);
+                            CacheHelper.setString(key: "userName", value: widget.userName ?? "");
                           } else {
                             GoRouter.of(context).pushReplacement(Routers.kRestPasswordPage);
                           }

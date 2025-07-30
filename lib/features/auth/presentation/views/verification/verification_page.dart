@@ -9,7 +9,9 @@ class VerificationArgs {
   final String emailOrPhone;
   final bool isFromRegister;
   final AuthType selectedAuthType;
+  final String? userName;
   VerificationArgs({
+    this.userName,
     required this.selectedAuthType,
     required this.emailOrPhone,
     required this.isFromRegister,
@@ -20,11 +22,9 @@ class VerificationPage extends StatelessWidget {
   final String email;
   final bool isFromRegiter;
   final AuthType selectedAuthType;
+  final String? userName;
   const VerificationPage(
-      {super.key,
-      required this.email,
-      required this.isFromRegiter,
-      required this.selectedAuthType});
+      {super.key, required this.email, required this.isFromRegiter, required this.selectedAuthType, this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +35,7 @@ class VerificationPage extends StatelessWidget {
           identifier: email,
           isFromRigster: isFromRegiter,
           selectedAuthType: selectedAuthType,
+          userName: userName,
         ),
       ),
     );

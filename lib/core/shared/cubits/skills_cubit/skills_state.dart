@@ -22,3 +22,5 @@ final class SkillsSuccess extends SkillsState {
 }
 
 final class SkillsLoading extends SkillsState {}
+
+final class GetSkillsFromAI extends SkillsState {}
