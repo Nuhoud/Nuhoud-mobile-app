@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -92,7 +94,10 @@ class _OnboardingUserExperiencePageBodyState extends State<OnboardingUserExperie
         duration: const Duration(seconds: 2),
       );
     } else {
-      final data = addedExperiences.map((e) => e.toJson(!e.isCurrent)).toList();
+      if (addedExperiences.first.jobEndDate == null || addedExperiences.first.jobEndDate!.isEmpty) {
+        log("jobEndDate is empty");
+      }
+      final data = addedExperiences.map((e) => e.toJson()).toList();
       BlocProvider.of<OnboardingCubit>(context).addUserInfo("experiences", data);
       GoRouter.of(context).push(Routers.kOndboardingUserGoalsPage);
     }

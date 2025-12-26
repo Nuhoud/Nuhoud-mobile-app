@@ -29,14 +29,14 @@ class ExperincesModel {
     );
   }
 
-  Map<String, dynamic> toJson(bool withEndDate) {
+  Map<String, dynamic> toJson() {
     return {
       'jobTitle': jobTitle,
       'company': company,
       'startDate': jobStartDate,
       'location': jobLocation,
       'isCurrent': isCurrent,
-      if (withEndDate) 'endDate': jobEndDate,
+      if (!isCurrent) 'endDate': jobEndDate,
       'description': jobDescription
     };
   }
