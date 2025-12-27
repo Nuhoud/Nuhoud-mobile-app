@@ -1,7 +1,12 @@
+import 'dart:developer';
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:nuhoud/core/utils/cache_helper.dart';
 import 'package:nuhoud/features/home/data/models/job_model.dart';
 import 'package:nuhoud/features/home/data/repos/home_repo.dart';
+import 'package:nuhoud/features/home/presentation/params/fcm_params.dart';
 import 'package:nuhoud/features/home/presentation/params/job_params.dart';
 
 part 'home_state.dart';
@@ -26,6 +31,11 @@ class HomeCubit extends Cubit<HomeState> {
   bool isFetchingJobs = false;
   bool hasReachedMax = false;
   int _currentPage = 1;
+
+  void initHome() {
+    getJobs(loadMore: false);
+    updateFcmToken();
+  }
 
   Future<void> getJobs({bool loadMore = false}) async {
     try {
@@ -77,6 +87,22 @@ class HomeCubit extends Cubit<HomeState> {
       emit(GetJobDetailsFailure(message: failure.message));
     }, (jobModel) {
       emit(GetJobDetailsSuccess(job: jobModel));
+    });
+  }
+
+  Future<void> updateFcmToken() async {
+    final token = CacheHelper.getData(key: 'fcm_token');
+
+    if (token == null) return;
+
+    final platform = Platform.isAndroid ? 'android' : 'ios';
+
+    final result = await homeRepo.updateFcmToken(FcmParams(token: token, platform: platform));
+    result.fold((failure) {
+      emit(UpdateFcmTokenFailure(message: failure.message));
+    }, (jobModel) {
+      emit(const UpdateFcmTokenSuccess());
+      log('FCM token updated successfully');
     });
   }
 

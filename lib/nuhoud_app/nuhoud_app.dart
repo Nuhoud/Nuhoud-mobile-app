@@ -22,14 +22,11 @@ class NuhoudApp extends StatefulWidget {
 }
 
 class _NuhoudAppState extends State<NuhoudApp> {
+  late final FirebaseMessagingService _firebaseMessagingService;
   @override
   void initState() {
     super.initState();
-    final firebaseMessagingService = FirebaseMessagingService(Routers.router);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await firebaseMessagingService.handlePendingNavigation();
-    });
+    _firebaseMessagingService = FirebaseMessagingService(Routers.router);
   }
 
   @override
@@ -39,13 +36,15 @@ class _NuhoudAppState extends State<NuhoudApp> {
         BlocProvider(create: (context) => LocaleCubit()..getSaveLanguage()),
         BlocProvider(create: (context) => getit.get<OnboardingCubit>()),
         BlocProvider(create: (context) => getit.get<RefreshCubit>()),
-        BlocProvider(create: (context) => getit.get<HomeCubit>()..getJobs(loadMore: false)),
+        BlocProvider(create: (context) => getit.get<HomeCubit>()..initHome()),
         BlocProvider(create: (context) => getit.get<ApplictionCubit>()),
         BlocProvider(create: (context) => getit.get<ProfileCubit>()),
         BlocProvider(create: (context) => getit.get<SkillsCubit>()),
         BlocProvider(create: (context) => getit.get<UserPlanCubit>()),
       ],
-      child: const NuhoudMaterialApp(),
+      child: NuhoudMaterialApp(
+        firebaseMessagingService: _firebaseMessagingService,
+      ),
     );
   }
 }

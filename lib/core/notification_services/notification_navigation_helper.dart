@@ -1,4 +1,5 @@
 import 'dart:developer';
+
 import 'package:go_router/go_router.dart';
 import 'package:nuhoud/core/utils/routs.dart';
 
@@ -22,76 +23,105 @@ class NotificationNavigationHelper {
       return;
     }
 
-    try {
-      if (!_isAllowed(uri.pathSegments.first)) {
-        log('[NotifNav] Screen not allowed: ${uri.pathSegments.first}');
-        router.go(Routers.kHomePageRoute);
-        return;
-      }
+    log('Notification Navigation - Path: $path, Segments: ${uri.pathSegments}');
 
-      /// /job-details/234
+    try {
+      /// Handle job-details with ID: /job-details/68725f64cc482e8b6ade45f0
       if (_isJobDetails(uri)) {
         final jobId = uri.pathSegments[1];
-        router.go(Routers.kJobDetailsPage, extra: jobId);
+        log('Navigating to job details with ID: $jobId');
+
+        // Navigate using path parameter format
+        router.push('${Routers.kJobDetailsPage}/$jobId');
         return;
       }
 
-      /// /job-application-details/99
+      /// Handle job-application-details with ID: /job-application-details/99
       if (_isJobApplicationDetails(uri)) {
         final applicationId = uri.pathSegments[1];
-        router.go(
-          Routers.kJobApplicationDetailsScreen,
-          extra: applicationId,
-        );
+        log('Navigating to job application details with ID: $applicationId');
+
+        // Navigate using path parameter format
+        router.push('${Routers.kJobApplicationDetailsScreen}/$applicationId');
         return;
       }
 
-      try {
-        router.go(uri.pathSegments.first);
-      } catch (e, st) {
-        log('[NotifNav] Navigation error: $e', stackTrace: st);
-        router.go(Routers.kHomePageRoute);
+      // For static routes (like /filterPage, /profilePage)
+      final routePath = _mapPathToRoute(uri);
+      if (routePath != null) {
+        log('Navigating to static route: $routePath');
+        router.push(routePath);
+      } else {
+        log('Route not mapped, falling back to home');
+        _fallback(router, 'Route not found: ${uri.path}');
       }
     } catch (e, st) {
       log('[NotifNav] Navigation error: $e', stackTrace: st);
-      _fallback(router, 'Exception');
+      _fallback(router, 'Exception: $e');
     }
   }
 
   static String? _extractPath(Map<String, dynamic> data) {
-    final raw = data['screen'];
-    if (raw is String && raw.isNotEmpty) {
-      return raw.startsWith('/') ? raw : '/$raw';
+    // Try 'screen' key first
+    final rawScreen = data['screen'];
+    if (rawScreen is String && rawScreen.isNotEmpty) {
+      // Ensure the path starts with a slash
+      return rawScreen.startsWith('/') ? rawScreen : '/$rawScreen';
     }
+
+    // Also check for 'deeplink' key (like in working project)
+    final deeplink = data['deeplink'];
+    if (deeplink is String && deeplink.isNotEmpty) {
+      final uri = Uri.tryParse(deeplink);
+      if (uri != null) {
+        final fromQuery = uri.queryParameters['screen'];
+        if (fromQuery != null && fromQuery.isNotEmpty) {
+          return fromQuery.startsWith('/') ? fromQuery : '/$fromQuery';
+        }
+        return deeplink;
+      }
+    }
+
     return null;
   }
 
-  static bool _isAllowed(String path) {
-    final uri = Uri.tryParse(path);
-    if (uri == null) return false;
+  static String? _mapPathToRoute(Uri uri) {
+    final path = uri.path;
 
-    final first = uri.pathSegments.isEmpty ? '' : uri.pathSegments.first;
+    // Direct route mappings
+    switch (path) {
+      case '/filterPage':
+      case '/filter':
+        return Routers.kFilterPage;
 
-    const allowedRoots = {
-      Routers.kHomePageRoute,
-      Routers.kFilterPage,
-      Routers.kProfilePage,
-      Routers.kJobDetailsPage,
-      Routers.kJobApplicationsScreen,
-      Routers.kJobApplicationDetailsScreen,
-    };
+      case '/profilePage':
+      case '/profile':
+        return Routers.kProfilePage;
 
-    return allowedRoots.contains(first);
+      case '/ApplicationsScreen':
+      case '/applications':
+        return Routers.kJobApplicationsScreen;
+
+      case '/homePage':
+      case '/home':
+        return Routers.kHomePageRoute;
+
+      // Add more mappings as needed
+    }
+
+    return null;
   }
 
-  static bool _isJobDetails(Uri uri) =>
-      uri.pathSegments.length == 2 && uri.pathSegments.first == Routers.kJobDetailsPage;
+  static bool _isJobDetails(Uri uri) {
+    return uri.pathSegments.length == 2 && uri.pathSegments.first == 'job-details';
+  }
 
-  static bool _isJobApplicationDetails(Uri uri) =>
-      uri.pathSegments.length == 2 && uri.pathSegments.first == Routers.kJobApplicationDetailsScreen;
+  static bool _isJobApplicationDetails(Uri uri) {
+    return uri.pathSegments.length == 2 && uri.pathSegments.first == 'job-application-details';
+  }
 
   static void _fallback(GoRouter router, String reason) {
     log('[NotifNav] Fallback → home ($reason)');
-    router.go(Routers.kHomePageRoute);
+    router.push(Routers.kHomePageRoute);
   }
 }

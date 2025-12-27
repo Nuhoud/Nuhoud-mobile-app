@@ -37,3 +37,12 @@ final class GetJobDetailsFailure extends HomeState {
   final String message;
   const GetJobDetailsFailure({required this.message});
 }
+
+final class UpdateFcmTokenSuccess extends HomeState {
+  const UpdateFcmTokenSuccess();
+}
+
+final class UpdateFcmTokenFailure extends HomeState {
+  final String message;
+  const UpdateFcmTokenFailure({required this.message});
+}

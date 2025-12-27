@@ -144,10 +144,12 @@ abstract class Routers {
         path: kOndboardingUserSkillsPage,
         builder: (context, state) => const OnboardingUserSkillsPage(),
       ),
+      // Updated: Changed to use path parameters for better URL matching
       GoRoute(
-        path: kJobDetailsPage,
+        path: '$kJobDetailsPage/:jobId',
+        name: 'job-details',
         builder: (context, state) {
-          final jobId = state.extra as String;
+          final jobId = state.pathParameters['jobId']!;
           return JobDetailsPage(jobId: jobId);
         },
       ),
@@ -209,10 +211,12 @@ abstract class Routers {
         path: kJobApplicationsScreen,
         builder: (context, state) => const JobApplicationsPage(),
       ),
+      // Updated: Changed to use path parameters
       GoRoute(
-        path: kJobApplicationDetailsScreen,
+        path: '$kJobApplicationDetailsScreen/:applicationId',
+        name: 'job-application-details',
         builder: (context, state) {
-          final applicationId = state.extra as String;
+          final applicationId = state.pathParameters['applicationId']!;
           return JobApplicationDetailsPage(
             applicationId: applicationId,
           );

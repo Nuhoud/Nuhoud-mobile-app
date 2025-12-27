@@ -51,6 +51,11 @@ class FirebaseMessagingService {
 
     try {
       final data = Map<String, dynamic>.from(jsonDecode(raw));
+      log('[FCM] Handling pending navigation: $data');
+
+      // Use a small delay to ensure router is ready
+      await Future.delayed(const Duration(milliseconds: 100));
+
       await NotificationNavigationHelper.handle(
         router: _router,
         data: data,
@@ -74,7 +79,10 @@ class FirebaseMessagingService {
   Future<void> _logToken() async {
     try {
       final token = await _messaging.getToken();
-      log('[FCM] Token: $token');
+      if (token != null && token.isNotEmpty) {
+        CacheHelper.setString(key: 'fcm_token', value: token);
+        log('[FCM] Token: $token');
+      }
 
       _messaging.onTokenRefresh.listen((newToken) {
         log('[FCM] Token refreshed: $newToken');
@@ -96,6 +104,10 @@ class FirebaseMessagingService {
     /// Background → foreground (notification tap)
     FirebaseMessaging.onMessageOpenedApp.listen((message) async {
       log('[FCM] Opened from background: ${message.data}');
+
+      // Small delay to ensure router is ready
+      await Future.delayed(const Duration(milliseconds: 50));
+
       await NotificationNavigationHelper.handle(
         router: _router,
         data: message.data,
