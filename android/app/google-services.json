@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "473831186426",
+    "project_id": "nuhoud-app",
+    "storage_bucket": "nuhoud-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473831186426:android:a3c5f30848c4b9b868ce43",
+        "android_client_info": {
+          "package_name": "com.empower.nuhoud"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCjwzi9BocYJrrRALSrjGqMRnlW4WzI8g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
