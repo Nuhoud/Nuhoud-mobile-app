@@ -37,7 +37,7 @@ class JobApplicationItem extends StatelessWidget {
   Widget build(BuildContext context) {
     // this navigation is true?
     return GestureDetector(
-      onTap: () => GoRouter.of(context).go(Routers.kJobDetailsPage, extra: job.id),
+      onTap: () => GoRouter.of(context).push(Routers.kJobDetailsPage, extra: job.id),
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(

@@ -23,6 +23,12 @@ class NotificationNavigationHelper {
     }
 
     try {
+      if (!_isAllowed(uri.pathSegments.first)) {
+        log('[NotifNav] Screen not allowed: ${uri.pathSegments.first}');
+        router.go(Routers.kHomePageRoute);
+        return;
+      }
+
       /// /job-details/234
       if (_isJobDetails(uri)) {
         final jobId = uri.pathSegments[1];
@@ -40,8 +46,12 @@ class NotificationNavigationHelper {
         return;
       }
 
-      /// simple routes without params
-      router.go('/${uri.pathSegments.first}');
+      try {
+        router.go(uri.pathSegments.first);
+      } catch (e, st) {
+        log('[NotifNav] Navigation error: $e', stackTrace: st);
+        router.go(Routers.kHomePageRoute);
+      }
     } catch (e, st) {
       log('[NotifNav] Navigation error: $e', stackTrace: st);
       _fallback(router, 'Exception');
@@ -56,10 +66,29 @@ class NotificationNavigationHelper {
     return null;
   }
 
-  static bool _isJobDetails(Uri uri) => uri.pathSegments.length == 2 && uri.pathSegments.first == 'job-details';
+  static bool _isAllowed(String path) {
+    final uri = Uri.tryParse(path);
+    if (uri == null) return false;
+
+    final first = uri.pathSegments.isEmpty ? '' : uri.pathSegments.first;
+
+    const allowedRoots = {
+      Routers.kHomePageRoute,
+      Routers.kFilterPage,
+      Routers.kProfilePage,
+      Routers.kJobDetailsPage,
+      Routers.kJobApplicationsScreen,
+      Routers.kJobApplicationDetailsScreen,
+    };
+
+    return allowedRoots.contains(first);
+  }
+
+  static bool _isJobDetails(Uri uri) =>
+      uri.pathSegments.length == 2 && uri.pathSegments.first == Routers.kJobDetailsPage;
 
   static bool _isJobApplicationDetails(Uri uri) =>
-      uri.pathSegments.length == 2 && uri.pathSegments.first == 'job-application-details';
+      uri.pathSegments.length == 2 && uri.pathSegments.first == Routers.kJobApplicationDetailsScreen;
 
   static void _fallback(GoRouter router, String reason) {
     log('[NotifNav] Fallback → home ($reason)');

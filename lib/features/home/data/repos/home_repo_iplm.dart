@@ -5,6 +5,7 @@ import 'package:nuhoud/core/api_services/urls.dart';
 import 'package:nuhoud/core/errors/error_handler.dart';
 import 'package:nuhoud/core/errors/failuer.dart';
 import 'package:nuhoud/features/home/data/models/job_data_model.dart';
+import 'package:nuhoud/features/home/data/models/job_model.dart';
 import 'package:nuhoud/features/home/data/repos/home_repo.dart';
 import 'package:nuhoud/features/home/presentation/params/job_params.dart';
 
@@ -29,4 +30,20 @@ class HomeRepoImpl implements HomeRepo {
   }
 
   bool _isSuccess(int? statusCode) => (statusCode == 200 || statusCode == 201);
+
+  @override
+  Future<Either<Failure, JobModel>> getJobDetails(String jobId) async {
+    try {
+      final response = await apiServices.get(endPoint: "${Urls.getJobDetails}/$jobId");
+      final jobModel = JobModel.fromJson(response.data);
+      if (_isSuccess(response.statusCode)) {
+        return Right(jobModel);
+      } else {
+        return Left(ServerFailure(ErrorHandler.defaultMessage()));
+      }
+    } catch (e) {
+      debugPrint("get job details error: ${e.toString()}");
+      return Left(ErrorHandler.handle(e));
+    }
+  }
 }

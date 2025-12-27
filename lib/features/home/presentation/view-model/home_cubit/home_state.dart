@@ -23,3 +23,17 @@ final class GetJobsFailure extends HomeState {
   final String message;
   const GetJobsFailure({required this.message});
 }
+
+final class GetJobDetailsLoading extends HomeState {
+  const GetJobDetailsLoading();
+}
+
+final class GetJobDetailsSuccess extends HomeState {
+  final JobModel job;
+  const GetJobDetailsSuccess({required this.job});
+}
+
+final class GetJobDetailsFailure extends HomeState {
+  final String message;
+  const GetJobDetailsFailure({required this.message});
+}

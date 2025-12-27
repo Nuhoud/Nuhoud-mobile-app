@@ -1,18 +1,7 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:nuhoud/core/utils/functions.dart';
-import 'package:nuhoud/core/utils/routs.dart';
 import 'package:nuhoud/core/utils/size_app.dart';
-import 'package:nuhoud/core/utils/styles.dart';
-import 'package:nuhoud/core/widgets/custom_button.dart';
-import 'package:nuhoud/core/widgets/custom_snak_bar.dart';
-import 'package:nuhoud/features/home/presentation/params/appliction_params.dart';
-import 'package:nuhoud/features/home/presentation/view-model/appliction_cubit/appliction_cubit.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../data/models/job_model.dart';
-import '../custom_job_details_appbar.dart';
 
 class JobDetailsPageBody extends StatefulWidget {
   final JobModel job;
@@ -55,228 +44,159 @@ class _JobDetailsPageBodyState extends State<JobDetailsPageBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.white,
-        extendBodyBehindAppBar: true,
-        appBar: customAppBar(
-          text: "",
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          context: context,
-        ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 24),
-                // Job Title & Company
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 24),
+            // Job Title & Company
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.job.title,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.headingTextColor,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    widget.job.companyName,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: AppColors.subHeadingTextColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Divider
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Divider(
+                color: Colors.grey[300],
+                thickness: 1,
+              ),
+            ),
+            const SizedBox(height: 24),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.0),
+              child: Text(
+                "نظرة عامة على الوظيفة",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.headingTextColor,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              height: response(context, 45),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: [
+                    _DetailChip(
+                      icon: Icons.location_on_outlined,
+                      text: widget.job.jobLocation,
+                    ),
+                    const SizedBox(width: 10),
+                    // Updated salary chip
+                    _DetailChip(
+                      icon: Icons.attach_money_outlined,
+                      text:
+                          "${widget.job.salaryRange.min}-${widget.job.salaryRange.max} ${getCurrencyArabic(widget.job.salaryRange.currency)}",
+                    ),
+                    const SizedBox(width: 10),
+                    _DetailChip(
+                      icon: Icons.workspaces_outline,
+                      text: widget.job.experienceLevel,
+                    ),
+                    const SizedBox(width: 10),
+                    _DetailChip(
+                      icon: Icons.business_center_outlined,
+                      text: widget.job.jobType,
+                    ),
+                    const SizedBox(width: 10),
+                    _DetailChip(
+                      icon: Icons.business_outlined,
+                      text: widget.job.workPlaceType,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Deadline chip
+            if (widget.job.daysRemaining >= 0) ...[
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: _getDeadlineBackgroundColor(widget.job.daysRemaining),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        widget.job.title,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.headingTextColor,
-                        ),
+                      Icon(
+                        Icons.access_time,
+                        size: 18,
+                        color: _getDeadlineTextColor(widget.job.daysRemaining),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(width: 6),
                       Text(
-                        widget.job.companyName,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: AppColors.subHeadingTextColor,
+                        _getDeadlineText(widget.job.daysRemaining),
+                        style: TextStyle(
+                          color: _getDeadlineTextColor(widget.job.daysRemaining),
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
-
-                // Divider
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Divider(
-                    color: Colors.grey[300],
-                    thickness: 1,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.0),
-                  child: Text(
-                    "نظرة عامة على الوظيفة",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.headingTextColor,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  height: response(context, 45),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        _DetailChip(
-                          icon: Icons.location_on_outlined,
-                          text: widget.job.jobLocation,
-                        ),
-                        const SizedBox(width: 10),
-                        // Updated salary chip
-                        _DetailChip(
-                          icon: Icons.attach_money_outlined,
-                          text:
-                              "${widget.job.salaryRange.min}-${widget.job.salaryRange.max} ${getCurrencyArabic(widget.job.salaryRange.currency)}",
-                        ),
-                        const SizedBox(width: 10),
-                        _DetailChip(
-                          icon: Icons.workspaces_outline,
-                          text: widget.job.experienceLevel,
-                        ),
-                        const SizedBox(width: 10),
-                        _DetailChip(
-                          icon: Icons.business_center_outlined,
-                          text: widget.job.jobType,
-                        ),
-                        const SizedBox(width: 10),
-                        _DetailChip(
-                          icon: Icons.business_outlined,
-                          text: widget.job.workPlaceType,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // Deadline chip
-                if (widget.job.daysRemaining >= 0) ...[
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: _getDeadlineBackgroundColor(widget.job.daysRemaining),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.access_time,
-                            size: 18,
-                            color: _getDeadlineTextColor(widget.job.daysRemaining),
-                          ),
-                          const SizedBox(width: 6),
-                          Text(
-                            _getDeadlineText(widget.job.daysRemaining),
-                            style: TextStyle(
-                              color: _getDeadlineTextColor(widget.job.daysRemaining),
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-                const SizedBox(height: 32),
-
-                // Description Section
-                _buildExpandableSection(
-                  title: "وصف العمل",
-                  content: widget.job.description,
-                  key: 'description',
-                ),
-
-                // Requirements Section
-                _buildExpandableSection(
-                  title: "متطلبات العمل",
-                  content: widget.job.requirements.join(", "),
-                  key: 'requirements',
-                ),
-
-                // Responsibilities Section
-                _buildExpandableSection(
-                  title: "المسؤوليات",
-                  content: widget.job.skillsRequired.join(", "),
-                  key: 'responsibilities',
-                ),
-
-                const SizedBox(height: 40),
-              ],
-            ),
-          ),
-        ),
-        bottomNavigationBar: BlocConsumer<ApplictionCubit, ApplictionState>(
-          listener: (context, state) {
-            if (state is SubmitApplictionError) {
-              CustomSnackBar.showSnackBar(
-                  context: context, title: "خطأ", message: state.message, contentType: ContentType.failure);
-            }
-            if (state is SubmitApplictionSuccess) {
-              showCustomDialog(
-                context: context,
-                icon: Icons.check,
-                withAvatar: true,
-                iconColor: Colors.green[400],
-                title: "تم تقديم الطلب",
-                description: "تم تقديم طلبك بنجاح سيتم التحقق من طلبك في اقرب وقت",
-                primaryButtonText: "اذهب الى طلباتي",
-                onPrimaryAction: () {
-                  Navigator.pop(context);
-                  GoRouter.of(context).push(Routers.kJobApplicationsScreen);
-                },
-                onSecondaryAction: () {
-                  Navigator.pop(context);
-                },
-              );
-            }
-          },
-          builder: (context, state) {
-            return CustomButton(
-              isLoading: state is SubmitApplictionLoading,
-              onPressed: () {
-                context.read<ApplictionCubit>().submitOffer(
-                      OfferParams(
-                        title: widget.job.title,
-                        employerId: widget.job.employerId,
-                        companyName: widget.job.companyName,
-                      ),
-                      widget.job.id,
-                    );
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.send_outlined,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'تقديم على العمل',
-                    style: Styles.textStyle16.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
               ),
-            );
-          },
-        ));
+            ],
+            const SizedBox(height: 32),
+
+            // Description Section
+            _buildExpandableSection(
+              title: "وصف العمل",
+              content: widget.job.description,
+              key: 'description',
+            ),
+
+            // Requirements Section
+            _buildExpandableSection(
+              title: "متطلبات العمل",
+              content: widget.job.requirements.join(", "),
+              key: 'requirements',
+            ),
+
+            // Responsibilities Section
+            _buildExpandableSection(
+              title: "المسؤوليات",
+              content: widget.job.skillsRequired.join(", "),
+              key: 'responsibilities',
+            ),
+
+            const SizedBox(height: 40),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget _buildExpandableSection({

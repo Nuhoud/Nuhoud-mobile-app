@@ -70,6 +70,16 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
+  Future<void> getJobDetails(String jobId) async {
+    emit(const GetJobDetailsLoading());
+    final result = await homeRepo.getJobDetails(jobId);
+    result.fold((failure) {
+      emit(GetJobDetailsFailure(message: failure.message));
+    }, (jobModel) {
+      emit(GetJobDetailsSuccess(job: jobModel));
+    });
+  }
+
   void resetFilter() {
     filterLocation = null;
     filterCompany = null;
