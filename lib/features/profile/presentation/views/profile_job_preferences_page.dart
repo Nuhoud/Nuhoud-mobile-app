@@ -119,26 +119,30 @@ class _ProfileJobPreferencesPageState extends State<ProfileJobPreferencesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(60),
-          child: CustomAppBar(
-            backBtn: true,
-            backgroundColor: AppColors.primaryColor,
-            title: 'تفضيلات العمل',
-          ),
-        ),
-        body: SingleChildScrollView(padding: const EdgeInsets.all(20), child: _buildEditForm() //: _buildDisplayView(),
+    return Scaffold(
+      body: Column(
+        children: [
+          const SafeArea(
+            child: CustomAppBar(
+              backBtn: true,
+              backgroundColor: AppColors.primaryColor,
+              title: 'تفضيلات العمل',
             ),
-        // floatingActionButton: _isEditing
-        //     ? null
-        //     : FloatingActionButton(
-        //         onPressed: _startEditing,
-        //         backgroundColor: AppColors.primaryColor,
-        //         child: const Icon(Icons.edit, color: Colors.white),
-        //       ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+                padding: const EdgeInsets.all(20), child: _buildEditForm() //: _buildDisplayView(),
+                ),
+          ),
+        ],
       ),
+      // floatingActionButton: _isEditing
+      //     ? null
+      //     : FloatingActionButton(
+      //         onPressed: _startEditing,
+      //         backgroundColor: AppColors.primaryColor,
+      //         child: const Icon(Icons.edit, color: Colors.white),
+      //       ),
     );
   }
 

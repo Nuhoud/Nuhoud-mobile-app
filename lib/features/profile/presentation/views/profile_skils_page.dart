@@ -77,41 +77,44 @@ class _ProfileSkillsPageState extends State<ProfileSkillsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(60),
-          child: CustomAppBar(
-            backBtn: true,
-            backgroundColor: AppColors.primaryColor,
-            title: 'المهارات',
+    return Scaffold(
+      body: Column(
+        children: [
+          const SafeArea(
+            child: CustomAppBar(
+              backBtn: true,
+              backgroundColor: AppColors.primaryColor,
+              title: 'المهارات',
+            ),
           ),
-        ),
-        body: BlocBuilder<SkillsCubit, SkillsState>(
-          builder: (context, state) {
-            if (state is GetSkillsFromAI) {
-              return const WaitingMessageWithDots(
-                message: "يتم إنشاء مهاراتك الشخصية بناءً على معلوماتك",
-              );
-            }
-            if (state is SkillsLoading) {
-              return const CustomCircularProgressIndicator(
-                color: AppColors.primaryColor,
-              );
-            }
-            if (state is SkillsError) {
-              return CustomErrorWidget(
-                  errorMessage: state.message,
-                  onRetry: () {
-                    context.read<SkillsCubit>().getSkills();
-                  });
-            }
-            if (state is SkillsSuccess) {
-              return SingleChildScrollView(padding: const EdgeInsets.all(20), child: _buildEditView(state.skills));
-            }
-            return const SizedBox();
-          },
-        ),
+          Expanded(
+            child: BlocBuilder<SkillsCubit, SkillsState>(
+              builder: (context, state) {
+                if (state is GetSkillsFromAI) {
+                  return const WaitingMessageWithDots(
+                    message: "يتم إنشاء مهاراتك الشخصية بناءً على معلوماتك",
+                  );
+                }
+                if (state is SkillsLoading) {
+                  return const CustomCircularProgressIndicator(
+                    color: AppColors.primaryColor,
+                  );
+                }
+                if (state is SkillsError) {
+                  return CustomErrorWidget(
+                      errorMessage: state.message,
+                      onRetry: () {
+                        context.read<SkillsCubit>().getSkills();
+                      });
+                }
+                if (state is SkillsSuccess) {
+                  return SingleChildScrollView(padding: const EdgeInsets.all(20), child: _buildEditView(state.skills));
+                }
+                return const SizedBox();
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

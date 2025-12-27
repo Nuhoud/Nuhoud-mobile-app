@@ -95,17 +95,18 @@ class _ProfileGoalsPageState extends State<ProfileGoalsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(60),
-          child: CustomAppBar(
-            backBtn: true,
-            backgroundColor: AppColors.primaryColor,
-            title: 'الأهداف والاهتمامات',
+    return Scaffold(
+      body: Column(
+        children: [
+          const SafeArea(
+            child: CustomAppBar(
+              backBtn: true,
+              backgroundColor: AppColors.primaryColor,
+              title: 'الأهداف والاهتمامات',
+            ),
           ),
-        ),
-        body: SingleChildScrollView(padding: const EdgeInsets.all(20), child: _buildEditForm()),
+          Expanded(child: SingleChildScrollView(padding: const EdgeInsets.all(20), child: _buildEditForm())),
+        ],
       ),
     );
   }

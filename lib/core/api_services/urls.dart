@@ -2,8 +2,8 @@ class Urls {
   static const String mainPort = "3000";
   static const String jobPort = "4000";
   static const String ip = "10.0.2.2";
-  static const String mainBaseUrl = "http://localhost/Nuhoud/";
-  static const String jobsBaseUrl = "http://localhost/NuhoudJob/";
+  static const String mainBaseUrl = "http://10.0.2.2/Nuhoud/";
+  static const String jobsBaseUrl = "http://10.0.2.2/NuhoudJob/";
 
   //auth endpoint
   static String login = "auth/login";

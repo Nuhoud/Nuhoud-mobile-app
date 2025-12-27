@@ -24,7 +24,7 @@ class CustomAppBar extends StatelessWidget {
         children: [
           backBtn
               ? IconButton(
-                  icon: Icon(Icons.arrow_back_outlined, size: 20, color: textColor ?? Colors.white70),
+                  icon: Icon(Icons.arrow_back_outlined, size: 20, color: textColor ?? Colors.white),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -37,7 +37,7 @@ class CustomAppBar extends StatelessWidget {
             child: Text(
               overflow: TextOverflow.ellipsis,
               title,
-              style: Styles.textStyle18.copyWith(color: textColor ?? Colors.white70, fontWeight: FontWeight.bold),
+              style: Styles.textStyle18.copyWith(color: textColor ?? Colors.white, fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(

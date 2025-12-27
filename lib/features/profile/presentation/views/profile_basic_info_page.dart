@@ -5,7 +5,6 @@ import 'package:nuhoud/features/profile/data/models/profile_model.dart';
 import 'package:nuhoud/features/profile/presentation/view-model/cubit/profile_cubit.dart';
 import '../../../../../../core/utils/app_colors.dart';
 import '../../../../../../core/widgets/custom_snak_bar.dart';
-import '../../../../core/utils/size_app.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import 'widgets/profile_basic_info_widgets.dart';
 
@@ -81,67 +80,70 @@ class _ProfileBasicInfoPageState extends State<ProfileBasicInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(response(context, 60)),
-          child: const CustomAppBar(
-            backBtn: true,
-            backgroundColor: AppColors.primaryColor,
-            title: 'المعلومات الشخصية',
-          ),
-        ),
-        body: BlocListener<ProfileCubit, ProfileState>(
-          listener: (context, state) {
-            if (state is UpdateProfileSuccess) {
-              Navigator.pop(context);
-              context.read<ProfileCubit>().getProfile();
-              CustomSnackBar.showSnackBar(
-                context: context,
-                title: "تم الحفظ",
-                message: "تم تحديث الملف الشخصي بنجاح",
-                contentType: ContentType.success,
-              );
-            }
-            if (state is UpdateProfileError) {
-              CustomSnackBar.showSnackBar(
-                context: context,
-                title: "خطأ",
-                message: state.message,
-                contentType: ContentType.failure,
-              );
-            }
-          },
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
-            child: Form(
-              key: formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  DateOfBirthField(controller: dateController),
-                  const SizedBox(height: 20),
-                  LocationField(controller: locationController),
-                  const SizedBox(height: 20),
-                  GenderRadioGroup(gender: gender, onChanged: (value) => setState(() => gender = value)),
-                  const SizedBox(height: 20),
-                  LanguagesSection(
-                    languages: languages,
-                    removeLanguage: removeLanguage,
-                    addLanguage: addLanguage,
-                    languageController: languageController,
-                  ),
-                  const SizedBox(height: 20),
-                  BlocBuilder<ProfileCubit, ProfileState>(
-                    builder: (context, state) {
-                      return SaveProfileButton(onPressed: _saveProfile, isLoading: state is UpdateProfileLoading);
-                    },
-                  ),
-                ],
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: BlocListener<ProfileCubit, ProfileState>(
+        listener: (context, state) {
+          if (state is UpdateProfileSuccess) {
+            Navigator.pop(context);
+            context.read<ProfileCubit>().getProfile();
+            CustomSnackBar.showSnackBar(
+              context: context,
+              title: "تم الحفظ",
+              message: "تم تحديث الملف الشخصي بنجاح",
+              contentType: ContentType.success,
+            );
+          }
+          if (state is UpdateProfileError) {
+            CustomSnackBar.showSnackBar(
+              context: context,
+              title: "خطأ",
+              message: state.message,
+              contentType: ContentType.failure,
+            );
+          }
+        },
+        child: Column(
+          children: [
+            const SafeArea(
+              child: CustomAppBar(
+                backBtn: true,
+                backgroundColor: AppColors.primaryColor,
+                title: 'المعلومات الشخصية',
               ),
             ),
-          ),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(20),
+                child: Form(
+                  key: formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      DateOfBirthField(controller: dateController),
+                      const SizedBox(height: 20),
+                      LocationField(controller: locationController),
+                      const SizedBox(height: 20),
+                      GenderRadioGroup(gender: gender, onChanged: (value) => setState(() => gender = value)),
+                      const SizedBox(height: 20),
+                      LanguagesSection(
+                        languages: languages,
+                        removeLanguage: removeLanguage,
+                        addLanguage: addLanguage,
+                        languageController: languageController,
+                      ),
+                      const SizedBox(height: 20),
+                      BlocBuilder<ProfileCubit, ProfileState>(
+                        builder: (context, state) {
+                          return SaveProfileButton(onPressed: _saveProfile, isLoading: state is UpdateProfileLoading);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

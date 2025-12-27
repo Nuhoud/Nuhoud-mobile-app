@@ -164,90 +164,93 @@ class _ProfileExperiencePageState extends State<ProfileExperiencePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(response(context, 60)),
-          child: const CustomAppBar(
-            backBtn: true,
-            backgroundColor: AppColors.primaryColor,
-            title: 'الخبرات العملية',
+    return Scaffold(
+      body: Column(
+        children: [
+          const SafeArea(
+            child: CustomAppBar(
+              backBtn: true,
+              backgroundColor: AppColors.primaryColor,
+              title: 'الخبرات العملية',
+            ),
           ),
-        ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Experience list title
-              Text(
-                "الخبرات العملية:",
-                style: Styles.textStyle18.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryColor,
-                ),
-              ),
-              const SizedBox(height: 16),
-              // Experience list
-              if (_experiences.isEmpty) _buildEmptyState(),
-              if (_experiences.isNotEmpty)
-                ..._experiences.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final exp = entry.value;
-                  return _buildExperienceItem(exp, index);
-                }),
-              const SizedBox(height: 24),
-              if (_editingIndex != null) _buildExperienceForm(),
-              const SizedBox(height: 30),
-              // Save all button
-              BlocConsumer<ProfileCubit, ProfileState>(
-                listener: (context, state) {
-                  if (state is UpdateProfileSuccess) {
-                    Navigator.pop(context);
-                    context.read<ProfileCubit>().getProfile();
-                    CustomSnackBar.showSnackBar(
-                      context: context,
-                      title: "تم الحفظ",
-                      message: "تم تحديث الخبرات العملية بنجاح",
-                      contentType: ContentType.success,
-                    );
-                  }
-                  if (state is UpdateProfileError) {
-                    CustomSnackBar.showSnackBar(
-                      context: context,
-                      title: "خطأ",
-                      message: state.message,
-                      contentType: ContentType.failure,
-                    );
-                  }
-                },
-                builder: (context, state) {
-                  return CustomButton(
-                    isLoading: state is UpdateProfileLoading,
-                    onPressed: _saveToBackend,
-                    child: Text(
-                      "حفظ التغييرات",
-                      style: Styles.textStyle16.copyWith(color: Colors.white),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Experience list title
+                  Text(
+                    "الخبرات العملية:",
+                    style: Styles.textStyle18.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryColor,
                     ),
-                  );
-                },
+                  ),
+                  const SizedBox(height: 16),
+                  // Experience list
+                  if (_experiences.isEmpty) _buildEmptyState(),
+                  if (_experiences.isNotEmpty)
+                    ..._experiences.asMap().entries.map((entry) {
+                      final index = entry.key;
+                      final exp = entry.value;
+                      return _buildExperienceItem(exp, index);
+                    }),
+                  const SizedBox(height: 24),
+                  if (_editingIndex != null) _buildExperienceForm(),
+                  const SizedBox(height: 30),
+                  // Save all button
+                  BlocConsumer<ProfileCubit, ProfileState>(
+                    listener: (context, state) {
+                      if (state is UpdateProfileSuccess) {
+                        Navigator.pop(context);
+                        context.read<ProfileCubit>().getProfile();
+                        CustomSnackBar.showSnackBar(
+                          context: context,
+                          title: "تم الحفظ",
+                          message: "تم تحديث الخبرات العملية بنجاح",
+                          contentType: ContentType.success,
+                        );
+                      }
+                      if (state is UpdateProfileError) {
+                        CustomSnackBar.showSnackBar(
+                          context: context,
+                          title: "خطأ",
+                          message: state.message,
+                          contentType: ContentType.failure,
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      return CustomButton(
+                        isLoading: state is UpdateProfileLoading,
+                        onPressed: _saveToBackend,
+                        child: Text(
+                          "حفظ التغييرات",
+                          style: Styles.textStyle16.copyWith(color: Colors.white),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-        floatingActionButton: _editingIndex == null
-            ? FloatingActionButton(
-                onPressed: () {
-                  setState(() {
-                    _editingIndex = -1; // Special value for new item
-                    _resetControllers();
-                  });
-                },
-                backgroundColor: AppColors.primaryColor,
-                child: const Icon(Icons.add, color: Colors.white),
-              )
-            : null,
+        ],
       ),
+      floatingActionButton: _editingIndex == null
+          ? FloatingActionButton(
+              onPressed: () {
+                setState(() {
+                  _editingIndex = -1; // Special value for new item
+                  _resetControllers();
+                });
+              },
+              backgroundColor: AppColors.primaryColor,
+              child: const Icon(Icons.add, color: Colors.white),
+            )
+          : null,
     );
   }
 

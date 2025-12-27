@@ -41,7 +41,7 @@ class _HomeLayoutState extends State<HomeLayout> {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(100),
             child: SizedBox(
-              height: response(context, 75),
+              height: response(context, 78),
               child: BottomNavigationBar(
                 currentIndex: currentIndex,
                 onTap: (index) {
