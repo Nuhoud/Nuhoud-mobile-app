@@ -1,0 +1,29 @@
+{
+  "screens": [
+    {
+      "path": "/homePage",
+      "args": [],
+      "example": "/homePage"
+    },
+    {
+      "path": "/job-details/:jobId",
+      "args": ["jobId"],
+      "example": "/job-details/123"
+    },
+    {
+      "path": "/profilePage",
+      "args": [],
+      "example": "/profilePage"
+    },
+    {
+      "path": "/ApplicationsScreen",
+      "args": [],
+      "example": "/ApplicationsScreen"
+    },
+    {
+      "path": "/filterResultScreen",
+      "args": [],
+      "example": "/filterResultScreen"
+    }
+  ]
+}

@@ -9,25 +9,73 @@ import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/app_constats.dart';
 import '../../../../../core/utils/size_app.dart';
 
-class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final double height;
-
-  const CustomHomeAppBar({super.key, required this.height});
-
-  @override
-  Size get preferredSize => Size.fromHeight(height);
+class CustomHomeAppBar extends StatelessWidget {
+  const CustomHomeAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     final TextEditingController searchController = TextEditingController();
     return Container(
-      color: AppColors.primaryColor,
+      decoration: const BoxDecoration(
+        color: AppColors.primaryColor,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(16),
+          bottomRight: Radius.circular(16),
+        ),
+      ),
       padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Image.asset(AssetsData.logo, width: response(context, 50), height: response(context, 50)),
+                Row(
+                  children: [
+                    GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          width: response(context, 45),
+                          height: response(context, 45),
+                          decoration: BoxDecoration(
+                            color: AppColors.textWhite.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(Icons.notifications_outlined, color: Colors.white),
+                        )),
+                    const SizedBox(
+                      width: 8,
+                    ),
+                    Container(
+                      width: response(context, 45),
+                      height: response(context, 45),
+                      decoration: BoxDecoration(
+                        color: AppColors.textWhite.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Center(
+                        child: IconButton(
+                          icon: Image.asset(
+                            AssetsData.filter,
+                            color: Colors.white,
+                            width: response(context, 25),
+                            height: response(context, 25),
+                          ),
+                          color: Colors.white,
+                          onPressed: () {
+                            GoRouter.of(context).push(Routers.kFilterPage);
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
             Row(
               children: [
                 const SizedBox(width: 8),
@@ -53,31 +101,9 @@ class CustomHomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
-                Container(
-                  width: response(context, 55),
-                  height: response(context, 55),
-                  decoration: BoxDecoration(
-                    color: AppColors.textWhite.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Center(
-                    child: IconButton(
-                      icon: Image.asset(
-                        AssetsData.filter,
-                        color: Colors.white,
-                        width: response(context, 35),
-                        height: response(context, 35),
-                      ),
-                      color: Colors.white,
-                      onPressed: () {
-                        GoRouter.of(context).push(Routers.kFilterPage);
-                      },
-                    ),
-                  ),
-                ),
               ],
             ),
+            const SizedBox(height: 16),
           ],
         ),
       ),

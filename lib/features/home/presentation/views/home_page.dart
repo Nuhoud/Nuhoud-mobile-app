@@ -14,32 +14,43 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      bottom: false,
-      child: Scaffold(
-        appBar: CustomHomeAppBar(height: MediaQuery.sizeOf(context).height * 0.13),
-        body: BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, state) {
-            final homeCubit = context.read<HomeCubit>();
-            if ((state is GetJobsLoading && state.isFirstLoading) || state is HomeInitial) {
-              return SkeletonizerHelper.homeSkeletonizer();
-            }
-            if (state is GetJobsFailure) {
-              return Center(
-                  child: CustomErrorWidget(
-                errorMessage: state.message,
-                textColor: AppColors.headingTextColor,
-                onRetry: () {
-                  homeCubit.getJobs(loadMore: false);
-                },
-              ));
-            }
-            if (state is GetJobsSuccess && state.jobs.isEmpty) {
-              return const Center(child: EmptyWidget());
-            }
-            return JobApplication(jobs: homeCubit.jobs);
-          },
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        backgroundColor: AppColors.primaryColor,
+        elevation: 0,
+        foregroundColor: Colors.transparent,
+        toolbarHeight: 0,
+        scrolledUnderElevation: 0,
+      ),
+      body: Column(
+        children: [
+          const CustomHomeAppBar(),
+          Expanded(
+            child: BlocBuilder<HomeCubit, HomeState>(
+              builder: (context, state) {
+                final homeCubit = context.read<HomeCubit>();
+                if ((state is GetJobsLoading && state.isFirstLoading) || state is HomeInitial) {
+                  return SkeletonizerHelper.homeSkeletonizer();
+                }
+                if (state is GetJobsFailure) {
+                  return Center(
+                      child: CustomErrorWidget(
+                    errorMessage: state.message,
+                    textColor: AppColors.headingTextColor,
+                    onRetry: () {
+                      homeCubit.getJobs(loadMore: false);
+                    },
+                  ));
+                }
+                if (state is GetJobsSuccess && state.jobs.isEmpty) {
+                  return const Center(child: EmptyWidget());
+                }
+                return JobApplication(jobs: homeCubit.jobs);
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

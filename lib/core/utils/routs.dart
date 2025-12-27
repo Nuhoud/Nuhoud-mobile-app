@@ -1,8 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:nuhoud/features/auth/presentation/views/reset_password/request_reset_password_page.dart';
-import 'package:nuhoud/features/home/data/models/job_model.dart';
 import 'package:nuhoud/features/home/presentation/views/filter_page.dart';
+import 'package:nuhoud/features/home/presentation/views/job_details_page.dart';
 import 'package:nuhoud/features/home/presentation/views/widgets/filter_result_screen.dart';
+import 'package:nuhoud/features/job_applications/presentation/views/job_application_details_page.dart';
 import 'package:nuhoud/features/job_applications/presentation/views/job_applications_page.dart';
 import 'package:nuhoud/features/profile/data/models/profile_model.dart';
 import 'package:nuhoud/features/profile/presentation/views/profile_basic_info_page.dart';
@@ -18,7 +19,6 @@ import '../../features/auth/presentation/views/register/register_page.dart';
 import '../../features/auth/presentation/views/reset_password/reset_password_page.dart';
 import '../../features/auth/presentation/views/verification/verification_page.dart';
 import '../../features/home/presentation/views/home_layout.dart';
-import '../../features/home/presentation/views/jobe_details_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_intro_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_job_preferences_page.dart';
 import '../../features/onboarding/presentation/views/onboarding_ueser_experince_page.dart';
@@ -52,7 +52,8 @@ abstract class Routers {
   static const String kOndboardingUserCertificationsPage = '/onboardingUserCertificationsPage';
   static const String kOndboardingUserSkillsPage = '/onboardingUserSkillsPage';
 
-  static const String kJobDetailsPage = '/jobDetailsPage';
+  // jobs
+  static const String kJobDetailsPage = '/job-details';
 
   //profile pages
   static const String kProfilePage = '/profilePage';
@@ -68,6 +69,7 @@ abstract class Routers {
 
   //job applications
   static const String kJobApplicationsScreen = '/ApplicationsScreen';
+  static const String kJobApplicationDetailsScreen = '/job-application-details';
 
   static final router = GoRouter(
     routes: [
@@ -144,7 +146,10 @@ abstract class Routers {
       ),
       GoRoute(
         path: kJobDetailsPage,
-        builder: (context, state) => JobDetailsPage(job: state.extra as JobModel),
+        builder: (context, state) {
+          final jobId = state.extra as String;
+          return JobDetailsPage(jobId: jobId);
+        },
       ),
       GoRoute(
         path: kProfilePage,
@@ -203,6 +208,15 @@ abstract class Routers {
       GoRoute(
         path: kJobApplicationsScreen,
         builder: (context, state) => const JobApplicationsPage(),
+      ),
+      GoRoute(
+        path: kJobApplicationDetailsScreen,
+        builder: (context, state) {
+          final applicationId = state.extra as String;
+          return JobApplicationDetailsPage(
+            applicationId: applicationId,
+          );
+        },
       ),
     ],
   );

@@ -10,20 +10,20 @@ import 'package:nuhoud/core/widgets/custom_button.dart';
 import 'package:nuhoud/core/widgets/custom_snak_bar.dart';
 import 'package:nuhoud/features/home/presentation/params/appliction_params.dart';
 import 'package:nuhoud/features/home/presentation/view-model/appliction_cubit/appliction_cubit.dart';
-import '../../../../core/utils/app_colors.dart';
-import '../../data/models/job_model.dart';
-import 'widgets/custom_job_details_appbar.dart';
+import '../../../../../../core/utils/app_colors.dart';
+import '../../../../data/models/job_model.dart';
+import '../custom_job_details_appbar.dart';
 
-class JobDetailsPage extends StatefulWidget {
+class JobDetailsPageBody extends StatefulWidget {
   final JobModel job;
 
-  const JobDetailsPage({super.key, required this.job});
+  const JobDetailsPageBody({super.key, required this.job});
 
   @override
-  State<JobDetailsPage> createState() => _JobDetailsPageState();
+  State<JobDetailsPageBody> createState() => _JobDetailsPageBodyState();
 }
 
-class _JobDetailsPageState extends State<JobDetailsPage> {
+class _JobDetailsPageBodyState extends State<JobDetailsPageBody> {
   final Map<String, bool> _expandedSections = {
     'description': false,
     'requirements': false,
