@@ -1,29 +1,101 @@
 {
+  "rules": {
+    "screen_field": "data.screen",
+    "type": "string",
+    "leading_slash": true,
+    "trailing_slash": false,
+    "query_params": false,
+    "description": "The backend must send the navigation target inside data.screen as a full path"
+  },
+
   "screens": [
     {
       "path": "/homePage",
       "args": [],
-      "example": "/homePage"
+      "example": "/homePage",
+      "description": "الصفحة الرئيسية"
     },
     {
       "path": "/job-details/:jobId",
       "args": ["jobId"],
-      "example": "/job-details/123"
+      "example": "/job-details/12345",
+      "description": "تفاصيل وظيفة"
+    },
+    {
+      "path": "/job-application-details/:applicationId",
+      "args": ["applicationId"],
+      "example": "/job-application-details/98765",
+      "description": "تفاصيل طلب توظيف"
     },
     {
       "path": "/profilePage",
       "args": [],
-      "example": "/profilePage"
+      "example": "/profilePage",
+      "description": "الملف الشخصي"
     },
     {
       "path": "/ApplicationsScreen",
       "args": [],
-      "example": "/ApplicationsScreen"
+      "example": "/ApplicationsScreen",
+      "description": "طلبات التوظيف"
     },
     {
-      "path": "/filterResultScreen",
+      "path": "/filterPage",
       "args": [],
-      "example": "/filterResultScreen"
+      "example": "/filterPage",
+      "description": "بحث / الفلترة"
+    }
+  ],
+
+  "notification_examples": [
+    {
+      "title": "تم قبول طلبك",
+      "body": "تم قبول طلبك المقدم في شركة المبوجون، يرجى التواصل في أسرع وقت لاستكمال الإجراءات",
+      "data": {
+        "screen": "/job-application-details/22323"
+      }
+    },
+    {
+      "title": "فرصة عمل جديدة تناسبك",
+      "body": "تم نشر وظيفة Flutter Developer جديدة تناسب خبرتك",
+      "data": {
+        "screen": "/job-details/98432"
+      }
+    },
+    {
+      "title": "تحديث حالة الطلب",
+      "body": "نأسف لإبلاغك أن طلبك لم يتم قبوله هذه المرة",
+      "data": {
+        "screen": "/job-application-details/22323"
+      }
+    },
+    {
+      "title": "أكمل ملفك الشخصي",
+      "body": "أكمل ملفك الشخصي لزيادة فرصك في القبول",
+      "data": {
+        "screen": "/profilePage"
+      }
+    },
+    {
+      "title": "طلبات التوظيف",
+      "body": "لديك تحديثات جديدة على طلبات التوظيف الخاصة بك",
+      "data": {
+        "screen": "/ApplicationsScreen"
+      }
+    },
+    {
+      "title": "بحث جديد",
+      "body": "قم بإجراء بحث جديد لعرض المزيد من الفرص",
+      "data": {
+        "screen": "/filterPage"
+      }
+    },
+    {
+      "title": "إشعار جديد",
+      "body": "لديك إشعار جديد داخل التطبيق",
+      "data": {
+        "screen": "/homePage"
+      }
     }
   ]
 }

@@ -5,4 +5,5 @@ import 'package:nuhoud/features/job_applications/data/models/job_application_mod
 
 abstract class JobApplicationsRepo {
   Future<Either<Failure, JobApplicationModel>> getMyJobApplications(PaginationsParams paginationsParams);
+  Future<Either<Failure, JobApplication>> getJobApplicationDetails(String applicationId);
 }

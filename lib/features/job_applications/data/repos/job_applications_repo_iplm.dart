@@ -28,4 +28,21 @@ class JobApplicationsRepoImpl implements JobApplicationsRepo {
       return Left(ErrorHandler.handle(e));
     }
   }
+
+  @override
+  Future<Either<Failure, JobApplication>> getJobApplicationDetails(String applicationId) async {
+    try {
+      final response = await apiServices.get(
+        endPoint: "${Urls.getJobApplicationDetails}/$applicationId",
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final jobApplication = JobApplication.fromJson(response.data);
+        return Right(jobApplication);
+      }
+      return Left(ServerFailure(ErrorHandler.defaultMessage()));
+    } catch (e) {
+      debugPrint("get user plan error:${e.toString()}");
+      return Left(ErrorHandler.handle(e));
+    }
+  }
 }

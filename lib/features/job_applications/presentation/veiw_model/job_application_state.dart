@@ -22,3 +22,17 @@ final class JobApplicationError extends JobApplicationState {
 }
 
 final class JobApplicationLoading extends JobApplicationState {}
+
+final class JobApplicationDetailsSuccess extends JobApplicationState {
+  final JobApplication jobApplication;
+
+  const JobApplicationDetailsSuccess(this.jobApplication);
+}
+
+final class JobApplicationDetailsError extends JobApplicationState {
+  final String message;
+
+  const JobApplicationDetailsError(this.message);
+}
+
+final class JobApplicationDetailsLoading extends JobApplicationState {}

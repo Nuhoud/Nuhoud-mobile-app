@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:nuhoud/core/utils/app_colors.dart';
+import 'package:nuhoud/core/utils/routs.dart';
 import 'package:nuhoud/core/utils/size_app.dart';
 import 'package:nuhoud/core/utils/styles.dart';
 import 'package:nuhoud/core/widgets/custom_app_bar.dart';
@@ -74,8 +76,9 @@ class JobApplicationsPage extends StatelessWidget {
 
 class JobApplicationCard extends StatelessWidget {
   final JobApplication application;
+  final bool shouldNavigate;
 
-  const JobApplicationCard({super.key, required this.application});
+  const JobApplicationCard({super.key, required this.application, this.shouldNavigate = true});
 
   (Color, Color, String) _getStatusData(String status) {
     switch (status.toLowerCase()) {
@@ -96,104 +99,109 @@ class JobApplicationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final (bgColor, textColor, statusText) = _getStatusData(application.status ?? 'pending');
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.borderColor),
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Job Title and Company
-          Row(
-            children: [
-              const Icon(Icons.business_center, color: AppColors.primaryColor, size: 24),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      application.jobTitle ?? 'عنوان الوظيفة غير متوفر',
-                      style: Styles.textStyle18.copyWith(
-                        color: AppColors.headingTextColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      application.companyName ?? 'شركة غير معروفة',
-                      style: Styles.textStyle16.copyWith(
-                        color: AppColors.subHeadingTextColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-
-          // Status and Application Date
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Status
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                decoration: BoxDecoration(
-                  color: bgColor,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  statusText,
-                  style: Styles.textStyle16.copyWith(
-                    color: textColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-
-              // Application Date
-              if (application.postedAt != null)
-                Text(
-                  'تقدمت: ${DateTime.parse(application.postedAt!).day}/${DateTime.parse(application.postedAt!).month}/${DateTime.parse(application.postedAt!).year}',
-                  style: Styles.textStyle15.copyWith(
-                    color: AppColors.subHeadingTextColor,
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(height: 12),
-
-          // Employer Note
-          if (application.employerNote?.isNotEmpty == true) ...[
-            const Divider(height: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return GestureDetector(
+      onTap: shouldNavigate
+          ? () => GoRouter.of(context).push(Routers.kJobApplicationDetailsScreen, extra: application.id)
+          : null,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColors.borderColor),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Job Title and Company
+            Row(
               children: [
-                Text(
-                  'ملاحظة صاحب العمل:',
-                  style: Styles.textStyle16.copyWith(
-                    color: AppColors.headingTextColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  application.employerNote!,
-                  style: Styles.textStyle16.copyWith(
-                    color: AppColors.subHeadingTextColor,
+                const Icon(Icons.business_center, color: AppColors.primaryColor, size: 24),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        application.jobTitle ?? 'عنوان الوظيفة غير متوفر',
+                        style: Styles.textStyle18.copyWith(
+                          color: AppColors.headingTextColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        application.companyName ?? 'شركة غير معروفة',
+                        style: Styles.textStyle16.copyWith(
+                          color: AppColors.subHeadingTextColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
+            const SizedBox(height: 16),
+
+            // Status and Application Date
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Status
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: bgColor,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    statusText,
+                    style: Styles.textStyle16.copyWith(
+                      color: textColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+
+                // Application Date
+                if (application.postedAt != null)
+                  Text(
+                    'تقدمت: ${DateTime.parse(application.postedAt!).day}/${DateTime.parse(application.postedAt!).month}/${DateTime.parse(application.postedAt!).year}',
+                    style: Styles.textStyle15.copyWith(
+                      color: AppColors.subHeadingTextColor,
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 12),
+
+            // Employer Note
+            if (application.employerNote?.isNotEmpty == true) ...[
+              const Divider(height: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'ملاحظة صاحب العمل:',
+                    style: Styles.textStyle16.copyWith(
+                      color: AppColors.headingTextColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    application.employerNote!,
+                    style: Styles.textStyle16.copyWith(
+                      color: AppColors.subHeadingTextColor,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

@@ -36,4 +36,5 @@ class Urls {
 
   //job applcations
   static String getMyJobApplications = "application/my-applications";
+  static String getJobApplicationDetails = "application/";
 }

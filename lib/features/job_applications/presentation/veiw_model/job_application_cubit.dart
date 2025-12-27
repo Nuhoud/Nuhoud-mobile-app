@@ -16,4 +16,12 @@ class JobApplicationCubit extends Cubit<JobApplicationState> {
       emit(JobApplicationSuccess(data.data ?? []));
     });
   }
+
+  Future<void> getJobApplicationDetails(String applicationId) async {
+    emit(JobApplicationLoading());
+    final result = await jobApplicationsRepo.getJobApplicationDetails(applicationId);
+    result.fold((f) => emit(JobApplicationError(f.message)), (data) {
+      emit(JobApplicationDetailsSuccess(data));
+    });
+  }
 }
