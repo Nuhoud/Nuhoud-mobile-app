@@ -45,4 +45,14 @@ class ApiServices {
   Future<Response> patch({required String endPoint, required dynamic data, Map<String, dynamic>? queryParameters}) {
     return _dio.patch(endPoint, queryParameters: queryParameters, data: data, options: Options(headers: _headers()));
   }
+
+  Future<Response> postMultipart({
+    required String endPoint,
+    required FormData data,
+    Map<String, dynamic>? queryParameters,
+  }) {
+    final headers = _headers()..remove('Content-Type');
+    return _dio.post(endPoint,
+        queryParameters: queryParameters, data: data, options: Options(headers: headers));
+  }
 }

@@ -32,3 +32,15 @@ final class UpdateProfileError extends ProfileState {
   final String message;
   const UpdateProfileError(this.message);
 }
+
+final class UpdateProfilePhotoLoading extends ProfileState {}
+
+final class UpdateProfilePhotoSuccess extends ProfileState {
+  final String photoUrl;
+  const UpdateProfilePhotoSuccess(this.photoUrl);
+}
+
+final class UpdateProfilePhotoError extends ProfileState {
+  final String message;
+  const UpdateProfilePhotoError(this.message);
+}

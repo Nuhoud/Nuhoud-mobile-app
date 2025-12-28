@@ -40,50 +40,53 @@ class _JobApplicationState extends State<JobApplication> {
       color: AppColors.backgroundColor,
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return CustomScrollView(
-            physics: const BouncingScrollPhysics(),
-            controller: _scrollController,
-            slivers: [
-              // Title Section
-              SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                      child: Text(
-                        "الوظائف المقترحة",
-                        style: TextStyle(
-                          color: AppColors.headingTextColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: MediaQuery.sizeOf(context).shortestSide * 0.055,
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 30.0),
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              controller: _scrollController,
+              slivers: [
+                // Title Section
+                SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                        child: Text(
+                          "الوظائف المقترحة",
+                          style: TextStyle(
+                            color: AppColors.headingTextColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: MediaQuery.sizeOf(context).shortestSide * 0.055,
+                          ),
                         ),
                       ),
+                    ],
+                  ),
+                ),
+                // list Section
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  sliver: SliverList.separated(
+                    itemBuilder: (context, index) => JobApplicationItem(
+                      job: widget.jobs[index],
                     ),
-                  ],
-                ),
-              ),
-              // list Section
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                sliver: SliverList.separated(
-                  itemBuilder: (context, index) => JobApplicationItem(
-                    job: widget.jobs[index],
-                  ),
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: 16,
-                  ),
-                  itemCount: widget.jobs.length,
-                ),
-              ),
-              if (!cubit.hasReachedMax && cubit.isFetchingJobs)
-                const SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: LoadingWidget(),
+                    separatorBuilder: (context, index) => const SizedBox(
+                      height: 16,
+                    ),
+                    itemCount: widget.jobs.length,
                   ),
                 ),
-            ],
+                if (!cubit.hasReachedMax && cubit.isFetchingJobs)
+                  const SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: LoadingWidget(),
+                    ),
+                  ),
+              ],
+            ),
           );
         },
       ),

@@ -27,6 +27,7 @@ class Urls {
 
   //profile endpoint
   static String getProfile = "profile/my-profile";
+  static String updateProfilePhoto = "profile/photo";
 
   //user plan endpoint
   static String getUserPlan = "aiservice/devplan";

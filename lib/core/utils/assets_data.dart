@@ -17,7 +17,11 @@ class AssetsData {
   static const roadMapFillNav = 'assets/icons/roadmap_fill_nav.svg';
   static const profileNav = 'assets/icons/profile_nav.svg';
   static const profileFillNav = 'assets/icons/profile_fill_nav.svg';
+
   //home
   static const filter = 'assets/images/filter.png';
   static const err = 'assets/images/error.png';
+
+  // profile
+  static const profilePhoto = 'assets/images/profile_image.png';
 }

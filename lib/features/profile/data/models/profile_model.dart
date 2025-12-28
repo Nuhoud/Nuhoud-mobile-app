@@ -6,31 +6,32 @@ class ProfileModel {
   JobPreferences? jobPreferences;
   Goals? goals;
   Skills? skills;
+  String? url;
 
-  ProfileModel({
-    this.basicInfo,
-    this.education,
-    this.experiences,
-    this.certifications,
-    this.jobPreferences,
-    this.goals,
-    this.skills,
-  });
+  ProfileModel(
+      {this.basicInfo,
+      this.education,
+      this.experiences,
+      this.certifications,
+      this.jobPreferences,
+      this.goals,
+      this.skills,
+      this.url});
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
-        basicInfo: json["basic"] == null ? null : BasicInfo.fromJson(json["basic"]),
-        education:
-            json["education"] == null ? [] : List<Education>.from(json["education"]!.map((x) => Education.fromJson(x))),
-        experiences: json["experiences"] == null
-            ? []
-            : List<Experience>.from(json["experiences"]!.map((x) => Experience.fromJson(x))),
-        certifications: json["certifications"] == null
-            ? []
-            : List<Certification>.from(json["certifications"]!.map((x) => Certification.fromJson(x))),
-        jobPreferences: json["jobPreferences"] == null ? null : JobPreferences.fromJson(json["jobPreferences"]),
-        goals: json["goals"] == null ? null : Goals.fromJson(json["goals"]),
-        skills: json["skills"] == null ? null : Skills.fromJson(json["skills"]),
-      );
+      basicInfo: json["basic"] == null ? null : BasicInfo.fromJson(json["basic"]),
+      education:
+          json["education"] == null ? [] : List<Education>.from(json["education"]!.map((x) => Education.fromJson(x))),
+      experiences: json["experiences"] == null
+          ? []
+          : List<Experience>.from(json["experiences"]!.map((x) => Experience.fromJson(x))),
+      certifications: json["certifications"] == null
+          ? []
+          : List<Certification>.from(json["certifications"]!.map((x) => Certification.fromJson(x))),
+      jobPreferences: json["jobPreferences"] == null ? null : JobPreferences.fromJson(json["jobPreferences"]),
+      goals: json["goals"] == null ? null : Goals.fromJson(json["goals"]),
+      skills: json["skills"] == null ? null : Skills.fromJson(json["skills"]),
+      url: json['url']);
 
   Map<String, dynamic> toJson() => {
         "basicInfo": basicInfo?.toJson(),
