@@ -17,6 +17,7 @@ class HomeLayout extends StatefulWidget {
 }
 
 class _HomeLayoutState extends State<HomeLayout> {
+  late final PageController _pageController;
   int currentIndex = 0;
 
   final List<Widget> pages = const [
@@ -26,90 +27,109 @@ class _HomeLayoutState extends State<HomeLayout> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    currentIndex = widget.isViewBook ? 1 : 0;
+    _pageController = PageController(initialPage: currentIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onNavBarTapped(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+    _pageController.jumpToPage(index);
+  }
+
+  void _onPageChanged(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBody: true,
+      extendBodyBehindAppBar: true,
       backgroundColor: AppColors.backgroundColor,
-      body: pages[currentIndex],
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Material(
-          elevation: 5,
-          borderRadius: BorderRadius.circular(100),
-          color: AppColors.backgroundColor,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(100),
-            child: SizedBox(
-              height: response(context, 78),
-              child: BottomNavigationBar(
-                currentIndex: currentIndex,
-                onTap: (index) {
-                  setState(() {
-                    currentIndex = index;
-                  });
-                },
-                selectedItemColor: AppColors.primaryColor,
-                unselectedItemColor: Colors.white,
-                type: BottomNavigationBarType.fixed,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                selectedLabelStyle: const TextStyle(fontSize: 0, height: 0),
-                unselectedLabelStyle: const TextStyle(fontSize: 0, height: 0),
-                items: [
-                  _buildNavItem(
-                    AssetsData.searchNav,
-                    AssetsData.searchFillNav,
-                    0,
-                  ),
-                  _buildNavItem(
-                    AssetsData.roadMapFillNav,
-                    AssetsData.roadMapNav,
-                    1,
-                  ),
-                  _buildNavItem(
-                    AssetsData.profileNav,
-                    AssetsData.profileFillNav,
-                    2,
-                  ),
-                ],
-              ),
-            ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: _onPageChanged,
+        physics: const BouncingScrollPhysics(),
+        children: pages,
+      ),
+      bottomNavigationBar: _buildBottomNav(),
+    );
+  }
+
+  Widget _buildBottomNav() {
+    final icons = [
+      [AssetsData.searchFillNav, AssetsData.searchNav],
+      [AssetsData.roadMapNav, AssetsData.roadMapFillNav],
+      [AssetsData.profileFillNav, AssetsData.profileNav],
+    ];
+
+    final titles = ['الرئيسية', 'الخطة', 'الملف الشخصي'];
+
+    return Material(
+      borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
+      child: Container(
+        height: response(context, 90),
+        decoration: BoxDecoration(
+          color: AppColors.primaryColor,
+          boxShadow: [
+            BoxShadow(blurRadius: 12, color: Colors.black.withValues(alpha: .12), offset: const Offset(0, -4))
+          ],
+          borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: List.generate(
+            icons.length,
+            (index) => _buildNavItem(index, titles[index], icons[index]),
           ),
         ),
       ),
     );
   }
 
-  BottomNavigationBarItem _buildNavItem(
-    String asset,
-    String assetSelected,
-    int index,
-  ) {
-    final bool isSelected = currentIndex == index;
-    const Color bgColor = AppColors.primaryColor;
+  Widget _buildNavItem(int index, String title, List<String> icons) {
+    final bool selected = index == currentIndex;
 
-    return BottomNavigationBarItem(
-      label: '',
-      icon: Container(
-        width: response(context, 80),
-        height: response(context, 52),
-        decoration: BoxDecoration(
-          color: isSelected ? bgColor : Colors.transparent,
-          borderRadius: BorderRadius.circular(100),
-        ),
-        child: Center(
-          child: SizedBox(
-            width: response(context, 26),
-            height: response(context, 26),
-            child: FittedBox(
-              fit: BoxFit.contain,
+    return GestureDetector(
+      onTap: () => _onNavBarTapped(index),
+      behavior: HitTestBehavior.opaque,
+      child: SizedBox(
+        width: response(context, 90),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: response(context, 28),
+              height: response(context, 28),
               child: SvgPicture.asset(
-                isSelected ? assetSelected : asset,
-                color: isSelected ? null : AppColors.iconNavBarColor,
+                selected ? icons[0] : icons[1],
+                colorFilter: ColorFilter.mode(
+                    selected ? AppColors.textWhite : AppColors.textWhite.withValues(alpha: 0.6), BlendMode.srcIn),
               ),
             ),
-          ),
+            const SizedBox(height: 6),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 12,
+                color: selected ? Colors.white : Colors.white.withValues(alpha: 0.6),
+              ),
+            ),
+          ],
         ),
       ),
     );

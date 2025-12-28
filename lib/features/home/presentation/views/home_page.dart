@@ -27,27 +27,35 @@ class HomePage extends StatelessWidget {
         children: [
           const CustomHomeAppBar(),
           Expanded(
-            child: BlocBuilder<HomeCubit, HomeState>(
-              builder: (context, state) {
+            child: RefreshIndicator(
+              color: AppColors.primaryColor,
+              backgroundColor: AppColors.backgroundColor,
+              onRefresh: () async {
                 final homeCubit = context.read<HomeCubit>();
-                if ((state is GetJobsLoading && state.isFirstLoading) || state is HomeInitial) {
-                  return SkeletonizerHelper.homeSkeletonizer();
-                }
-                if (state is GetJobsFailure) {
-                  return Center(
-                      child: CustomErrorWidget(
-                    errorMessage: state.message,
-                    textColor: AppColors.headingTextColor,
-                    onRetry: () {
-                      homeCubit.getJobs(loadMore: false);
-                    },
-                  ));
-                }
-                if (state is GetJobsSuccess && state.jobs.isEmpty) {
-                  return const Center(child: EmptyWidget());
-                }
-                return JobApplication(jobs: homeCubit.jobs);
+                homeCubit.getJobs(loadMore: false);
               },
+              child: BlocBuilder<HomeCubit, HomeState>(
+                builder: (context, state) {
+                  final homeCubit = context.read<HomeCubit>();
+                  if ((state is GetJobsLoading && state.isFirstLoading) || state is HomeInitial) {
+                    return SkeletonizerHelper.homeSkeletonizer();
+                  }
+                  if (state is GetJobsFailure) {
+                    return Center(
+                        child: CustomErrorWidget(
+                      errorMessage: state.message,
+                      textColor: AppColors.headingTextColor,
+                      onRetry: () {
+                        homeCubit.getJobs(loadMore: false);
+                      },
+                    ));
+                  }
+                  if (state is GetJobsSuccess && state.jobs.isEmpty) {
+                    return const Center(child: EmptyWidget());
+                  }
+                  return JobApplication(jobs: homeCubit.jobs);
+                },
+              ),
             ),
           ),
         ],
