@@ -101,7 +101,7 @@ class JobApplicationCard extends StatelessWidget {
 
     return GestureDetector(
       onTap: shouldNavigate
-          ? () => GoRouter.of(context).push(Routers.kJobApplicationDetailsScreen, extra: application.id)
+          ? () => GoRouter.of(context).push("${Routers.kJobApplicationDetailsScreen}/${application.id}")
           : null,
       child: Container(
         padding: const EdgeInsets.all(16),
