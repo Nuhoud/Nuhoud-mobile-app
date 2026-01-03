@@ -86,7 +86,7 @@ class _LoginPageBodyState extends State<LoginPageBody> {
                       }
                     },
                     onSuccess: () {
-                      GoRouter.of(context).push(Routers.kHomePageRoute);
+                      GoRouter.of(context).pushReplacement(Routers.kHomePageRoute);
                     },
                   )
                 ],
