@@ -11,10 +11,10 @@ class SkillsCubit extends Cubit<SkillsState> {
   SkillsCubit(this.skillsRepo) : super(SkillsInitial());
 
   Future<void> getSkills() async {
-    if (!getSkillsSuccess) {
-      emit(GetSkillsFromAI());
-      await Future.delayed(const Duration(minutes: 2));
-    }
+    // if (!getSkillsSuccess) {
+    //   emit(GetSkillsFromAI());
+    //   await Future.delayed(const Duration(minutes: 2));
+    // }
     emit(SkillsLoading());
     final result = await skillsRepo.getSkills();
     result.fold((failure) => emit(SkillsError(failure.message)), (skills) {

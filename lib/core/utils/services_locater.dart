@@ -14,6 +14,9 @@ import 'package:nuhoud/features/home/presentation/view-model/home_cubit/home_cub
 import 'package:nuhoud/features/job_applications/data/repos/job_applications_repo.dart';
 import 'package:nuhoud/features/job_applications/data/repos/job_applications_repo_iplm.dart';
 import 'package:nuhoud/features/job_applications/presentation/veiw_model/job_application_cubit.dart';
+import 'package:nuhoud/features/notifications/data/repos/notification_repo.dart';
+import 'package:nuhoud/features/notifications/data/repos/notification_repo_iplm.dart';
+import 'package:nuhoud/features/notifications/presentation/view-model/notification_cubit.dart';
 import 'package:nuhoud/features/onboarding/data/repo/onboarding_repo.dart';
 import 'package:nuhoud/features/onboarding/data/repo/onboarding_rpeo_iplm.dart';
 import 'package:nuhoud/features/onboarding/presentation/view-model/onboarding_cuibt/onboarding_cubit.dart';
@@ -63,6 +66,7 @@ void setupLocatorServices() {
   getit.registerLazySingleton<SkillsRepo>(() => SkillsRepoImpl(getit.get<ApiServices>()));
   getit.registerLazySingleton<JobApplicationsRepo>(
       () => JobApplicationsRepoImpl(getit.get<ApiServices>(instanceName: 'jobsApiServices')));
+  getit.registerLazySingleton<NotificationRepo>(() => NotificationRepoImpl(getit.get<ApiServices>()));
 
   //cubits
   getit.registerLazySingleton<RefreshCubit>(() => RefreshCubit());
@@ -74,4 +78,5 @@ void setupLocatorServices() {
   getit.registerFactory<UserPlanCubit>(() => UserPlanCubit(getit.get<UserPlanRepo>()));
   getit.registerFactory<SkillsCubit>(() => SkillsCubit(getit.get<SkillsRepo>()));
   getit.registerFactory<JobApplicationCubit>(() => JobApplicationCubit(getit.get<JobApplicationsRepo>()));
+  getit.registerFactory<NotificationCubit>(() => NotificationCubit(getit.get<NotificationRepo>()));
 }

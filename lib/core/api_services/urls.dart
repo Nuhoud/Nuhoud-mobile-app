@@ -41,4 +41,7 @@ class Urls {
 
   // fcm token
   static String updateFcmToken = "firebase/devices";
+
+  // notifications endpoint
+  static String getNotifications = "firebase/notifications";
 }

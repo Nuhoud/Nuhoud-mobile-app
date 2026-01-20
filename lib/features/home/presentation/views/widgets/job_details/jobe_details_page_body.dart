@@ -18,6 +18,7 @@ class _JobDetailsPageBodyState extends State<JobDetailsPageBody> {
     'requirements': false,
     'responsibilities': false,
   };
+
   String _getDeadlineText(int days) {
     if (days == 0) return "ينتهي اليوم";
     if (days == 1) return "يوم واحد";
@@ -44,6 +45,7 @@ class _JobDetailsPageBodyState extends State<JobDetailsPageBody> {
 
   @override
   Widget build(BuildContext context) {
+    final int daysRemaining = widget.job.daysRemaining ?? 0;
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(
@@ -137,14 +139,15 @@ class _JobDetailsPageBodyState extends State<JobDetailsPageBody> {
             ),
 
             // Deadline chip
-            if (widget.job.daysRemaining >= 0) ...[
+
+            if (daysRemaining >= 0) ...[
               const SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: _getDeadlineBackgroundColor(widget.job.daysRemaining),
+                    color: _getDeadlineBackgroundColor(daysRemaining),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
@@ -153,13 +156,13 @@ class _JobDetailsPageBodyState extends State<JobDetailsPageBody> {
                       Icon(
                         Icons.access_time,
                         size: 18,
-                        color: _getDeadlineTextColor(widget.job.daysRemaining),
+                        color: _getDeadlineTextColor(widget.job.daysRemaining ?? 0),
                       ),
                       const SizedBox(width: 6),
                       Text(
-                        _getDeadlineText(widget.job.daysRemaining),
+                        _getDeadlineText(widget.job.daysRemaining ?? 0),
                         style: TextStyle(
-                          color: _getDeadlineTextColor(widget.job.daysRemaining),
+                          color: _getDeadlineTextColor(widget.job.daysRemaining ?? 0),
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),

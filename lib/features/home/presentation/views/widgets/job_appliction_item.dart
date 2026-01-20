@@ -36,6 +36,7 @@ class JobApplicationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // this navigation is true?
+    final int daysRemaining = job.daysRemaining ?? 0;
     return GestureDetector(
       onTap: () => GoRouter.of(context).push('${Routers.kJobDetailsPage}/${job.id}'),
       child: Container(
@@ -101,14 +102,14 @@ class JobApplicationItem extends StatelessWidget {
                     style: subHeadingTextStyle),
               ],
             ),
-            if (job.daysRemaining >= 0) ...[
+            if (daysRemaining >= 0) ...[
               const SizedBox(height: 8),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: _getDeadlineBackgroundColor(job.daysRemaining),
+                    color: _getDeadlineBackgroundColor(daysRemaining),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: Row(
@@ -117,13 +118,13 @@ class JobApplicationItem extends StatelessWidget {
                       Icon(
                         Icons.access_time,
                         size: 16,
-                        color: _getDeadlineTextColor(job.daysRemaining),
+                        color: _getDeadlineTextColor(daysRemaining),
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        _getDeadlineText(job.daysRemaining),
+                        _getDeadlineText(daysRemaining),
                         style: subHeadingTextStyle.copyWith(
-                          color: _getDeadlineTextColor(job.daysRemaining),
+                          color: _getDeadlineTextColor(daysRemaining),
                           fontWeight: FontWeight.bold,
                         ),
                       ),

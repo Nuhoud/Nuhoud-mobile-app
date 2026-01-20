@@ -5,6 +5,7 @@ import 'package:nuhoud/features/home/presentation/views/job_details_page.dart';
 import 'package:nuhoud/features/home/presentation/views/widgets/filter_result_screen.dart';
 import 'package:nuhoud/features/job_applications/presentation/views/job_application_details_page.dart';
 import 'package:nuhoud/features/job_applications/presentation/views/job_applications_page.dart';
+import 'package:nuhoud/features/notifications/presentation/views/notification_page.dart';
 import 'package:nuhoud/features/profile/data/models/profile_model.dart';
 import 'package:nuhoud/features/profile/presentation/views/profile_basic_info_page.dart';
 import 'package:nuhoud/features/profile/presentation/views/profile_certifications_page.dart';
@@ -66,6 +67,7 @@ abstract class Routers {
   static const String kProfileSkillsPage = '/profileSkillsPage';
   static const String kFilterPage = '/filterPage';
   static const String kFilterResultScreen = '/filterResultScreen';
+  static const String kNotificationPage = '/notificationPage';
 
   //job applications
   static const String kJobApplicationsScreen = '/ApplicationsScreen';
@@ -80,6 +82,10 @@ abstract class Routers {
       GoRoute(
         path: kHomePageRoute,
         builder: (context, state) => const HomeLayout(),
+      ),
+      GoRoute(
+        path: kNotificationPage,
+        builder: (context, state) => const NotificationPage(),
       ),
       GoRoute(
         path: kLoginPageRoute,

@@ -36,7 +36,7 @@ class CustomHomeAppBar extends StatelessWidget {
                 Row(
                   children: [
                     GestureDetector(
-                        onTap: () {},
+                        onTap: () => GoRouter.of(context).push(Routers.kNotificationPage),
                         child: Container(
                           width: response(context, 45),
                           height: response(context, 45),

@@ -15,9 +15,9 @@ class JobModel {
   final DateTime deadline;
   final String status;
   final int applicationsCount;
-  final bool isActive;
-  final bool isExpired;
-  final int daysRemaining;
+  final bool? isActive;
+  final bool? isExpired;
+  final int? daysRemaining;
 
   JobModel({
     required this.id,

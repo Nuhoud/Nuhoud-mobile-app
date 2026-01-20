@@ -11,10 +11,10 @@ class UserPlanCubit extends Cubit<UserPlanState> {
   UserPlanCubit(this.userPlanRepo) : super(UserPlanInitial());
 
   Future<void> getUserPlan() async {
-    if (!getUserPlanSuccess) {
-      emit(GetPlanFromAI());
-      await Future.delayed(const Duration(minutes: 2));
-    }
+    // if (!getUserPlanSuccess) {
+    //   emit(GetPlanFromAI());
+    //   await Future.delayed(const Duration(minutes: 2));
+    // }
     emit(UserPlanLoading());
     final result = await userPlanRepo.getUserPlan();
     result.fold((failure) => emit(UserPlanError(message: failure.message)), (userPlanModel) {
